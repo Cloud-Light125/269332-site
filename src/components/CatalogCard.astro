@@ -20,30 +20,47 @@ const repositoryLabel =
 		{isPrivate && <span class="private">私有仓库</span>}
 	</div>
 	<h2>{item.name}</h2>
+	{item.englishName && <p class="english-name">{item.englishName}</p>}
 	<p class="summary">{item.summary}</p>
 	<ul class="tag-list" aria-label={item.name + ' 技术标签'}>
 		{item.tags.map((tag) => <li>{tag}</li>)}
 	</ul>
 	<div class="card-footer">
-		{isPrivate && <p>源代码仓库仅对已授权的 GitHub 账号开放。</p>}
+		{isPrivate && <p class="private-note">源代码仓库仅对已授权的 GitHub 账号开放。</p>}
+		{item.downloadNote && <p class="download-note">{item.downloadNote}</p>}
 		<div class="card-actions">
-			{item.website && (
-				<a
-					class="website-link"
-					href={item.website}
-					target={websiteIsExternal ? '_blank' : undefined}
-					rel={websiteIsExternal ? 'noopener noreferrer' : undefined}
-				>
-					{websiteLabel}
+			{item.detailsPath ? (
+				<a class="primary-link" href={item.detailsPath}>
+					查看详情
 					<span aria-hidden="true">→</span>
-					{websiteIsExternal && <span class="sr-only">（在新窗口打开）</span>}
+				</a>
+			) : (
+				item.website && (
+					<a
+						class="primary-link"
+						href={item.website}
+						target={websiteIsExternal ? '_blank' : undefined}
+						rel={websiteIsExternal ? 'noopener noreferrer' : undefined}
+					>
+						{websiteLabel}
+						<span aria-hidden="true">→</span>
+						{websiteIsExternal && <span class="sr-only">（在新窗口打开）</span>}
+					</a>
+				)
+			)}
+			{item.downloadUrl ? (
+				<a href={item.downloadUrl} target="_blank" rel="noopener noreferrer">
+					{item.downloadLabel ?? 'GitHub 下载'}
+					<span aria-hidden="true">↗</span>
+					<span class="sr-only">（在新窗口打开）</span>
+				</a>
+			) : (
+				<a href={item.repository} target="_blank" rel="noopener noreferrer">
+					{repositoryLabel}
+					<span aria-hidden="true">↗</span>
+					<span class="sr-only">（在新窗口打开）</span>
 				</a>
 			)}
-			<a href={item.repository} target="_blank" rel="noopener noreferrer">
-				{repositoryLabel}
-				<span aria-hidden="true">↗</span>
-				<span class="sr-only">（在新窗口打开）</span>
-			</a>
 		</div>
 	</div>
 </article>
@@ -87,8 +104,16 @@ const repositoryLabel =
 		color: #8a4b0f;
 	}
 	h2 {
-		margin-bottom: 0.7rem;
+		margin-bottom: 0.25rem;
 		font-size: 1.35rem;
+		overflow-wrap: anywhere;
+	}
+	.english-name {
+		margin: 0 0 0.7rem;
+		color: var(--color-accent-hover);
+		font-family: Consolas, 'SFMono-Regular', monospace;
+		font-size: 0.76rem;
+		font-weight: 700;
 		overflow-wrap: anywhere;
 	}
 	.summary {
@@ -117,8 +142,13 @@ const repositoryLabel =
 	}
 	.card-footer p {
 		margin-bottom: 0.75rem;
-		color: #8a4b0f;
 		font-size: 0.76rem;
+	}
+	.private-note {
+		color: #8a4b0f;
+	}
+	.download-note {
+		color: var(--color-text-muted);
 	}
 	.card-actions {
 		display: flex;
@@ -133,13 +163,13 @@ const repositoryLabel =
 		font-weight: 700;
 		text-decoration: none;
 	}
-	.card-actions .website-link {
+	.card-actions .primary-link {
 		padding: 0.35rem 0.65rem;
 		background: var(--color-accent);
 		border-radius: var(--radius-small);
 		color: white;
 	}
-	.card-actions .website-link:hover {
+	.card-actions .primary-link:hover {
 		background: var(--color-accent-hover);
 		color: white;
 	}

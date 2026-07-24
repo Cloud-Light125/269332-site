@@ -1,0 +1,19 @@
+---
+import ProjectDetailLayout from '../../layouts/ProjectDetailLayout.astro';
+import { projectDetails, type ProjectDetail } from '../../data/project-details';
+
+export function getStaticPaths() {
+	return projectDetails.map((project) => ({
+		params: { slug: project.slug },
+		props: { project },
+	}));
+}
+
+interface Props {
+	project: ProjectDetail;
+}
+
+const { project } = Astro.props;
+---
+
+<ProjectDetailLayout project={project} />

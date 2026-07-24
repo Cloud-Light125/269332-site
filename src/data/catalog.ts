@@ -1,10 +1,15 @@
 export interface CatalogItem {
 	name: string;
+	englishName?: string;
 	summary: string;
 	repository: string;
 	website?: string;
 	websiteLabel?: string;
 	repositoryLabel?: string;
+	detailsPath?: string;
+	downloadUrl?: string;
+	downloadLabel?: string;
+	downloadNote?: string;
 	category: string;
 	status: string;
 	visibility: 'public' | 'private';
@@ -52,32 +57,47 @@ export const gameTools: CatalogItem[] = [
 
 export const projects: CatalogItem[] = [
 	{
-		name: 'PowerSettingsManager',
+		name: 'Windows 高级电源设置管理器',
+		englishName: 'PowerSettingsManager',
 		summary:
 			'面向 Windows 10/11 的简体中文 WPF 桌面工具，用于检测和管理经典高级电源设置的可见性，并提供扫描快照、备份和安全恢复。',
 		repository: 'https://github.com/yundan125/PowerSettingsManager',
-		category: 'Windows 桌面工具',
-		status: '开发中',
+		detailsPath: '/projects/power-settings-manager/',
+		downloadUrl: 'https://github.com/yundan125/PowerSettingsManager/releases/latest',
+		downloadLabel: 'GitHub 下载',
+		downloadNote: 'GitHub Releases 提供 Windows x64 自包含便携 ZIP，解压后即可运行。',
+		category: 'Windows 系统工具',
+		status: '可用',
 		visibility: 'public',
 		tags: ['.NET 8', 'WPF', 'PowerCfg', 'Windows 注册表'],
 	},
 	{
-		name: 'MobileHotspotController',
+		name: 'Windows 移动热点控制器',
+		englishName: 'MobileHotspotController',
 		summary:
 			'Windows 11 移动热点与离线局域网控制器，可管理系统移动热点，并在需要时回退到 Wi-Fi Direct 仅局域网模式。',
 		repository: 'https://github.com/yundan125/MobileHotspotController',
-		category: 'Windows 桌面工具',
-		status: '开发中',
+		detailsPath: '/projects/mobile-hotspot-controller/',
+		downloadUrl: 'https://github.com/yundan125/MobileHotspotController/releases/latest',
+		downloadLabel: 'GitHub 下载',
+		downloadNote: 'GitHub Releases 提供 Windows 11 x64 自包含单文件程序，无需另装 .NET 运行时。',
+		category: 'Windows 网络工具',
+		status: '可用',
 		visibility: 'public',
 		tags: ['.NET 8', 'WPF', 'WinRT', 'Wi-Fi Direct'],
 	},
 	{
-		name: 'TDM Claim Toggle Patcher',
+		name: 'TwitchDropsMiner 掉宝自动领取开关补丁工具',
+		englishName: 'TDM Claim Toggle Patcher',
 		summary:
 			'用于 TwitchDropsMiner 源码的可审计补丁工具，增加可持久化的自动领取 Drops 开关，并提供兼容性检测、备份、恢复以及 GUI/CLI。',
 		repository: 'https://github.com/yundan125/tdm-claim-toggle-patcher',
+		detailsPath: '/projects/tdm-claim-toggle-patcher/',
+		downloadUrl: 'https://github.com/yundan125/tdm-claim-toggle-patcher/releases/latest',
+		downloadLabel: 'GitHub 下载',
+		downloadNote: 'GitHub Releases 提供支持 GUI 与 CLI 的 Windows 单文件程序。',
 		category: '源码补丁工具',
-		status: '开发中',
+		status: '可用',
 		visibility: 'public',
 		tags: ['Python', 'AST', 'GUI / CLI', 'TwitchDropsMiner'],
 	},
