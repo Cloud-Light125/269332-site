@@ -1,23 +1,22 @@
-<section class="tech-section" aria-labelledby="tech-title">
+<section class="updates-section" aria-labelledby="updates-title">
 	<div>
-		<p class="eyebrow">技术栈</p>
-		<h2 id="tech-title">网站如何构建</h2>
+		<p class="eyebrow">内容更新</p>
+		<h2 id="updates-title">这里会持续补充什么</h2>
 		<p>
-			网站使用 Astro 静态生成，通过 GitHub 管理源码，并由 Cloudflare 自动构建和部署。Markdown
-			与 MDX 内容能力保留，便于后续扩展。
+			每个项目不只保留一个源码链接。随着功能变化，这里会逐步补充项目介绍、下载方式、使用步骤、已知限制和更新状态。
 		</p>
 	</div>
-	<ul aria-label="网站技术栈">
-		<li>Astro</li>
-		<li>TypeScript</li>
-		<li>Markdown / MDX</li>
-		<li>GitHub</li>
-		<li>Cloudflare</li>
+	<ul aria-label="项目页面内容">
+		<li>功能介绍</li>
+		<li>下载入口</li>
+		<li>使用方法</li>
+		<li>注意事项</li>
+		<li>更新状态</li>
 	</ul>
 </section>
 
 <style>
-	.tech-section {
+	.updates-section {
 		display: grid;
 		grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
 		align-items: center;
@@ -31,7 +30,7 @@
 	h2 {
 		color: white;
 	}
-	.tech-section > div > p:last-child {
+	.updates-section > div > p:last-child {
 		margin: 0;
 	}
 	ul {
@@ -52,7 +51,7 @@
 		font-weight: 700;
 	}
 	@media (max-width: 760px) {
-		.tech-section {
+		.updates-section {
 			grid-template-columns: 1fr;
 			gap: 1.5rem;
 		}

@@ -4,20 +4,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
 	title="关于这个网站 · CloudLight"
-	description="了解 CloudLight 个人网站的项目、游戏工具、技术架构和源码信息。"
+	description="了解 CloudLight 网站收录的项目、游戏工具、使用说明以及源码与反馈方式。"
 >
 	<main class="about-page">
 		<header class="about-hero">
 			<p class="eyebrow">关于</p>
 			<h1>关于这个网站</h1>
-			<p class="lead">CloudLight 是一个用于整理个人项目、游戏工具和开发经验的独立网站。</p>
+			<p class="lead">CloudLight 用来集中整理个人项目、游戏工具和对应的使用说明。</p>
 			<p>
-				这里的内容主要来自实际开发和问题解决过程，重点是把零散经验整理成能够长期保存和继续维护的内容。
+				这里会说明每个项目解决什么问题、如何下载和使用，以及实际操作时需要注意的限制。
 			</p>
 			<nav aria-label="本页内容">
 				<a href="#content">网站内容</a>
-				<a href="#principles">项目原则</a>
-				<a href="#technology">网站技术</a>
+				<a href="#project-info">内容说明</a>
 				<a href="#source">源码与反馈</a>
 			</nav>
 		</header>
@@ -28,61 +27,80 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			<div class="content-grid">
 				<article>
 					<h3>Windows 软件与系统工具</h3>
-					<p>整理电源设置、网络控制和 Windows 系统能力相关的桌面项目。</p>
+					<p>整理电源设置、网络控制和 Windows 系统功能相关的桌面项目。</p>
 				</article>
 				<article>
 					<h3>游戏工具箱</h3>
-					<p>收录 Steam 数据可视化、守望先锋趣味测试和其他游戏相关的浏览器交互工具。</p>
+					<p>收录 Steam 数据展示、守望先锋趣味工具和其他游戏相关网页。</p>
 				</article>
 				<article>
-					<h3>网站开发与部署</h3>
-					<p>围绕 Astro、GitHub、Cloudflare 和自动化构建维护这个站点。</p>
+					<h3>项目说明与使用指南</h3>
+					<p>整理项目用途、功能范围、下载方式、使用步骤和需要注意的问题。</p>
 				</article>
 				<article>
 					<h3>游戏与电竞开发</h3>
-					<p>围绕赛事结构、交互展示和游戏内容制作可继续维护的项目。</p>
+					<p>围绕赛事预测、数据展示和游戏内容制作可以直接使用的交互页面。</p>
 				</article>
 			</div>
-			<p class="content-note">文章功能正在整理，完善后会重新开放。</p>
+			<p class="content-note">文章功能仍在整理，完善后会重新开放。</p>
 		</section>
 
-		<section id="principles" aria-labelledby="principles-title">
-			<p class="eyebrow">维护方式</p>
-			<h2 id="principles-title">内容与项目原则</h2>
-			<ul class="principle-list">
-				<li><span>01</span>只展示真实存在的项目和游戏工具。</li>
-				<li><span>02</span>尽量提供清楚的功能说明和源码入口。</li>
-				<li><span>03</span>优先解决实际使用中的问题。</li>
-				<li><span>04</span>保持网站结构简单、轻量和可维护。</li>
-				<li><span>05</span>不为了填充页面编造项目、数据和成果。</li>
-				<li><span>06</span>内容随着项目开发逐步更新。</li>
+		<section id="project-info" aria-labelledby="project-info-title">
+			<p class="eyebrow">内容说明</p>
+			<h2 id="project-info-title">在项目页面可以看到什么</h2>
+			<ul class="guide-list">
+				<li>
+					<span>01</span>
+					<div>
+						<h3>项目用途</h3>
+						<p>说明项目解决什么问题，以及适合哪些使用场景。</p>
+					</div>
+				</li>
+				<li>
+					<span>02</span>
+					<div>
+						<h3>主要功能</h3>
+						<p>概括当前已经实现的功能，不把计划内容写成现有功能。</p>
+					</div>
+				</li>
+				<li>
+					<span>03</span>
+					<div>
+						<h3>下载方式</h3>
+						<p>提供 GitHub 下载入口，并说明下载的是程序还是源码。</p>
+					</div>
+				</li>
+				<li>
+					<span>04</span>
+					<div>
+						<h3>使用方法</h3>
+						<p>整理下载、启动、配置和基本操作步骤。</p>
+					</div>
+				</li>
+				<li>
+					<span>05</span>
+					<div>
+						<h3>限制与风险</h3>
+						<p>说明系统要求、兼容性、已知限制和需要注意的操作。</p>
+					</div>
+				</li>
+				<li>
+					<span>06</span>
+					<div>
+						<h3>源码与反馈</h3>
+						<p>提供项目仓库，方便查看更新记录和反馈问题。</p>
+					</div>
+				</li>
 			</ul>
 		</section>
 
-		<section id="technology" aria-labelledby="technology-title">
-			<p class="eyebrow">技术架构</p>
-			<h2 id="technology-title">网站技术</h2>
-			<div class="architecture">
-				<dl>
-					<div><dt>生成方式</dt><dd>Astro 静态生成</dd></div>
-					<div><dt>开发语言</dt><dd>TypeScript、HTML、CSS</dd></div>
-					<div><dt>内容能力</dt><dd>Markdown 与 MDX</dd></div>
-					<div><dt>源码管理</dt><dd>GitHub</dd></div>
-					<div><dt>构建部署</dt><dd>Cloudflare 自动部署</dd></div>
-					<div><dt>正式域名</dt><dd><a href="https://269332.xyz">269332.xyz</a></dd></div>
-				</dl>
-				<p>
-					网站保持静态输出，不依赖长期运行的应用服务器。源码推送到 GitHub 后，由 Cloudflare 完成构建和发布。
-				</p>
-			</div>
-		</section>
-
 		<section id="source" aria-labelledby="source-title">
-			<p class="eyebrow">开放信息</p>
+			<p class="eyebrow">GitHub</p>
 			<h2 id="source-title">源码与反馈</h2>
-			<p>
-				可以通过 GitHub 查看网站源码、相关项目和开发进度。发现页面错误或失效链接时，可先在对应仓库查看已有说明和反馈渠道。
-			</p>
+			<div class="source-intro">
+				<p>网站源码和公开项目均可在 GitHub 查看，可以通过仓库了解具体实现和最近更新。</p>
+				<p>发现页面错误、失效链接或项目问题时，请优先前往对应仓库查看说明和反馈渠道。</p>
+			</div>
 			<div class="source-links">
 				<a
 					class="source-card"
@@ -92,7 +110,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				>
 					<span>网站源码</span>
 					<strong>yundan125/269332-site</strong>
-					<small>在 GitHub 查看 <span aria-hidden="true">↗</span></small>
+					<p>查看主站源码和更新记录</p>
+					<small>打开网站仓库 <span aria-hidden="true">↗</span></small>
 					<span class="sr-only">（在新窗口打开）</span>
 				</a>
 				<a
@@ -103,7 +122,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				>
 					<span>GitHub 主页</span>
 					<strong>github.com/yundan125</strong>
-					<small>查看全部公开仓库 <span aria-hidden="true">↗</span></small>
+					<p>查看公开项目和源码仓库</p>
+					<small>打开 GitHub 主页 <span aria-hidden="true">↗</span></small>
 					<span class="sr-only">（在新窗口打开）</span>
 				</a>
 			</div>
@@ -112,9 +132,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		<aside class="site-note" aria-labelledby="site-note-title">
 			<h2 id="site-note-title">站点说明</h2>
 			<ul>
-				<li>本站为个人网站，页面内容可能随项目更新而调整。</li>
-				<li>外部链接会在新窗口打开。</li>
-				<li>项目授权以对应仓库中的许可证为准。</li>
+				<li>本站内容以实际公开项目和已经实现的功能为准。</li>
+				<li>项目下载、使用限制和许可证以对应 GitHub 仓库为准。</li>
+				<li>发现页面错误、描述不准确或链接失效时，可以前往对应仓库反馈。</li>
 			</ul>
 		</aside>
 	</main>
@@ -190,71 +210,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		border-radius: var(--radius-small);
 		color: var(--color-accent-hover);
 	}
-	.principle-list {
+	.guide-list {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 0;
 		margin: 2rem 0 0;
 		padding: 0;
 		border-top: 1px solid var(--color-border);
 		list-style: none;
 	}
-	.principle-list li {
-		display: flex;
-		gap: 1rem;
-		padding: 1rem 0;
+	.guide-list li {
+		display: grid;
+		grid-template-columns: 2.25rem minmax(0, 1fr);
+		gap: 0.8rem;
+		padding: 1.1rem 0;
 		border-bottom: 1px solid var(--color-border);
 	}
-	.principle-list li:nth-child(odd) {
+	.guide-list li:nth-child(odd) {
 		padding-right: 1.5rem;
 	}
-	.principle-list li:nth-child(even) {
+	.guide-list li:nth-child(even) {
 		padding-left: 1.5rem;
 		border-left: 1px solid var(--color-border);
 	}
-	.principle-list span {
+	.guide-list > li > span {
 		color: var(--color-accent);
 		font-size: 0.7rem;
 		font-weight: 700;
+		letter-spacing: 0.08em;
 	}
-	.architecture {
-		display: grid;
-		grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
-		gap: 2rem;
-		margin-top: 2rem;
+	.guide-list h3 {
+		margin-bottom: 0.35rem;
+		font-size: 1rem;
 	}
-	dl {
-		margin: 0;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-medium);
-	}
-	dl div {
-		display: grid;
-		grid-template-columns: 7rem 1fr;
-		gap: 1rem;
-		padding: 0.75rem 1rem;
-	}
-	dl div + div {
-		border-top: 1px solid var(--color-border);
-	}
-	dt {
-		color: var(--color-text-muted);
-		font-size: 0.78rem;
-		font-weight: 700;
-	}
-	dd {
-		margin: 0;
-		font-size: 0.88rem;
-		font-weight: 700;
-	}
-	.architecture > p {
+	.guide-list p {
 		margin: 0;
 		color: var(--color-text-muted);
+		font-size: 0.85rem;
 	}
-	#source > p:not(.eyebrow) {
+	.source-intro {
 		max-width: 44rem;
 		color: var(--color-text-muted);
+	}
+	.source-intro p:last-child {
+		margin-bottom: 0;
 	}
 	.source-links {
 		display: grid;
@@ -264,8 +262,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	}
 	.source-card {
 		display: flex;
-		flex-direction: column;
+		min-width: 0;
 		padding: 1.35rem;
+		flex-direction: column;
 		background: var(--color-surface);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-medium);
@@ -283,8 +282,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		font-size: 0.72rem;
 	}
 	.source-card strong {
-		margin: 0.25rem 0 1.5rem;
+		margin: 0.25rem 0 0.5rem;
 		overflow-wrap: anywhere;
+	}
+	.source-card p {
+		margin: 0 0 1.5rem;
+		color: var(--color-text-muted);
+		font-size: 0.85rem;
 	}
 	.source-card small {
 		margin-top: auto;
@@ -306,18 +310,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		padding-left: 1.2rem;
 		font-size: 0.85rem;
 	}
+	.site-note li + li {
+		margin-top: 0.45rem;
+	}
 	@media (max-width: 720px) {
 		.about-page {
 			width: min(960px, calc(100% - 1.5rem));
 		}
 		.content-grid,
-		.principle-list,
-		.architecture,
+		.guide-list,
 		.source-links {
 			grid-template-columns: 1fr;
 		}
-		.principle-list li:nth-child(odd),
-		.principle-list li:nth-child(even) {
+		.guide-list li:nth-child(odd),
+		.guide-list li:nth-child(even) {
 			padding-right: 0;
 			padding-left: 0;
 			border-left: 0;

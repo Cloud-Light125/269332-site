@@ -22,7 +22,7 @@ const repositoryLabel =
 	<h2>{item.name}</h2>
 	{item.englishName && <p class="english-name">{item.englishName}</p>}
 	<p class="summary">{item.summary}</p>
-	<ul class="tag-list" aria-label={item.name + ' 技术标签'}>
+	<ul class="tag-list" aria-label={item.name + ' 标签'}>
 		{item.tags.map((tag) => <li>{tag}</li>)}
 	</ul>
 	<div class="card-footer">

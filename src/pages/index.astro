@@ -3,7 +3,7 @@ import FeaturedCatalog from '../components/home/FeaturedCatalog.astro';
 import FocusAreas from '../components/home/FocusAreas.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import HomeOverview from '../components/home/HomeOverview.astro';
-import TechStack from '../components/home/TechStack.astro';
+import ContentUpdates from '../components/home/ContentUpdates.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { gameTools, projects } from '../data/catalog';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -31,7 +31,7 @@ const websiteSchema = {
 			id="featured-projects"
 			eyebrow="精选项目"
 			title="正在维护的项目"
-			description="从系统工具到源码补丁，这些项目都来自真实的使用需求，并持续在对应仓库中维护。"
+			description="从系统工具到源码补丁，这些项目都来自实际需求。页面中可以查看用途、下载方式和使用说明。"
 			items={projects}
 			allHref="/projects/"
 			allLabel="查看全部项目"
@@ -46,12 +46,12 @@ const websiteSchema = {
 			allLabel="查看游戏工具箱"
 		/>
 		<FocusAreas />
-		<TechStack />
+		<ContentUpdates />
 		<section class="about-callout" aria-labelledby="about-callout-title">
 			<div>
 				<p class="eyebrow">关于本站</p>
 				<h2 id="about-callout-title">了解这个网站</h2>
-				<p>CloudLight 用于整理真实项目、游戏工具和开发经验，并随着项目推进持续更新。</p>
+				<p>这里集中介绍网站收录的项目、游戏工具、使用说明和反馈入口。</p>
 			</div>
 			<div class="callout-actions">
 				<a class="button button-primary" href="/about/">关于本站</a>

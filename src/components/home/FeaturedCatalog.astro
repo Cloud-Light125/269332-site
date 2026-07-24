@@ -38,7 +38,7 @@ const { id, eyebrow, title, description, items, allHref, allLabel } = Astro.prop
 				<h3>{item.name}</h3>
 				{item.englishName && <p class="english-name">{item.englishName}</p>}
 				<p class="summary">{item.summary}</p>
-				<ul aria-label={item.name + ' 技术标签'}>
+				<ul aria-label={item.name + ' 标签'}>
 					{item.tags.slice(0, 3).map((tag) => <li>{tag}</li>)}
 				</ul>
 				<div class="card-actions">
