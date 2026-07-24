@@ -41,8 +41,10 @@ export const gameTools: CatalogItem[] = [
 		summary:
 			'面向 OWCS 2026 Midseason Championship 小组赛的浏览器对战预测器，支持选择胜者、录入比分、编辑赛事配置、导入导出和本地保存。',
 		repository: 'https://github.com/yundan125/OWCS-Predictor',
+		website: '/owcs-predictor/',
+		websiteLabel: '立即使用',
 		category: '电竞 / 预测工具',
-		status: '开发中',
+		status: '可用',
 		visibility: 'public',
 		tags: ['HTML', 'CSS', 'JavaScript', 'localStorage'],
 	},
