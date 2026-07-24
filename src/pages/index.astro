@@ -5,7 +5,7 @@ import HomeHero from '../components/home/HomeHero.astro';
 import HomeOverview from '../components/home/HomeOverview.astro';
 import TechStack from '../components/home/TechStack.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import { overwatchTools, projects } from '../data/catalog';
+import { gameTools, projects } from '../data/catalog';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const websiteSchema = {
@@ -17,7 +17,7 @@ const websiteSchema = {
 };
 ---
 
-<BaseLayout title="269332 · 项目与守望先锋工具" description={SITE_DESCRIPTION}>
+<BaseLayout title="CloudLight · 项目与游戏工具" description={SITE_DESCRIPTION}>
 	<script
 		slot="head"
 		is:inline
@@ -26,7 +26,7 @@ const websiteSchema = {
 	></script>
 	<main class="home">
 		<HomeHero />
-		<HomeOverview projectsCount={projects.length} overwatchToolsCount={overwatchTools.length} />
+		<HomeOverview projectsCount={projects.length} gameToolsCount={gameTools.length} />
 		<FeaturedCatalog
 			id="featured-projects"
 			eyebrow="精选项目"
@@ -37,13 +37,13 @@ const websiteSchema = {
 			allLabel="查看全部项目"
 		/>
 		<FeaturedCatalog
-			id="featured-overwatch-tools"
-			eyebrow="守望先锋工具箱"
-			title="守望先锋相关网页工具"
-			description="收录赛事预测、英雄猜名和其他围绕《守望先锋》制作的交互工具。"
-			items={overwatchTools}
+			id="featured-game-tools"
+			eyebrow="游戏工具箱"
+			title="游戏相关网页工具"
+			description="收录我制作的游戏相关网页工具，包括游戏数据可视化、趣味测试和实用辅助功能。"
+			items={gameTools}
 			allHref="/tools/"
-			allLabel="查看守望先锋工具箱"
+			allLabel="查看游戏工具箱"
 		/>
 		<FocusAreas />
 		<TechStack />
@@ -51,7 +51,7 @@ const websiteSchema = {
 			<div>
 				<p class="eyebrow">关于本站</p>
 				<h2 id="about-callout-title">了解这个网站</h2>
-				<p>269332 用于整理真实项目、守望先锋工具和开发经验，并随着项目推进持续更新。</p>
+				<p>CloudLight 用于整理真实项目、游戏工具和开发经验，并随着项目推进持续更新。</p>
 			</div>
 			<div class="callout-actions">
 				<a class="button button-primary" href="/about/">关于本站</a>

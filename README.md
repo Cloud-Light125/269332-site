@@ -1,6 +1,6 @@
-# 269332-site
+# CloudLight
 
-269332.xyz 的 Astro 静态网站源码。
+CloudLight 的 Astro 静态网站源码。
 
 网站用于发布个人博客、展示项目与开发记录，并提供网页工具和功能导航。生产站点通过 GitHub main 分支连接 Cloudflare Pages 自动构建。
 

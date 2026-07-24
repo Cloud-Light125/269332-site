@@ -1,27 +1,28 @@
 ---
 import CatalogCard from '../../components/CatalogCard.astro';
-import { overwatchTools } from '../../data/catalog';
+import { gameTools } from '../../data/catalog';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-	title="守望先锋工具箱 · 269332"
-	description="浏览 269332 收录的守望先锋赛事预测、英雄猜名和其他交互工具。"
+	title="游戏工具箱 · CloudLight"
+	description="浏览 CloudLight 收录的 Steam 游戏数据可视化、守望先锋趣味测试和其他游戏相关网页工具。"
 >
 	<main class="catalog-page">
 		<header>
 			<div>
-				<p class="eyebrow">守望先锋</p>
-				<h1>守望先锋工具箱</h1>
-				<p>收录围绕《守望先锋》制作的赛事预测、英雄猜名和其他网页工具。</p>
+				<p class="eyebrow">游戏工具</p>
+				<h1>游戏工具箱</h1>
+				<p>收录我制作的游戏相关网页工具，包括游戏数据可视化、趣味测试和实用辅助功能。</p>
 			</div>
-			<p class="count"><strong>{overwatchTools.length}</strong> 个守望先锋工具</p>
+			<p class="count"><strong>{gameTools.length}</strong> 个游戏工具</p>
 		</header>
-		<section class="catalog-grid" aria-label="守望先锋工具列表">
-			{overwatchTools.map((tool) => <CatalogCard item={tool} />)}
+		<section class="catalog-grid" aria-label="游戏工具列表">
+			{gameTools.map((tool) => <CatalogCard item={tool} />)}
 		</section>
-		<aside class="copyright-note" aria-label="守望先锋版权与非官方说明">
-			《守望先锋》及相关角色、美术素材版权归 Blizzard Entertainment 所有。本站收录的相关工具用于个人学习和非商业娱乐，与 Blizzard Entertainment 无官方关联。
+		<aside class="copyright-note" aria-label="游戏相关商标与非官方说明">
+			<p>《守望先锋》及相关角色、美术素材版权归 Blizzard Entertainment 所有。本站收录的相关工具与 Blizzard Entertainment 无官方关联。</p>
+			<p>Steam 是 Valve Corporation 的商标。本站收录的 Steam 数据工具为独立项目，与 Valve Corporation 无官方关联，仅使用账号公开提供的游戏时长信息。</p>
 		</aside>
 	</main>
 </BaseLayout>
@@ -70,6 +71,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 		border-radius: var(--radius-small);
 		color: var(--color-text-muted);
 		font-size: 0.78rem;
+	}
+	.copyright-note p {
+		margin: 0;
+	}
+	.copyright-note p + p {
+		margin-top: 0.55rem;
 	}
 	@media (max-width: 720px) {
 		.catalog-page {

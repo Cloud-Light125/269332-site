@@ -3,13 +3,39 @@ export interface CatalogItem {
 	summary: string;
 	repository: string;
 	website?: string;
+	websiteLabel?: string;
+	repositoryLabel?: string;
 	category: string;
 	status: string;
 	visibility: 'public' | 'private';
 	tags: string[];
 }
 
-export const overwatchTools: CatalogItem[] = [
+export const gameTools: CatalogItem[] = [
+	{
+		name: 'Steam 游玩时光全景图',
+		summary:
+			'根据一个或多个 Steam 账号的公开游戏时长生成封面全景图。游玩越久，游戏封面越醒目；相同游戏的时长可跨账号累计，并支持排行榜和 PNG 图片导出。',
+		repository: 'https://github.com/yundan125/playtime-panorama',
+		website: 'https://playtime.269332.xyz',
+		websiteLabel: '立即使用',
+		repositoryLabel: '查看源码',
+		category: 'Steam / 数据可视化',
+		status: '可用',
+		visibility: 'public',
+		tags: ['Steam', '数据可视化', 'Cloudflare Workers', 'TypeScript'],
+	},
+	{
+		name: '守望先锋看图猜英雄',
+		summary:
+			'面向没玩过《守望先锋》的玩家制作的第一印象猜名游戏。根据英雄图标或全身照，从名称池中为每位英雄分配名字并填写理由，提交后再揭晓真实名称和猜测结果。',
+		repository: 'https://github.com/yundan125/overwatch-hero-quiz',
+		website: '/overwatch-hero-quiz/',
+		category: '守望先锋 / 英雄猜名',
+		status: '可用',
+		visibility: 'public',
+		tags: ['HTML', 'CSS', 'JavaScript', 'localStorage'],
+	},
 	{
 		name: 'OWCS Predictor',
 		summary:
@@ -17,17 +43,6 @@ export const overwatchTools: CatalogItem[] = [
 		repository: 'https://github.com/yundan125/OWCS-Predictor',
 		category: '电竞 / 预测工具',
 		status: '开发中',
-		visibility: 'public',
-		tags: ['HTML', 'CSS', 'JavaScript', 'localStorage'],
-	},
-	{
-		name: '给守望先锋英雄起名字',
-		summary:
-			'面向没玩过《守望先锋》的玩家制作的第一印象猜名游戏。根据英雄图标或全身照，从名称池中为每位英雄分配名字并填写理由，提交后再揭晓真实名称和猜测结果。',
-		repository: 'https://github.com/yundan125/overwatch-hero-quiz',
-		website: '/overwatch-hero-quiz/',
-		category: '守望先锋 / 英雄猜名',
-		status: '可用',
 		visibility: 'public',
 		tags: ['HTML', 'CSS', 'JavaScript', 'localStorage'],
 	},

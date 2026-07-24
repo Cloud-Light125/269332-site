@@ -7,6 +7,10 @@ interface Props {
 
 const { item } = Astro.props;
 const isPrivate = item.visibility === 'private';
+const websiteIsExternal = item.website?.startsWith('http') ?? false;
+const websiteLabel = item.websiteLabel ?? '打开网页';
+const repositoryLabel =
+	item.repositoryLabel ?? (isPrivate ? '访问私有仓库' : '查看 GitHub 仓库');
 ---
 
 <article class="catalog-card">
@@ -24,13 +28,19 @@ const isPrivate = item.visibility === 'private';
 		{isPrivate && <p>源代码仓库仅对已授权的 GitHub 账号开放。</p>}
 		<div class="card-actions">
 			{item.website && (
-				<a class="website-link" href={item.website}>
-					打开网页
+				<a
+					class="website-link"
+					href={item.website}
+					target={websiteIsExternal ? '_blank' : undefined}
+					rel={websiteIsExternal ? 'noopener noreferrer' : undefined}
+				>
+					{websiteLabel}
 					<span aria-hidden="true">→</span>
+					{websiteIsExternal && <span class="sr-only">（在新窗口打开）</span>}
 				</a>
 			)}
 			<a href={item.repository} target="_blank" rel="noopener noreferrer">
-				{isPrivate ? '访问私有仓库' : '查看 GitHub 仓库'}
+				{repositoryLabel}
 				<span aria-hidden="true">↗</span>
 				<span class="sr-only">（在新窗口打开）</span>
 			</a>

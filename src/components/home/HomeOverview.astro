@@ -1,10 +1,10 @@
 ---
 interface Props {
 	projectsCount: number;
-	overwatchToolsCount: number;
+	gameToolsCount: number;
 }
 
-const { projectsCount, overwatchToolsCount } = Astro.props;
+const { projectsCount, gameToolsCount } = Astro.props;
 ---
 
 <section class="overview" aria-label="网站概览">
@@ -13,8 +13,8 @@ const { projectsCount, overwatchToolsCount } = Astro.props;
 		<span>个真实项目</span>
 	</div>
 	<div>
-		<strong>{overwatchToolsCount}</strong>
-		<span>个守望先锋工具</span>
+		<strong>{gameToolsCount}</strong>
+		<span>个游戏工具</span>
 	</div>
 	<div>
 		<strong>Windows / Web</strong>
