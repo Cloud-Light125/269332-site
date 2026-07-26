@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
 	title="关于这个网站 · CloudLight"
-	description="了解 CloudLight 网站收录的项目、游戏工具、使用说明以及源码与反馈方式。"
+	description="了解 CloudLight 网站收录的项目、游戏工具、文章、使用说明以及源码与反馈方式。"
 >
 	<main class="about-page">
 		<header class="about-hero">
@@ -12,7 +12,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			<h1>关于这个网站</h1>
 			<p class="lead">CloudLight 用来集中整理个人项目、游戏工具、文章和对应的使用说明。</p>
 			<p>
-				这里会说明每个项目解决什么问题、如何下载和使用，以及实际操作时需要注意的限制。
+				这里会说明项目和工具解决什么问题、如何下载和使用，也会整理 Windows 使用经验、问题处理方法以及实际开发记录。
 			</p>
 			<nav aria-label="本页内容">
 				<a href="#content">网站内容</a>
@@ -26,71 +26,71 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			<h2 id="content-title">网站内容</h2>
 			<div class="content-grid">
 				<article>
-					<h3>Windows 软件与系统工具</h3>
-					<p>整理电源设置、网络控制和 Windows 系统功能相关的桌面项目。</p>
+					<h3>Windows 软件、系统工具与使用经验</h3>
+					<p>整理电源设置、网络控制和 Windows 系统功能相关的桌面项目，也记录 Windows 使用经验和问题处理方法。</p>
 				</article>
 				<article>
 					<h3>游戏工具箱</h3>
-					<p>收录 Steam 数据展示、守望先锋趣味工具和其他游戏相关网页。</p>
+					<p>收录 Steam 数据展示、守望先锋趣味工具、赛事预测和其他游戏相关网页。</p>
 				</article>
 				<article>
-					<h3>项目说明与使用指南</h3>
-					<p>整理项目用途、功能范围、下载方式、使用步骤和需要注意的问题。</p>
+					<h3>项目说明、文章与使用指南</h3>
+					<p>整理项目用途、功能范围、下载方式和使用步骤，并通过文章记录问题原因、处理过程和实际经验。</p>
 				</article>
 				<article>
-					<h3>游戏与电竞开发</h3>
-					<p>围绕赛事预测、数据展示和游戏内容制作可以直接使用的交互页面。</p>
+					<h3>游戏、电竞与开发记录</h3>
+					<p>围绕赛事预测、数据展示和游戏内容制作可直接使用的交互页面，同时记录相关实现过程和开发经验。</p>
 				</article>
 			</div>
 			<p class="content-note">
-				文章已经开放，可以前往<a href="/blog/">文章页面</a>查看 Windows 使用经验和开发记录。
+				<a href="/blog/">文章页面</a>会持续整理 Windows 使用经验、问题处理方法和实际开发记录。
 			</p>
 		</section>
 
 		<section id="project-info" aria-labelledby="project-info-title">
 			<p class="eyebrow">内容说明</p>
-			<h2 id="project-info-title">在项目页面可以看到什么</h2>
+			<h2 id="project-info-title">在项目和文章页面可以看到什么</h2>
 			<ul class="guide-list">
 				<li>
 					<span>01</span>
 					<div>
-						<h3>项目用途</h3>
-						<p>说明项目解决什么问题，以及适合哪些使用场景。</p>
+						<h3>项目用途与文章主题</h3>
+						<p>说明项目解决什么问题、适合哪些使用场景，以及文章主要记录的问题和经验。</p>
 					</div>
 				</li>
 				<li>
 					<span>02</span>
 					<div>
-						<h3>主要功能</h3>
-						<p>概括当前已经实现的功能，不把计划内容写成现有功能。</p>
+						<h3>主要功能与核心内容</h3>
+						<p>概括项目当前已经实现的功能，并说明文章所记录的处理方法和关键内容。</p>
 					</div>
 				</li>
 				<li>
 					<span>03</span>
 					<div>
-						<h3>下载方式</h3>
-						<p>提供 GitHub 下载入口，并说明下载的是程序还是源码。</p>
+						<h3>下载与相关入口</h3>
+						<p>提供项目的 GitHub 下载入口、源码地址，以及文章中涉及的必要参考入口。</p>
 					</div>
 				</li>
 				<li>
 					<span>04</span>
 					<div>
-						<h3>使用方法</h3>
-						<p>整理下载、启动、配置和基本操作步骤。</p>
+						<h3>使用方法与操作步骤</h3>
+						<p>整理项目的下载、启动、配置和基本操作步骤，也记录文章中经过验证的处理流程。</p>
 					</div>
 				</li>
 				<li>
 					<span>05</span>
 					<div>
-						<h3>限制与风险</h3>
-						<p>说明系统要求、兼容性、已知限制和需要注意的操作。</p>
+						<h3>限制、风险与注意事项</h3>
+						<p>说明系统要求、兼容性、已知限制，以及项目使用或文章操作过程中需要注意的问题。</p>
 					</div>
 				</li>
 				<li>
 					<span>06</span>
 					<div>
-						<h3>源码与反馈</h3>
-						<p>提供项目仓库，方便查看更新记录和反馈问题。</p>
+						<h3>源码、参考与反馈</h3>
+						<p>提供项目仓库和相关参考信息，方便查看更新记录、核对内容和反馈问题。</p>
 					</div>
 				</li>
 			</ul>
@@ -134,7 +134,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		<aside class="site-note" aria-labelledby="site-note-title">
 			<h2 id="site-note-title">站点说明</h2>
 			<ul>
-				<li>本站内容以实际公开项目和已经实现的功能为准。</li>
+				<li>本站内容以实际公开项目、工具和已经发布的文章为准。</li>
 				<li>项目下载、使用限制和许可证以对应 GitHub 仓库为准。</li>
 				<li>发现页面错误、描述不准确或链接失效时，可以前往对应仓库反馈。</li>
 			</ul>
