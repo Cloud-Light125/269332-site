@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
+import CodeBlockEnhancer from '../components/CodeBlockEnhancer.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 
@@ -27,5 +28,6 @@ const { title, description, image, type = 'website' } = Astro.props;
 			<slot />
 		</div>
 		<SiteFooter />
+		<CodeBlockEnhancer />
 	</body>
 </html>

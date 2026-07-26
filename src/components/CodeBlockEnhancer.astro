@@ -1,0 +1,207 @@
+<style is:global>
+  .site-code-block {
+    position: relative;
+    margin: 1.5rem 0;
+    overflow: hidden;
+    border: 1px solid #3a3a3a;
+    border-radius: 10px;
+    background: #1e1e1e;
+  }
+
+  .site-code-block pre,
+  .site-code-block pre.astro-code {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 3.25rem 1.25rem 1.25rem;
+    overflow-x: auto;
+    border: 0;
+    border-radius: 0;
+    background: #1e1e1e !important;
+    color: #f5f5f5 !important;
+    font-family:
+      "Cascadia Code",
+      "JetBrains Mono",
+      "SFMono-Regular",
+      Consolas,
+      "Liberation Mono",
+      Menlo,
+      monospace;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    tab-size: 4;
+  }
+
+  .site-code-block pre code {
+    display: block;
+    min-width: max-content;
+    padding: 0;
+    border: 0;
+    background: transparent !important;
+    color: #f5f5f5 !important;
+    font: inherit;
+    white-space: pre;
+  }
+
+  .site-code-block pre code span {
+    color: #f5f5f5 !important;
+    font: inherit;
+  }
+
+  .site-code-copy {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.75rem;
+    z-index: 2;
+    min-width: 58px;
+    padding: 0.38rem 0.75rem;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background: #2d2d2d;
+    color: #f5f5f5;
+    font-family: inherit;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .site-code-copy:hover {
+    border-color: #777;
+    background: #3a3a3a;
+  }
+
+  .site-code-copy:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  .site-code-copy.is-copied {
+    border-color: #6d8b74;
+    background: #314438;
+  }
+
+  .site-code-copy.is-error {
+    border-color: #925b5b;
+    background: #4c3030;
+  }
+
+  @media (max-width: 640px) {
+    .site-code-block pre,
+    .site-code-block pre.astro-code {
+      padding: 3rem 1rem 1rem;
+      font-size: 0.82rem;
+      line-height: 1.65;
+    }
+
+    .site-code-copy {
+      top: 0.6rem;
+      right: 0.6rem;
+    }
+  }
+</style>
+
+<script>
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const textarea = document.createElement("textarea");
+
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    textarea.style.top = "0";
+    textarea.style.opacity = "0";
+
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    const copied = document.execCommand("copy");
+    textarea.remove();
+
+    if (!copied) {
+      throw new Error("浏览器拒绝复制操作");
+    }
+  }
+
+  function enhanceCodeBlocks() {
+    const codeBlocks = document.querySelectorAll("pre");
+
+    codeBlocks.forEach((pre) => {
+      if (!(pre instanceof HTMLElement)) {
+        return;
+      }
+
+      if (pre.dataset.copyReady === "true") {
+        return;
+      }
+
+      const parent = pre.parentNode;
+
+      if (!parent) {
+        return;
+      }
+
+      pre.dataset.copyReady = "true";
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "site-code-block";
+
+      parent.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "site-code-copy";
+      button.textContent = "复制";
+      button.setAttribute("aria-label", "复制代码");
+      button.setAttribute("title", "复制代码");
+
+      button.addEventListener("click", async () => {
+        const code = pre.querySelector("code");
+        const text = code?.textContent ?? pre.textContent ?? "";
+
+        button.disabled = true;
+        button.classList.remove("is-copied", "is-error");
+
+        try {
+          await copyText(text);
+
+          button.textContent = "已复制";
+          button.classList.add("is-copied");
+        } catch (error) {
+          console.error("复制代码失败：", error);
+
+          button.textContent = "复制失败";
+          button.classList.add("is-error");
+        }
+
+        window.setTimeout(() => {
+          button.textContent = "复制";
+          button.disabled = false;
+          button.classList.remove("is-copied", "is-error");
+        }, 1600);
+      });
+
+      wrapper.appendChild(button);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", enhanceCodeBlocks, {
+      once: true,
+    });
+  } else {
+    enhanceCodeBlocks();
+  }
+
+  document.addEventListener("astro:page-load", enhanceCodeBlocks);
+</script>

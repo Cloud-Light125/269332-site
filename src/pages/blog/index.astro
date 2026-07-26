@@ -1,0 +1,159 @@
+﻿---
+import { Image } from 'astro:assets';
+import FormattedDate from '../../components/FormattedDate.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../../utils/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout
+	title="文章 · CloudLight"
+	description="浏览 CloudLight 发布的 Windows 使用经验、问题处理方法和开发记录。"
+>
+	<main class="blog-index">
+		<header class="page-heading">
+			<p class="eyebrow">文章</p>
+			<h1>使用经验与开发记录</h1>
+			<span>记录实际使用中遇到的问题，以及经过验证的处理方法。</span>
+		</header>
+
+		{posts.length > 0 ? (
+			<ul class="post-list">
+				{posts.map((post) => (
+					<li>
+						<a href={'/blog/' + post.id + '/'} aria-label={'阅读：' + post.data.title}>
+							{post.data.heroImage && (
+								<Image width={720} height={360} src={post.data.heroImage} alt="" />
+							)}
+							<div class="post-content">
+								<h2>{post.data.title}</h2>
+								<p>{post.data.description}</p>
+								<div class="post-meta">
+									<FormattedDate date={post.data.pubDate} />
+									{post.data.tags.length > 0 && (
+										<ul aria-label="文章标签">
+											{post.data.tags.map((tag) => <li>{tag}</li>)}
+										</ul>
+									)}
+								</div>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+		) : (
+			<section class="empty-state">
+				<h2>暂无公开文章</h2>
+				<p>文章发布后会显示在这里，并同步进入 RSS。</p>
+			</section>
+		)}
+	</main>
+</BaseLayout>
+
+<style>
+	.blog-index {
+		width: min(960px, calc(100% - 2rem));
+		max-width: none;
+	}
+	.page-heading {
+		max-width: 46rem;
+		margin-bottom: 2.5rem;
+	}
+	.page-heading span {
+		color: var(--color-text-muted);
+	}
+	.post-list {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.post-list > li:first-child {
+		grid-column: 1 / -1;
+	}
+	.post-list a {
+		display: block;
+		height: 100%;
+		overflow: hidden;
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-large);
+		color: inherit;
+		text-decoration: none;
+		box-shadow: var(--shadow-small);
+	}
+	.post-list img {
+		display: block;
+		width: 100%;
+		border-radius: 0;
+	}
+	.post-content {
+		padding: clamp(1.25rem, 3vw, 1.75rem);
+	}
+	.post-list h2 {
+		margin-bottom: 0.65rem;
+		font-size: clamp(1.3rem, 3vw, 1.75rem);
+	}
+	.post-list .post-content > p {
+		margin-bottom: 1.25rem;
+		color: var(--color-text-muted);
+	}
+	.post-list a:hover {
+		border-color: var(--color-accent);
+		box-shadow: var(--shadow-medium);
+		transform: translateY(-2px);
+	}
+	.post-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem;
+		color: var(--color-text-muted);
+		font-size: 0.78rem;
+	}
+	.post-meta ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.post-meta li {
+		padding: 0.18rem 0.45rem;
+		background: var(--color-accent-soft);
+		border-radius: 999px;
+		color: var(--color-accent-hover);
+		font-weight: 700;
+	}
+	.empty-state {
+		padding: 2rem;
+		background: var(--color-surface);
+		border: 1px dashed var(--color-border);
+		border-radius: var(--radius-large);
+		text-align: center;
+	}
+	.empty-state p {
+		margin-bottom: 0;
+		color: var(--color-text-muted);
+	}
+	@media (max-width: 720px) {
+		.blog-index {
+			width: min(960px, calc(100% - 1.5rem));
+		}
+		.post-list {
+			grid-template-columns: 1fr;
+		}
+		.post-list > li:first-child {
+			grid-column: auto;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.post-list a:hover {
+			transform: none;
+		}
+	}
+</style>
