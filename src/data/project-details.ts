@@ -28,11 +28,17 @@ export interface ProjectDetail {
 	pageDescription: string;
 	introduction: string[];
 	useCases: DetailItem[];
+	useCasesTitle?: string;
 	featureGroups: ProjectFeatureGroup[];
+	installationSteps?: ProjectStep[];
 	steps: ProjectStep[];
+	stepsTitle?: string;
 	requirements: ProjectRequirement[];
+	requirementsTitle?: string;
 	technicalDetails: DetailItem[];
+	technicalTitle?: string;
 	cautions: string[];
+	ctaTitle?: string;
 }
 
 function getProject(slug: string): CatalogItem {
@@ -700,5 +706,159 @@ python -m tdm_claim_toggle_patcher restore --target "C:\\path\\to\\TwitchDropsMi
 			'构建 TwitchDropsMiner EXE 会运行目标仓库的脚本并安装依赖，只对可信源码目录执行。',
 			'不要分享 cookies.jar、Token、settings.json、代理凭据，或任何可能包含认证信息的文件和日志。',
 		],
+	},
+	{
+		slug: 'shanda-passport-login-helper',
+		item: getProject('shanda-passport-login-helper'),
+		pageDescription:
+			'在盛大通行证登录页面自动勾选协议、切换到一键登录方式，并填写保存在用户脚本管理器本地存储中的账号。',
+		introduction: [
+			'盛大通行证一键登录辅助脚本是一款运行在浏览器用户脚本管理器中的登录页面辅助工具。Greasy Fork 上的正式名称为“盛大通行证自动切换一键登录并填写账号”，当前公开版本为 1.1.0。',
+			'脚本在匹配的盛大通行证登录页面进入空闲状态后运行：勾选登录协议复选框、点击“一键登录”切换项，并把预先保存的账号写入账号输入框。页面重新渲染时，它会在前 30 秒内继续检查这些元素。',
+			'它不会点击最终登录按钮，也没有处理短信确认、手机确认、验证码或其他安全验证的代码。账号之外的登录步骤仍需由用户本人在盛大通行证页面完成。',
+		],
+		useCasesTitle: '适用页面',
+		useCases: [
+			{
+				title: '匹配的网站范围',
+				description: '脚本的 @match 为 *://login.u.sdo.com/*，即该主机下通过 HTTP 或 HTTPS 打开的路径。',
+			},
+			{
+				title: '实际生效条件',
+				description: '页面需要包含登录协议、切换一键登录和账号输入框对应的元素；缺少相应元素时，该项操作会跳过。',
+			},
+			{
+				title: '兼容边界',
+				description: '源码没有匹配其他盛大或盛趣域名，也没有声明适配 login.u.sdo.com 之外的登录页面。',
+			},
+		],
+		featureGroups: [
+			{
+				title: '登录页面辅助',
+				items: [
+					{
+						title: '勾选登录协议',
+						description: '找到登录协议复选框后将其设为已勾选，并触发 input 与 change 事件。使用前仍应由用户自行阅读并确认相关协议。',
+					},
+					{
+						title: '切换一键登录',
+						description: '找到“一键登录”导航按钮后自动点击；同一次页面运行中只执行一次该点击。',
+					},
+					{
+						title: '填写保存的账号',
+						description: '读取本地保存的账号，写入 username 输入框，并触发 input、change 与 blur 事件以兼容页面自身逻辑。',
+					},
+					{
+						title: '处理页面重新渲染',
+						description: 'MutationObserver 会观察页面结构变化，并配合每 500 毫秒一次的检查；30 秒后停止观察与定时检查。',
+					},
+				],
+			},
+			{
+				title: '账号管理',
+				items: [
+					{
+						title: '设置登录账号',
+						description: '通过用户脚本管理器菜单打开输入框，保存去除首尾空格后的账号，并立即尝试填入当前页面。',
+					},
+					{
+						title: '清除登录账号',
+						description: '通过菜单把已保存值设为空字符串；如果账号输入框存在，也会同时清空当前页面中的账号。',
+					},
+				],
+			},
+		],
+		installationSteps: [
+			{
+				title: '安装用户脚本管理器',
+				description: '先在浏览器中安装 Tampermonkey、Violentmonkey 或其他兼容的用户脚本管理器。',
+			},
+			{
+				title: '从 Greasy Fork 打开安装文件',
+				description: '使用本页的“安装脚本”入口打开 Greasy Fork 提供的 .user.js 文件。',
+			},
+			{
+				title: '核对并确认安装',
+				description: '在脚本管理器的安装界面核对名称、版本、匹配范围和权限，确认后再完成安装。',
+			},
+		],
+		stepsTitle: '使用方法',
+		steps: [
+			{
+				title: '确认脚本已启用',
+				description: '在用户脚本管理器中确认脚本处于启用状态。',
+			},
+			{
+				title: '打开账号设置',
+				description: '从用户脚本管理器的脚本菜单选择“设置登录账号”。',
+			},
+			{
+				title: '保存账号',
+				description: '在提示框中输入绑定手机的账号或手机账号。脚本会把去除首尾空格后的内容保存到脚本管理器本地存储。',
+			},
+			{
+				title: '打开支持的登录页面',
+				description: '访问 login.u.sdo.com 下的登录页面；脚本会尝试勾选协议、切换一键登录并填写已保存账号。',
+			},
+			{
+				title: '完成安全验证',
+				description: '由用户本人完成短信、手机确认、验证码或页面要求的其他安全步骤，并自行确认最终登录。',
+			},
+			{
+				title: '按需清除账号',
+				description: '不再使用时，从脚本菜单选择“清除登录账号”；也可以在设置账号时提交空内容来清除保存值。',
+			},
+		],
+		requirementsTitle: '数据与隐私说明',
+		requirements: [
+			{
+				term: '保存位置',
+				description: '账号通过 GM_setValue 保存在当前用户脚本管理器的本地值存储中，键名为 sdo_login_account；不使用网站的 localStorage。',
+			},
+			{
+				term: '保存内容',
+				description: '只保存用户在“设置登录账号”提示框中输入并去除首尾空格后的账号字符串。主站不会接收或保存这项数据。',
+			},
+			{
+				term: '密码',
+				description: '当前源码没有读取、填写或保存密码，也没有查询密码输入框。',
+			},
+			{
+				term: '网络传输',
+				description: '当前源码没有网络请求代码，也未申请跨域连接权限；脚本本身不会把保存值发送到第三方服务器。账号被填入目标登录页后，仍受该页面自身的数据处理方式约束。',
+			},
+			{
+				term: '清除方法',
+				description: '选择脚本菜单中的“清除登录账号”，或在“设置登录账号”时提交空内容。两种方式都会把 sdo_login_account 设为空字符串。',
+			},
+		],
+		technicalTitle: '权限说明',
+		technicalDetails: [
+			{
+				title: '@match',
+				description: '*://login.u.sdo.com/*，只在该主机范围的页面加载脚本。',
+			},
+			{
+				title: 'GM_getValue 与 GM_setValue',
+				description: '用于读取和保存账号字符串。保存位置由 Tampermonkey、Violentmonkey 等脚本管理器管理。',
+			},
+			{
+				title: 'GM_registerMenuCommand',
+				description: '用于注册“设置登录账号”和“清除登录账号”两个脚本菜单命令。',
+			},
+			{
+				title: '运行与网络权限',
+				description: '脚本在 document-idle 时运行，没有 @connect、GM_xmlhttpRequest 或同类网络权限；安装与更新地址由 Greasy Fork 元数据提供。',
+			},
+		],
+		cautions: [
+			'这是非官方用户脚本，与盛趣游戏、盛大网络及相关登录平台无官方关联。',
+			'登录页面结构变化后，脚本依赖的元素可能找不到，功能可能暂时失效。',
+			'安装或更新前应自行确认脚本权限、匹配范围和源代码，并留意 Greasy Fork 上的版本变化。',
+			'脚本不自动绕过验证码、短信验证、手机确认或其他安全机制，也不会替用户点击最终登录按钮。',
+			'不要在公共电脑、共享浏览器配置或不受信任的设备上保存账号。',
+			'具体兼容范围以当前 Greasy Fork 页面和源码为准；当前 @match 仅为 *://login.u.sdo.com/*。',
+		],
+		ctaTitle: '安装入口',
 	},
 ];

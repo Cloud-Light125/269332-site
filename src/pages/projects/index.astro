@@ -2,6 +2,13 @@
 import CatalogCard from '../../components/CatalogCard.astro';
 import { projects } from '../../data/catalog';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const gridBalanceClass =
+	projects.length > 3 && projects.length % 3 === 1
+		? 'remainder-one'
+		: projects.length % 3 === 2
+			? 'remainder-two'
+			: undefined;
 ---
 
 <BaseLayout
@@ -17,7 +24,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 			</div>
 			<p class="count"><strong>{projects.length}</strong> 个项目</p>
 		</header>
-		<section class="catalog-grid" aria-label="项目列表">
+		<section class:list={['catalog-grid', gridBalanceClass]} aria-label="项目列表">
 			{projects.map((project) => <CatalogCard item={project} />)}
 		</section>
 	</main>
@@ -55,8 +62,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 	}
 	.catalog-grid {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-columns: repeat(6, minmax(0, 1fr));
 		gap: 1rem;
+	}
+	.catalog-grid > :global(.catalog-card) {
+		grid-column: span 2;
+	}
+	.catalog-grid.remainder-two > :global(.catalog-card:nth-last-child(-n + 2)),
+	.catalog-grid.remainder-one > :global(.catalog-card:nth-last-child(-n + 4)) {
+		grid-column: span 3;
+	}
+	@media (max-width: 980px) {
+		.catalog-grid > :global(.catalog-card),
+		.catalog-grid.remainder-two > :global(.catalog-card:nth-last-child(-n + 2)),
+		.catalog-grid.remainder-one > :global(.catalog-card:nth-last-child(-n + 4)) {
+			grid-column: span 3;
+		}
+		.catalog-grid > :global(.catalog-card:last-child:nth-child(odd)) {
+			grid-column: 1 / -1;
+		}
 	}
 	@media (max-width: 720px) {
 		.catalog-page {
@@ -70,6 +94,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 		}
 		.catalog-grid {
 			grid-template-columns: 1fr;
+		}
+		.catalog-grid > :global(.catalog-card),
+		.catalog-grid.remainder-two > :global(.catalog-card:nth-last-child(-n + 2)),
+		.catalog-grid.remainder-one > :global(.catalog-card:nth-last-child(-n + 4)),
+		.catalog-grid > :global(.catalog-card:last-child:nth-child(odd)) {
+			grid-column: auto;
 		}
 	}
 </style>

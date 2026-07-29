@@ -9,6 +9,10 @@ interface Props {
 const { project } = Astro.props;
 const { item } = project;
 const downloadUrl = item.downloadUrl;
+const sourceUrl = item.sourceUrl ?? item.repository;
+const heroSourceLabel =
+	item.sourceLabel ?? item.repositoryLabel ?? '查看 GitHub 仓库';
+const ctaSourceLabel = item.sourceLabel ?? item.repositoryLabel ?? '查看源码';
 
 if (!downloadUrl) {
 	throw new Error(`Missing download URL for project: ${project.slug}`);
@@ -46,16 +50,18 @@ if (!downloadUrl) {
 						<span aria-hidden="true">↗</span>
 						<span class="sr-only">（在新窗口打开）</span>
 					</a>
-					<a
-						class="button button-secondary"
-						href={item.repository}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						查看 GitHub 仓库
-						<span aria-hidden="true">↗</span>
-						<span class="sr-only">（在新窗口打开）</span>
-					</a>
+					{sourceUrl && (
+						<a
+							class="button button-secondary"
+							href={sourceUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{heroSourceLabel}
+							<span aria-hidden="true">↗</span>
+							<span class="sr-only">（在新窗口打开）</span>
+						</a>
+					)}
 				</div>
 				{item.downloadNote && <p class="download-note">{item.downloadNote}</p>}
 			</div>
@@ -76,7 +82,7 @@ if (!downloadUrl) {
 
 		<section class="project-section" aria-labelledby="use-cases-title">
 			<p class="eyebrow">Use cases</p>
-			<h2 id="use-cases-title">适用场景</h2>
+			<h2 id="use-cases-title">{project.useCasesTitle ?? '适用场景'}</h2>
 			<div class="info-grid use-case-grid">
 				{project.useCases.map((useCase) => (
 					<article class="info-card">
@@ -110,9 +116,26 @@ if (!downloadUrl) {
 			</div>
 		</section>
 
+		{project.installationSteps && (
+			<section class="project-section reading-section" aria-labelledby="installation-title">
+				<p class="eyebrow">Installation</p>
+				<h2 id="installation-title">安装方法</h2>
+				<ol class="steps">
+					{project.installationSteps.map((step) => (
+						<li>
+							<div>
+								<h3>{step.title}</h3>
+								<p>{step.description}</p>
+							</div>
+						</li>
+					))}
+				</ol>
+			</section>
+		)}
+
 		<section class="project-section reading-section" aria-labelledby="steps-title">
 			<p class="eyebrow">Guide</p>
-			<h2 id="steps-title">使用方法</h2>
+			<h2 id="steps-title">{project.stepsTitle ?? '使用方法'}</h2>
 			<ol class="steps">
 				{project.steps.map((step) => (
 					<li>
@@ -130,7 +153,7 @@ if (!downloadUrl) {
 
 		<section class="project-section reading-section" aria-labelledby="requirements-title">
 			<p class="eyebrow">Requirements</p>
-			<h2 id="requirements-title">系统与运行要求</h2>
+			<h2 id="requirements-title">{project.requirementsTitle ?? '系统与运行要求'}</h2>
 			<dl class="requirements">
 				{project.requirements.map((requirement) => (
 					<div>
@@ -143,7 +166,7 @@ if (!downloadUrl) {
 
 		<section class="project-section" aria-labelledby="technical-title">
 			<p class="eyebrow">Technical</p>
-			<h2 id="technical-title">技术信息</h2>
+			<h2 id="technical-title">{project.technicalTitle ?? '技术信息'}</h2>
 			<div class="info-grid technical-grid">
 				{project.technicalDetails.map((detail) => (
 					<article class="info-card">
@@ -165,7 +188,7 @@ if (!downloadUrl) {
 		<section class="project-cta" aria-labelledby="download-title">
 			<div>
 				<p class="eyebrow">Download</p>
-				<h2 id="download-title">获取项目</h2>
+				<h2 id="download-title">{project.ctaTitle ?? '获取项目'}</h2>
 				<p>{item.downloadNote}</p>
 			</div>
 			<div class="project-actions">
@@ -179,16 +202,18 @@ if (!downloadUrl) {
 					<span aria-hidden="true">↗</span>
 					<span class="sr-only">（在新窗口打开）</span>
 				</a>
-				<a
-					class="button button-secondary"
-					href={item.repository}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					查看源码
-					<span aria-hidden="true">↗</span>
-					<span class="sr-only">（在新窗口打开）</span>
-				</a>
+				{sourceUrl && (
+					<a
+						class="button button-secondary"
+						href={sourceUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{ctaSourceLabel}
+						<span aria-hidden="true">↗</span>
+						<span class="sr-only">（在新窗口打开）</span>
+					</a>
+				)}
 				<a class="text-link" href="/projects/">返回项目列表</a>
 			</div>
 		</section>
@@ -424,15 +449,20 @@ if (!downloadUrl) {
 		display: grid;
 		grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
 		gap: 1.5rem;
+		min-width: 0;
 		padding: 1rem 0;
 		border-bottom: 1px solid var(--color-border);
 	}
 	.requirements dt {
+		min-width: 0;
 		font-weight: 700;
+		overflow-wrap: anywhere;
 	}
 	.requirements dd {
+		min-width: 0;
 		margin: 0;
 		color: var(--color-text-muted);
+		overflow-wrap: anywhere;
 	}
 	.notice {
 		padding: clamp(1.5rem, 4vw, 2.25rem);
@@ -518,6 +548,17 @@ if (!downloadUrl) {
 		.requirements > div {
 			grid-template-columns: 1fr;
 			gap: 0.25rem;
+		}
+		.steps pre {
+			overflow-wrap: anywhere;
+			white-space: pre-wrap;
+		}
+		.steps code {
+			display: block;
+			max-width: 100%;
+			overflow-wrap: anywhere;
+			white-space: inherit;
+			word-break: break-word;
 		}
 		.project-actions .button {
 			width: 100%;

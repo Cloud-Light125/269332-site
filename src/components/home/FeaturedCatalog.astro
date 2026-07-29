@@ -12,6 +12,9 @@ interface Props {
 }
 
 const { id, eyebrow, title, description, items, allHref, allLabel } = Astro.props;
+const getSourceUrl = (item: CatalogItem) => item.sourceUrl ?? item.repository;
+const getSourceLabel = (item: CatalogItem) =>
+	item.sourceLabel ?? item.repositoryLabel ?? '查看 GitHub 仓库';
 ---
 
 <section class="featured-section" aria-labelledby={id}>
@@ -42,35 +45,60 @@ const { id, eyebrow, title, description, items, allHref, allLabel } = Astro.prop
 					{item.tags.slice(0, 3).map((tag) => <li>{tag}</li>)}
 				</ul>
 				<div class="card-actions">
-					{item.detailsPath ? (
-						<a class="primary-link" href={item.detailsPath}>
-							查看详情 <span aria-hidden="true">→</span>
-						</a>
-					) : (
-						item.website && (
+					{item.downloadUrl && item.sourceUrl && getSourceUrl(item) ? (
+						<>
 							<a
 								class="primary-link"
-								href={item.website}
-								target={item.website.startsWith('http') ? '_blank' : undefined}
-								rel={item.website.startsWith('http') ? 'noopener noreferrer' : undefined}
+								href={item.downloadUrl}
+								target="_blank"
+								rel="noopener noreferrer"
 							>
-								{item.websiteLabel ?? '打开网页'} <span aria-hidden="true">→</span>
-								{item.website.startsWith('http') && (
-									<span class="sr-only">（在新窗口打开）</span>
-								)}
+								{item.downloadLabel ?? '下载'} <span aria-hidden="true">↗</span>
+								<span class="sr-only">（在新窗口打开）</span>
 							</a>
-						)
-					)}
-					{item.downloadUrl ? (
-						<a href={item.downloadUrl} target="_blank" rel="noopener noreferrer">
-							{item.downloadLabel ?? 'GitHub 下载'} <span aria-hidden="true">↗</span>
-							<span class="sr-only">（在新窗口打开）</span>
-						</a>
+							<a href={getSourceUrl(item)} target="_blank" rel="noopener noreferrer">
+								{getSourceLabel(item)} <span aria-hidden="true">↗</span>
+								<span class="sr-only">（在新窗口打开）</span>
+							</a>
+							{item.detailsPath && (
+								<a href={item.detailsPath}>
+									查看详情 <span aria-hidden="true">→</span>
+								</a>
+							)}
+						</>
 					) : (
-						<a href={item.repository} target="_blank" rel="noopener noreferrer">
-							{item.repositoryLabel ?? '查看 GitHub 仓库'} <span aria-hidden="true">↗</span>
-							<span class="sr-only">（在新窗口打开）</span>
-						</a>
+						<>
+							{item.detailsPath ? (
+								<a class="primary-link" href={item.detailsPath}>
+									查看详情 <span aria-hidden="true">→</span>
+								</a>
+							) : (
+								item.website && (
+									<a
+										class="primary-link"
+										href={item.website}
+										target={item.website.startsWith('http') ? '_blank' : undefined}
+										rel={item.website.startsWith('http') ? 'noopener noreferrer' : undefined}
+									>
+										{item.websiteLabel ?? '打开网页'} <span aria-hidden="true">→</span>
+										{item.website.startsWith('http') && (
+											<span class="sr-only">（在新窗口打开）</span>
+										)}
+									</a>
+								)
+							)}
+							{item.downloadUrl ? (
+								<a href={item.downloadUrl} target="_blank" rel="noopener noreferrer">
+									{item.downloadLabel ?? 'GitHub 下载'} <span aria-hidden="true">↗</span>
+									<span class="sr-only">（在新窗口打开）</span>
+								</a>
+							) : getSourceUrl(item) ? (
+								<a href={getSourceUrl(item)} target="_blank" rel="noopener noreferrer">
+									{getSourceLabel(item)} <span aria-hidden="true">↗</span>
+									<span class="sr-only">（在新窗口打开）</span>
+								</a>
+							) : null}
+						</>
 					)}
 				</div>
 			</article>

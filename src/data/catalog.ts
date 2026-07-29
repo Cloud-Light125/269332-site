@@ -2,7 +2,9 @@ export interface CatalogItem {
 	name: string;
 	englishName?: string;
 	summary: string;
-	repository: string;
+	repository?: string;
+	sourceUrl?: string;
+	sourceLabel?: string;
 	website?: string;
 	websiteLabel?: string;
 	repositoryLabel?: string;
@@ -116,5 +118,23 @@ export const projects: CatalogItem[] = [
 		status: '可用',
 		visibility: 'public',
 		tags: ['Python', 'AST', 'GUI / CLI', 'TwitchDropsMiner'],
+	},
+	{
+		name: '盛大通行证一键登录辅助脚本',
+		summary:
+			'自动识别盛大通行证登录页面，勾选登录协议、切换到一键登录方式并填写预先保存在用户脚本管理器中的账号，减少重复选择和输入操作。',
+		sourceUrl:
+			'https://greasyfork.org/zh-CN/scripts/589035-%E7%9B%9B%E5%A4%A7%E9%80%9A%E8%A1%8C%E8%AF%81%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E4%B8%80%E9%94%AE%E7%99%BB%E5%BD%95%E5%B9%B6%E5%A1%AB%E5%86%99%E8%B4%A6%E5%8F%B7',
+		sourceLabel: '查看 Greasy Fork 页面',
+		detailsPath: '/projects/shanda-passport-login-helper/',
+		downloadUrl:
+			'https://update.greasyfork.org/scripts/589035/%E7%9B%9B%E5%A4%A7%E9%80%9A%E8%A1%8C%E8%AF%81%E8%87%AA%E5%8A%A8%E5%88%87%E6%8D%A2%E4%B8%80%E9%94%AE%E7%99%BB%E5%BD%95%E5%B9%B6%E5%A1%AB%E5%86%99%E8%B4%A6%E5%8F%B7.user.js',
+		downloadLabel: '安装脚本',
+		downloadNote:
+			'Greasy Fork 当前公开版本为 1.1.0。点击安装后，已安装的用户脚本管理器会显示脚本信息与权限，确认后才会完成安装。',
+		category: '浏览器用户脚本',
+		status: '可用',
+		visibility: 'public',
+		tags: ['JavaScript', '用户脚本', 'Greasy Fork', '登录辅助'],
 	},
 ];
