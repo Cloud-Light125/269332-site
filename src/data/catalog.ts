@@ -1,7 +1,25 @@
+import type { ImageMetadata } from 'astro';
+import cloudlightAutomatorIcon from '../assets/projects/cloudlight-automator/icon.png';
+import cloudlightAutomatorScreenshot from '../assets/projects/cloudlight-automator/screenshot.png';
+import cloudlightSoopDropsMinerIcon from '../assets/projects/cloudlight-soop-drops-miner/icon.png';
+import cloudlightSoopDropsMinerScreenshot from '../assets/projects/cloudlight-soop-drops-miner/screenshot.png';
+import microsoftPinyinCleanerIcon from '../assets/projects/microsoft-pinyin-cleaner/icon.png';
+import microsoftPinyinCleanerScreenshot from '../assets/projects/microsoft-pinyin-cleaner/screenshot.png';
+import mobileHotspotControllerIcon from '../assets/projects/mobile-hotspot-controller/icon.png';
+import mobileHotspotControllerScreenshot from '../assets/projects/mobile-hotspot-controller/screenshot.png';
+import powerSettingsManagerIcon from '../assets/projects/power-settings-manager/icon.png';
+import powerSettingsManagerScreenshot from '../assets/projects/power-settings-manager/screenshot.png';
+import tdmClaimTogglePatcherIcon from '../assets/projects/tdm-claim-toggle-patcher/icon.png';
+import tdmClaimTogglePatcherScreenshot from '../assets/projects/tdm-claim-toggle-patcher/screenshot.png';
+
 export interface CatalogItem {
 	name: string;
 	englishName?: string;
 	summary: string;
+	icon?: ImageMetadata;
+	screenshot?: ImageMetadata;
+	screenshotAlt?: string;
+	screenshotCaption?: string;
 	repository?: string;
 	sourceUrl?: string;
 	sourceLabel?: string;
@@ -63,6 +81,11 @@ export const projects: CatalogItem[] = [
 		englishName: 'CloudLight Automator',
 		summary:
 			'用可视化流程图组合窗口、截图、图像识别、OCR、剪贴板和键鼠操作，创建可以重复运行的 Windows 自动化流程。',
+		icon: cloudlightAutomatorIcon,
+		screenshot: cloudlightAutomatorScreenshot,
+		screenshotAlt: 'CloudLight 自动化工作室的可视化工作流编辑界面',
+		screenshotCaption:
+			'在节点画布中组合自动化步骤，并通过参数面板配置窗口、识别和输入操作。',
 		repository: 'https://github.com/yundan125/cloudlight-automator',
 		detailsPath: '/projects/cloudlight-automator/',
 		downloadUrl: 'https://github.com/yundan125/cloudlight-automator/releases/latest',
@@ -79,6 +102,11 @@ export const projects: CatalogItem[] = [
 		englishName: 'CloudLight SOOP Drops Miner',
 		summary:
 			'用于参加 SOOP Live（原 AfreecaTV）的 Drops 活动，可同时管理多个账号，自动寻找符合任务的直播间，并集中查看任务进度和已获得的奖励。',
+		icon: cloudlightSoopDropsMinerIcon,
+		screenshot: cloudlightSoopDropsMinerScreenshot,
+		screenshotAlt: 'CloudLight SOOP Drops Miner 多账号挂机界面',
+		screenshotCaption:
+			'集中管理 SOOP 账号、直播间选择、掉宝任务进度、奖励背包和运行日志。',
 		repository: 'https://github.com/yundan125/cloudlight-soop-drops-miner',
 		detailsPath: '/projects/cloudlight-soop-drops-miner/',
 		downloadUrl: 'https://github.com/yundan125/cloudlight-soop-drops-miner/releases/latest',
@@ -95,6 +123,11 @@ export const projects: CatalogItem[] = [
 		englishName: 'MicrosoftPinyinCleaner',
 		summary:
 			'Windows 更新重新加入微软拼音后，可一键检测并从当前用户的输入法列表中移除。也可以在登录时自动检查，同时保留其他中文输入法。',
+		icon: microsoftPinyinCleanerIcon,
+		screenshot: microsoftPinyinCleanerScreenshot,
+		screenshotAlt: '微软拼音清理工具主界面',
+		screenshotCaption:
+			'检测当前用户输入法列表中的微软拼音，并提供立即清理和登录自动清理功能。',
 		repository: 'https://github.com/yundan125/MicrosoftPinyinCleaner',
 		detailsPath: '/projects/microsoft-pinyin-cleaner/',
 		downloadUrl:
@@ -112,6 +145,11 @@ export const projects: CatalogItem[] = [
 		englishName: 'PowerSettingsManager',
 		summary:
 			'扫描 Windows 10/11 中被隐藏的高级电源选项，并集中管理它们的显示、隐藏和恢复。修改前会保存快照和注册表备份。',
+		icon: powerSettingsManagerIcon,
+		screenshot: powerSettingsManagerScreenshot,
+		screenshotAlt: 'Windows 高级电源设置管理器的扫描结果和设置列表',
+		screenshotCaption:
+			'扫描并集中显示 Windows 高级电源选项，支持搜索、筛选和显示状态管理。',
 		repository: 'https://github.com/yundan125/PowerSettingsManager',
 		detailsPath: '/projects/power-settings-manager/',
 		downloadUrl: 'https://github.com/yundan125/PowerSettingsManager/releases/latest',
@@ -127,6 +165,11 @@ export const projects: CatalogItem[] = [
 		englishName: 'MobileHotspotController',
 		summary:
 			'用于管理 Windows 11 移动热点。在设备支持时，也可以通过 Wi-Fi Direct 创建只供局域网连接的热点，并提供托盘控制和诊断信息。',
+		icon: mobileHotspotControllerIcon,
+		screenshot: mobileHotspotControllerScreenshot,
+		screenshotAlt: 'Windows 移动热点控制器主界面',
+		screenshotCaption:
+			'管理 Windows 移动热点、局域网热点模式、连接状态和设备诊断。',
 		repository: 'https://github.com/yundan125/MobileHotspotController',
 		detailsPath: '/projects/mobile-hotspot-controller/',
 		downloadUrl: 'https://github.com/yundan125/MobileHotspotController/releases/latest',
@@ -142,6 +185,11 @@ export const projects: CatalogItem[] = [
 		englishName: 'TDM Claim Toggle Patcher',
 		summary:
 			'为 TwitchDropsMiner 增加可开关的自动领取掉宝功能。应用补丁前会检查源码兼容性，并保存可以恢复的备份。',
+		icon: tdmClaimTogglePatcherIcon,
+		screenshot: tdmClaimTogglePatcherScreenshot,
+		screenshotAlt: 'TwitchDropsMiner 掉宝自动领取开关补丁工具界面',
+		screenshotCaption:
+			'检查 TwitchDropsMiner 源码兼容性，并应用、检查或恢复自动领取开关补丁。',
 		repository: 'https://github.com/yundan125/tdm-claim-toggle-patcher',
 		detailsPath: '/projects/tdm-claim-toggle-patcher/',
 		downloadUrl: 'https://github.com/yundan125/tdm-claim-toggle-patcher/releases/latest',

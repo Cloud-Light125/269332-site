@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from './BaseLayout.astro';
 import type { ProjectDetail } from '../data/project-details';
 
@@ -13,6 +14,11 @@ const sourceUrl = item.sourceUrl ?? item.repository;
 const heroSourceLabel =
 	item.sourceLabel ?? item.repositoryLabel ?? '查看 GitHub 仓库';
 const ctaSourceLabel = item.sourceLabel ?? item.repositoryLabel ?? '查看源码';
+const screenshotWidths = item.screenshot
+	? [...new Set([640, 960, 1280, 1600, item.screenshot.width])]
+			.filter((width) => width <= item.screenshot!.width)
+			.sort((a, b) => a - b)
+	: undefined;
 
 if (!downloadUrl) {
 	throw new Error(`Missing download URL for project: ${project.slug}`);
@@ -71,6 +77,32 @@ if (!downloadUrl) {
 				<small>CloudLight</small>
 			</div>
 		</header>
+
+		{item.screenshot && (
+			<section class="project-section project-preview" aria-labelledby="preview-title">
+				<p class="eyebrow">Preview</p>
+				<h2 id="preview-title">界面预览</h2>
+				<figure>
+					<a
+						class="preview-link"
+						href={item.screenshot.src}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Image
+							src={item.screenshot}
+							alt={item.screenshotAlt ?? `${item.name}界面截图`}
+							widths={screenshotWidths}
+							sizes="(max-width: 720px) calc(100vw - 1.5rem), min(1120px, calc(100vw - 2rem))"
+							loading="lazy"
+							decoding="async"
+						/>
+						<span class="sr-only">（在新窗口打开原图）</span>
+					</a>
+					{item.screenshotCaption && <figcaption>{item.screenshotCaption}</figcaption>}
+				</figure>
+			</section>
+		)}
 
 		<section class="project-section reading-section" aria-labelledby="introduction-title">
 			<p class="eyebrow">Overview</p>
@@ -403,6 +435,35 @@ if (!downloadUrl) {
 	.project-section > h2,
 	.project-cta h2 {
 		margin-bottom: 1.5rem;
+	}
+	.project-preview figure {
+		margin: 0;
+	}
+	.preview-link {
+		display: block;
+		padding: clamp(0.45rem, 1.5vw, 0.8rem);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-large);
+		box-shadow: var(--shadow-small);
+	}
+	.preview-link:hover {
+		border-color: rgba(36, 93, 168, 0.5);
+		box-shadow: var(--shadow-medium);
+	}
+	.preview-link :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+		border-radius: calc(var(--radius-large) - 0.45rem);
+	}
+	.project-preview figcaption {
+		max-width: 52rem;
+		margin: 0.85rem auto 0;
+		color: var(--color-text-muted);
+		font-size: 0.84rem;
+		text-align: center;
 	}
 	.info-grid {
 		display: grid;
