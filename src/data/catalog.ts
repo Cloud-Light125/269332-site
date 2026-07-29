@@ -75,6 +75,23 @@ export const projects: CatalogItem[] = [
 		tags: ['可视化工作流', 'Windows', 'OCR', 'RPA Framework'],
 	},
 	{
+		name: '微软拼音清理工具',
+		englishName: 'MicrosoftPinyinCleaner',
+		summary:
+			'Windows 更新重新加入微软拼音后，可一键检测并从当前用户的输入法列表中移除。也可以在登录时自动检查，同时保留其他中文输入法。',
+		repository: 'https://github.com/yundan125/MicrosoftPinyinCleaner',
+		detailsPath: '/projects/microsoft-pinyin-cleaner/',
+		downloadUrl:
+			'https://github.com/yundan125/MicrosoftPinyinCleaner/releases/download/v1.0.0/MicrosoftPinyinCleaner.exe',
+		downloadLabel: 'GitHub 下载',
+		downloadNote:
+			'正式版 v1.0.0，提供 Windows 10/11 x64 自包含单文件程序，无需另装 .NET。文件大小 77,603,721 字节，SHA-256 为 B8FE5E85E380E55EBD02512A15691CECA47332DE1AC0ED82F8E4846A3F0DBBE2。',
+		category: 'Windows 输入法工具',
+		status: '可用',
+		visibility: 'public',
+		tags: ['Windows', '输入法', 'WPF', '.NET 8'],
+	},
+	{
 		name: 'Windows 高级电源设置管理器',
 		englishName: 'PowerSettingsManager',
 		summary:

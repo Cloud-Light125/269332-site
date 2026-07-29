@@ -177,6 +177,23 @@ if (!downloadUrl) {
 			</div>
 		</section>
 
+		{project.relatedLinks && project.relatedLinks.length > 0 && (
+			<section class="project-section reading-section" aria-labelledby="related-links-title">
+				<p class="eyebrow">Related</p>
+				<h2 id="related-links-title">相关教程</h2>
+				<div class="related-links">
+					{project.relatedLinks.map((link) => (
+						<article class="info-card">
+							<h3>
+								<a href={link.href}>{link.title} <span aria-hidden="true">→</span></a>
+							</h3>
+							{link.description && <p>{link.description}</p>}
+						</article>
+					))}
+				</div>
+			</section>
+		)}
+
 		<aside class="project-section notice" aria-labelledby="notice-title">
 			<p class="eyebrow">Before you start</p>
 			<h2 id="notice-title">注意事项</h2>
@@ -190,6 +207,22 @@ if (!downloadUrl) {
 				<p class="eyebrow">Download</p>
 				<h2 id="download-title">{project.ctaTitle ?? '获取项目'}</h2>
 				<p>{item.downloadNote}</p>
+				{project.downloadInfo && (
+					<dl class="download-info">
+						<div>
+							<dt>版本</dt>
+							<dd>{project.downloadInfo.version}</dd>
+						</div>
+						<div>
+							<dt>文件大小</dt>
+							<dd>{project.downloadInfo.fileSize}</dd>
+						</div>
+						<div>
+							<dt>SHA-256</dt>
+							<dd><code>{project.downloadInfo.sha256}</code></dd>
+						</div>
+					</dl>
+				)}
 			</div>
 			<div class="project-actions">
 				<a
@@ -316,6 +349,7 @@ if (!downloadUrl) {
 		margin: 0.85rem 0 0;
 		color: var(--color-text-muted);
 		font-size: 0.8rem;
+		overflow-wrap: anywhere;
 	}
 	.hero-mark {
 		display: flex;
@@ -385,6 +419,16 @@ if (!downloadUrl) {
 		margin: 0;
 		color: var(--color-text-muted);
 		font-size: 0.9rem;
+	}
+	.related-links {
+		display: grid;
+		gap: 1rem;
+	}
+	.related-links h3 {
+		margin-bottom: 0.45rem;
+	}
+	.related-links a {
+		text-decoration: none;
 	}
 	.feature-groups {
 		display: grid;
@@ -509,6 +553,34 @@ if (!downloadUrl) {
 		margin-bottom: 0;
 		color: var(--color-text-muted);
 	}
+	.download-info {
+		display: grid;
+		gap: 0.55rem;
+		margin: 1rem 0 0;
+	}
+	.download-info > div {
+		display: grid;
+		grid-template-columns: 5.5rem minmax(0, 1fr);
+		gap: 0.75rem;
+		min-width: 0;
+	}
+	.download-info dt {
+		font-weight: 700;
+	}
+	.download-info dd {
+		min-width: 0;
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+	.download-info code {
+		display: block;
+		font-family: Consolas, 'SFMono-Regular', monospace;
+		font-size: 0.78rem;
+		overflow-wrap: anywhere;
+		user-select: all;
+		white-space: normal;
+		word-break: break-all;
+	}
 	.text-link {
 		font-size: 0.86rem;
 		font-weight: 700;
@@ -548,6 +620,10 @@ if (!downloadUrl) {
 		.requirements > div {
 			grid-template-columns: 1fr;
 			gap: 0.25rem;
+		}
+		.download-info > div {
+			grid-template-columns: 1fr;
+			gap: 0.15rem;
 		}
 		.steps pre {
 			overflow-wrap: anywhere;

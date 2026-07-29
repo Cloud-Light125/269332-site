@@ -29,7 +29,12 @@ const getSourceLabel = (item: CatalogItem) =>
 	<div
 		class:list={[
 			'catalog-preview',
-			{ single: items.length === 1, pair: items.length === 2, quad: items.length === 4 },
+			{
+				single: items.length === 1,
+				pair: items.length === 2,
+				quad: items.length === 4,
+				many: items.length >= 4,
+			},
 		]}
 	>
 		{items.map((item) => (
@@ -247,6 +252,14 @@ const getSourceLabel = (item: CatalogItem) =>
 		.catalog-preview,
 		.catalog-preview.pair,
 		.catalog-preview.quad {
+			grid-template-columns: 1fr;
+		}
+		.catalog-preview.many {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 600px) {
+		.catalog-preview.many {
 			grid-template-columns: 1fr;
 		}
 	}

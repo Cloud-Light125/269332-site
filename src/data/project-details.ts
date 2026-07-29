@@ -22,6 +22,18 @@ export interface ProjectRequirement {
 	description: string;
 }
 
+export interface ProjectRelatedLink {
+	title: string;
+	href: string;
+	description?: string;
+}
+
+export interface ProjectDownloadInfo {
+	version: string;
+	fileSize: string;
+	sha256: string;
+}
+
 export interface ProjectDetail {
 	slug: string;
 	item: CatalogItem;
@@ -38,6 +50,8 @@ export interface ProjectDetail {
 	technicalDetails: DetailItem[];
 	technicalTitle?: string;
 	cautions: string[];
+	relatedLinks?: ProjectRelatedLink[];
+	downloadInfo?: ProjectDownloadInfo;
 	ctaTitle?: string;
 }
 
@@ -245,6 +259,180 @@ export const projectDetails: ProjectDetail[] = [
 			'当前版本尚未完成独立干净 Windows 环境验证。正式使用前，应先在可控环境中测试完整流程及停止操作。',
 			'移动或分享工作流时，需要同时检查其中引用的本地图片和模板路径；只复制 .workflow.json 不一定能带走全部依赖文件。',
 		],
+	},
+	{
+		slug: 'microsoft-pinyin-cleaner',
+		item: getProject('microsoft-pinyin-cleaner'),
+		pageDescription:
+			'检测并安全移除 Windows 更新后重新加入当前用户输入法列表的微软拼音，并可在登录时自动检查。',
+		introduction: [
+			'Windows 更新有时会把微软拼音重新加入当前用户的输入法列表。微软拼音清理工具用于检测这一状态，并在满足安全条件时从当前用户列表中移除它，适合已经使用搜狗拼音、微信输入法或其他中文输入法的用户。',
+			'程序只修改当前 Windows 用户的输入法列表，不删除中文语言包、系统文件或系统级输入法注册信息，也不会修改搜狗拼音、微信输入法等其他输入法。',
+			'发布版默认以当前用户的普通权限运行，应用清单使用 asInvoker，不申请管理员权限。输入法读取和修改通过系统自带的 Windows PowerShell 完成。',
+		],
+		useCases: [
+			{
+				title: '处理更新后的自动恢复',
+				description: 'Windows 更新重新加入微软拼音后，检测当前用户输入法列表并按需移除。',
+			},
+			{
+				title: '保留正在使用的中文输入法',
+				description: '适合已确认搜狗拼音、微信输入法或其他中文输入法能够正常使用的用户。',
+			},
+			{
+				title: '当前用户范围内维护',
+				description: '只调整当前 Windows 用户的语言列表和登录启动项，不执行系统级输入法卸载。',
+			},
+		],
+		featureGroups: [
+			{
+				title: '检测与安全移除',
+				items: [
+					{
+						title: '检测微软拼音',
+						description: '读取当前用户的 Windows 语言列表，判断其中是否存在微软拼音。',
+					},
+					{
+						title: '精确 TIP 匹配',
+						description: '只匹配微软拼音的完整 TIP 标识，忽略大小写，不按名称或模糊条件删除其他输入法。',
+					},
+					{
+						title: '一键移除',
+						description: '检测到微软拼音后，可通过界面按钮从当前用户输入法列表中移除。',
+					},
+					{
+						title: '保留其他中文输入法',
+						description: '删除前确认仍有至少一个其他中文输入法，并确认整个列表中至少保留一个输入法。',
+					},
+					{
+						title: '条件不足时拒绝写入',
+						description: '没有备用中文输入法、读取失败、操作超时或安全检查失败时，不调用语言列表写入命令。',
+					},
+				],
+			},
+			{
+				title: '登录自动清理与辅助操作',
+				items: [
+					{
+						title: '开启或关闭自动清理',
+						description: '通过当前用户的 HKCU Run 启动项管理登录自动清理，不创建系统级启动项。',
+					},
+					{
+						title: '延迟静默执行',
+						description: '登录启动后使用 --silent-clean 模式等待约 10 秒，再执行检查和安全移除，不显示主窗口或消息框。',
+					},
+					{
+						title: '兼容中文和空格路径',
+						description: '启动项保存带引号的完整 EXE 路径，支持路径中包含中文字符和空格。',
+					},
+					{
+						title: '保存最近日志',
+						description: '静默清理会覆盖写入最近一次操作时间、事件和结果，便于确认登录清理是否执行。',
+					},
+					{
+						title: '打开语言设置',
+						description: '可从程序直接打开 Windows“语言和区域”设置，安装或管理备用输入法。',
+					},
+				],
+			},
+		],
+		steps: [
+			{
+				title: '准备其他中文输入法',
+				description: '先安装并确认搜狗拼音、微信输入法或其他中文输入法可以正常输入中文。',
+			},
+			{
+				title: '下载并运行程序',
+				description: '从本页下载 MicrosoftPinyinCleaner.exe，并直接运行这个自包含单文件程序。',
+			},
+			{
+				title: '立即检测',
+				description: '点击“立即检测”，刷新当前用户输入法列表中的微软拼音状态。',
+			},
+			{
+				title: '确认并移除',
+				description: '检测到微软拼音后，点击“立即删除微软拼音”。条件不满足时，程序会拒绝删除并显示提示。',
+			},
+			{
+				title: '按需开启登录自动清理',
+				description: '需要长期处理 Windows 更新后的恢复问题时，点击“开启登录自动清理”。',
+			},
+			{
+				title: '移动后更新启动项',
+				description: '如果移动或重命名 EXE，请从新位置运行程序并重新开启自动清理，以更新启动项中的完整路径。',
+			},
+			{
+				title: '不再需要时关闭',
+				description: '删除 EXE 前先点击“关闭登录自动清理”，移除本程序的当前用户启动项。',
+			},
+		],
+		requirements: [
+			{
+				term: '操作系统',
+				description: 'Windows 10 或 Windows 11 x64。',
+			},
+			{
+				term: '发布形式',
+				description: '正式版为 win-x64 自包含单文件 EXE，无需另外安装 .NET 运行时。',
+			},
+			{
+				term: 'PowerShell',
+				description: '依赖系统自带 Windows PowerShell，并使用隐藏、非交互进程执行输入法操作。',
+			},
+			{
+				term: '系统命令',
+				description: '系统需要提供 Get-WinUserLanguageList 和 Set-WinUserLanguageList。',
+			},
+			{
+				term: '运行权限',
+				description: '应用清单声明 asInvoker，默认不申请管理员权限。',
+			},
+		],
+		technicalTitle: '数据与技术说明',
+		technicalDetails: [
+			{
+				title: '当前用户启动项',
+				description: '登录自动清理保存到 HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run，值名为 MicrosoftPinyinCleaner。',
+			},
+			{
+				title: '最近一次日志',
+				description: '静默清理日志位于 %LOCALAPPDATA%\\MicrosoftPinyinCleaner\\logs\\latest.log，每次保留最近一条简短结果。',
+			},
+			{
+				title: '离线与数据边界',
+				description: '程序不联网，不含账户、遥测或自动更新；不会把输入法列表或操作结果发送到服务器。',
+			},
+			{
+				title: '.NET 8 与 WPF',
+				description: '桌面界面使用 .NET 8 和 WPF；输入法列表操作通过 Windows PowerShell 调用系统命令完成。',
+			},
+			{
+				title: '静默模式',
+				description: '命令行参数为 --silent-clean，启动后等待约 10 秒执行清理，写入日志后退出。',
+			},
+		],
+		cautions: [
+			'使用前应先准备并实际测试另一个中文输入法，确认它能够正常输入中文。',
+			'如果微软拼音是唯一中文输入法，或移除后会没有任何输入法，程序会拒绝删除。',
+			'Windows 更新后仍可能再次加入微软拼音；登录自动清理用于在登录后处理这种情况。',
+			'移动或重命名 EXE 后，需要从新位置重新开启自动清理，更新启动项路径。',
+			'删除 EXE 前应先关闭登录自动清理，避免留下指向不存在文件的启动项。',
+			'本工具不是中文语言包卸载器，也不会永久删除 Windows 的系统输入法组件。',
+			'登录自动清理不能保证阻止所有未来 Windows 更新行为；系统行为变化后仍需重新确认实际效果。',
+		],
+		relatedLinks: [
+			{
+				title: '解决 Windows 更新后微软拼音自动恢复的问题',
+				href: '/blog/remove-microsoft-pinyin/',
+				description: '了解问题背景、手动处理方法与使用其他中文输入法时的注意事项。',
+			},
+		],
+		downloadInfo: {
+			version: 'v1.0.0',
+			fileSize: '77,603,721 字节',
+			sha256: 'B8FE5E85E380E55EBD02512A15691CECA47332DE1AC0ED82F8E4846A3F0DBBE2',
+		},
+		ctaTitle: '下载信息',
 	},
 	{
 		slug: 'power-settings-manager',
