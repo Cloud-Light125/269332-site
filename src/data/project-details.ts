@@ -420,13 +420,6 @@ export const projectDetails: ProjectDetail[] = [
 			'本工具不是中文语言包卸载器，也不会永久删除 Windows 的系统输入法组件。',
 			'登录自动清理不能保证阻止所有未来 Windows 更新行为；系统行为变化后仍需重新确认实际效果。',
 		],
-		relatedLinks: [
-			{
-				title: '解决 Windows 更新后微软拼音自动恢复的问题',
-				href: '/blog/remove-microsoft-pinyin/',
-				description: '了解问题背景、手动处理方法与使用其他中文输入法时的注意事项。',
-			},
-		],
 		downloadInfo: {
 			version: 'v1.0.0',
 			fileSize: '77,603,721 字节',
