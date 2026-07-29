@@ -75,6 +75,22 @@ export const projects: CatalogItem[] = [
 		tags: ['可视化工作流', 'Windows', 'OCR', 'RPA Framework'],
 	},
 	{
+		name: 'CloudLight SOOP 掉宝挂机工具',
+		englishName: 'CloudLight SOOP Drops Miner',
+		summary:
+			'用于参加 SOOP Live（原 AfreecaTV）的 Drops 活动，可同时管理多个账号，自动寻找符合任务的直播间，并集中查看任务进度和已获得的奖励。',
+		repository: 'https://github.com/yundan125/cloudlight-soop-drops-miner',
+		detailsPath: '/projects/cloudlight-soop-drops-miner/',
+		downloadUrl: 'https://github.com/yundan125/cloudlight-soop-drops-miner/releases/latest',
+		downloadLabel: 'GitHub 下载',
+		downloadNote:
+			'GitHub Releases 提供 v1.0.2 Windows 单文件 EXE，普通使用无需另装 Python。程序会把各账号的登录会话保存在 EXE 同目录的 accounts 文件夹中；其中可能包含 AuthTicket 等敏感 Cookie，请妥善保管并勿与他人共享。',
+		category: 'SOOP Live 掉宝工具',
+		status: '可用',
+		visibility: 'public',
+		tags: ['SOOP Live', '多账号', 'Drops', 'Python'],
+	},
+	{
 		name: '微软拼音清理工具',
 		englishName: 'MicrosoftPinyinCleaner',
 		summary:

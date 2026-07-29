@@ -80,6 +80,19 @@ if (!downloadUrl) {
 			</div>
 		</section>
 
+		{project.importantNotice && (
+			<aside
+				class="project-section reading-section notice important-notice"
+				aria-labelledby="important-notice-title"
+			>
+				<p class="eyebrow">Important</p>
+				<h2 id="important-notice-title">{project.importantNotice.title}</h2>
+				<div class="prose">
+					{project.importantNotice.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+				</div>
+			</aside>
+		)}
+
 		<section class="project-section" aria-labelledby="use-cases-title">
 			<p class="eyebrow">Use cases</p>
 			<h2 id="use-cases-title">{project.useCasesTitle ?? '适用场景'}</h2>
@@ -530,6 +543,13 @@ if (!downloadUrl) {
 	}
 	.notice li + li {
 		margin-top: 0.6rem;
+	}
+	.important-notice {
+		background: #fff5e8;
+		border-color: #e4bd83;
+	}
+	.important-notice .prose p:last-child {
+		margin-bottom: 0;
 	}
 	.project-cta {
 		display: flex;

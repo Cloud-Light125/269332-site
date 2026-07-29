@@ -34,11 +34,17 @@ export interface ProjectDownloadInfo {
 	sha256: string;
 }
 
+export interface ProjectNotice {
+	title: string;
+	paragraphs: string[];
+}
+
 export interface ProjectDetail {
 	slug: string;
 	item: CatalogItem;
 	pageDescription: string;
 	introduction: string[];
+	importantNotice?: ProjectNotice;
 	useCases: DetailItem[];
 	useCasesTitle?: string;
 	featureGroups: ProjectFeatureGroup[];
@@ -259,6 +265,197 @@ export const projectDetails: ProjectDetail[] = [
 			'当前版本尚未完成独立干净 Windows 环境验证。正式使用前，应先在可控环境中测试完整流程及停止操作。',
 			'移动或分享工作流时，需要同时检查其中引用的本地图片和模板路径；只复制 .workflow.json 不一定能带走全部依赖文件。',
 		],
+	},
+	{
+		slug: 'cloudlight-soop-drops-miner',
+		item: getProject('cloudlight-soop-drops-miner'),
+		pageDescription:
+			'在 Windows 上管理多个 SOOP Live 账号，按 Drops 任务选择直播间，并集中查看任务进度、奖励背包和兑换码。',
+		introduction: [
+			'CloudLight SOOP Drops Miner 是面向 SOOP Live Drops 活动的第三方 Windows 桌面辅助工具。SOOP Live 原名 AfreecaTV；本工具与 SOOP Live 官方无关，也未获得官方授权。',
+			'程序可以为多个账号分别维护登录会话，按任务和频道规则选择直播间，并在一个界面中查看账号状态、当前直播间、任务进度与奖励背包。它不会下载直播音视频，而是通过平台相关接口维持观看会话和查询 Drops 数据。',
+			'实际结果会受到平台活动、账号状态、直播间分类和网络环境影响，工具不保证一定获得奖励，也不提供验证码绕过、账号限制绕过、反检测或其他规避平台安全机制的功能。',
+		],
+		importantNotice: {
+			title: '同一账号一次只能观看一个直播间',
+			paragraphs: [
+				'只有当前直播间的分类或官方频道与任务规则匹配时，对应任务才会增加进度。一个账号同时存在多个不同要求的任务时，需要切换直播间，或在智能选台中设置优先任务。',
+				'手动粘贴不匹配的直播间，或在活动没有符合条件的直播间时，任务进度可能不会增加。',
+			],
+		},
+		useCases: [
+			{
+				title: '同时管理多个账号',
+				description: '在同一桌面界面中分别启动、停止和查看多个账号，每个账号使用独立的登录会话。',
+			},
+			{
+				title: '按任务选择直播间',
+				description: '根据当前 Drops 任务使用智能、手动或仅 owesports 模式选择直播间，并可指定优先任务。',
+			},
+			{
+				title: '汇总进度与奖励',
+				description: '集中查看当前直播间对应的任务进度、奖励背包和兑换码，减少在多个账号间反复切换。',
+			},
+		],
+		featureGroups: [
+			{
+				title: '账号与挂机控制',
+				items: [
+					{
+						title: '多账号并行管理',
+						description: '各账号使用独立的 Cookie、网络会话和运行状态，可同时执行 Drops 任务。',
+					},
+					{
+						title: '全部开始与全部停止',
+						description: '可以一键启动所有已保存账号，也可以统一停止正在运行的账号会话。',
+					},
+					{
+						title: '会话自动恢复',
+						description: 'HTTP 请求或心跳连续失败、超时或连接异常后，程序会按冷却时间重建会话并继续尝试。',
+					},
+				],
+			},
+			{
+				title: '任务与直播间选择',
+				items: [
+					{
+						title: '多种 Drops 类型',
+						description: '识别并处理固定型、抽奖型和随机型 Drops 任务，根据活动状态和可用直播间筛选候选频道。',
+					},
+					{
+						title: '智能选台与优先任务',
+						description: '智能模式会结合任务类型、频道分类和官方频道规则选台；存在多个任务时可以指定优先任务。',
+					},
+					{
+						title: '手动选台',
+						description: '支持粘贴 SOOP Live 直播间链接，或直接填写频道 ID；选择错误分类时会提示任务可能不匹配。',
+					},
+					{
+						title: '仅等待 owesports',
+						description: '可设置为只进入 owesports 官方频道；频道未开播时保持等待，不自动改挂其他直播间。',
+					},
+				],
+			},
+			{
+				title: '进度、奖励与设置',
+				items: [
+					{
+						title: '当前任务进度',
+						description: '账号卡片会显示当前直播间及与其匹配的任务进度，帮助判断所选频道是否正在推进任务。',
+					},
+					{
+						title: '奖励背包',
+						description: '可以刷新各账号的奖励背包，并从界面复制完整兑换码；界面列表会对兑换码进行遮盖显示。',
+					},
+					{
+						title: '桌面运行设置',
+						description: '提供当前用户开机启动、启动或关闭到托盘、HTTP/HTTPS 代理、可选自动领取、低流量轮询和系统/明暗主题设置。',
+					},
+					{
+						title: '可选 CLI 模式',
+						description: '除默认图形界面外，源码入口也提供命令行模式，可通过参数传入账号并输出运行日志。',
+					},
+				],
+			},
+		],
+		steps: [
+			{
+				title: '下载 Windows EXE',
+				description: '从 GitHub Releases 下载 CloudLight_SOOP_Drops_Miner.exe。v1.0.2 为单文件发布版，普通使用无需另装 Python。',
+			},
+			{
+				title: '阅读免责声明',
+				description: '首次启动时阅读软件内的第三方工具与账号风险说明，并在理解后决定是否同意继续。',
+			},
+			{
+				title: '添加账号并登录',
+				description: '输入 SOOP 账号和密码完成登录。程序会保存登录返回的会话 Cookie，登录结束后清空界面中的密码字段。',
+			},
+			{
+				title: '选择选台方式',
+				description: '根据需要选择智能选台、手动粘贴直播间链接或频道 ID，或设置为仅等待 owesports 官方频道。',
+			},
+			{
+				title: '设置优先任务',
+				description: '同一账号存在多个不同任务时，按需要选择优先任务，以便智能选台先匹配该任务。',
+			},
+			{
+				title: '开始运行',
+				description: '点击“全部开始”，让程序为已保存账号建立会话并进入符合当前选择规则的直播间。',
+			},
+			{
+				title: '查看运行状态',
+				description: '在账号列表中查看当前状态、直播间和与该直播间匹配的任务进度；进度不增加时检查频道分类和任务要求。',
+			},
+			{
+				title: '查看奖励背包',
+				description: '进入奖励背包刷新结果；需要使用兑换码时，从对应奖励项复制完整代码并按活动规则兑换。',
+			},
+			{
+				title: '停止并退出',
+				description: '结束使用时先点击“全部停止”，确认账号会话停止后再关闭程序或退出托盘。',
+			},
+		],
+		requirements: [
+			{
+				term: '操作系统',
+				description: 'Windows 10 或 Windows 11。当前公开 Release 提供 Windows 单文件 EXE。',
+			},
+			{
+				term: '网络访问',
+				description: '需要能够正常访问 SOOP Live 的登录、直播、Drops、搜索和日志收集等相关域名；代理功能只接受 HTTP 或 HTTPS 代理地址。',
+			},
+			{
+				term: '发布版运行环境',
+				description: 'v1.0.2 EXE 由 PyInstaller 打包，普通使用无需另装 Python。该可执行文件未进行代码签名，Windows 可能显示来源未知提示。',
+			},
+			{
+				term: '从源码运行',
+				description: '需要 Python 3.10 或更高版本，主要依赖 aiohttp、yarl 和 CustomTkinter 5.2.2。',
+			},
+		],
+		technicalTitle: '本地数据与隐私',
+		technicalDetails: [
+			{
+				title: '账号会话',
+				description: 'accounts/<账号>/cookies.json 保存在 EXE 同目录，内容可能包括 AuthTicket、BbsTicket 等敏感 Cookie。源码以普通 JSON 写入，没有实现 Cookie 加密。',
+			},
+			{
+				title: '密码处理',
+				description: '密码用于向 SOOP Live 登录接口提交登录请求；源码随后保存返回的 Cookie，并清空图形界面的密码字段，没有把密码写入本地配置文件。',
+			},
+			{
+				title: '程序设置',
+				description: 'settings.json 保存在程序数据目录，记录代理、托盘、开机启动、自动领取、低流量、主题和轮询间隔等设置。',
+			},
+			{
+				title: '免责声明状态',
+				description: '.disclaimer_accepted 文件只用于记录已确认免责声明；旧版根目录 cookies.json 可能在启动时迁移到对应账号目录。',
+			},
+			{
+				title: '敏感数据保护',
+				description: '不要上传、提交或分享 accounts/、cookies.json、HAR 或抓包数据。它们可能允许他人复用登录会话，应像密码一样妥善保管。',
+			},
+			{
+				title: '本站边界',
+				description: '本项目页面只提供说明和外部下载链接，不收集、接收或保存任何 SOOP 账号、密码、Cookie 或 Drops 数据。',
+			},
+		],
+		cautions: [
+			'这是第三方工具，与 SOOP Live 官方无关联，也未获得官方授权；使用者应自行确认平台规则和账号风险。',
+			'平台接口、活动规则、任务格式或页面发生变化后，部分或全部功能可能暂时失效。',
+			'登录会话属于敏感数据；不要分享 accounts/、cookies.json、HAR 或抓包数据，也不要在公共电脑上保存账号。',
+			'手动选择错误分类的直播间时，任务进度可能不会增加；同一账号一次只能观看一个直播间。',
+			'Mission 页面可能需要先进入带 Drops 的直播间并观看一段时间，之后才会出现任务。',
+			'工具不保证获得奖励，也不提供验证码绕过、账号限制绕过、反检测或其他规避安全机制的功能。',
+			'当前仓库没有单独声明许可证，本站不为项目补充或推断许可证。',
+		],
+		downloadInfo: {
+			version: 'v1.0.2',
+			fileSize: '30,060,743 字节',
+			sha256: 'DBE616D0796CD2FC71F72372B00FF8BFE55922E4A4BF5958D1D2290588D902A4',
+		},
+		ctaTitle: '下载与源码',
 	},
 	{
 		slug: 'microsoft-pinyin-cleaner',
