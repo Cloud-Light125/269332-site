@@ -57,6 +57,22 @@ export const gameTools: CatalogItem[] = [
 
 export const projects: CatalogItem[] = [
 	{
+		name: 'CloudLight 自动化工作室',
+		englishName: 'CloudLight Automator',
+		summary:
+			'用可视化流程图组合窗口、截图、图像识别、OCR、剪贴板和键鼠操作，创建可以重复运行的 Windows 自动化流程。',
+		repository: 'https://github.com/yundan125/cloudlight-automator',
+		detailsPath: '/projects/cloudlight-automator/',
+		downloadUrl: 'https://github.com/yundan125/cloudlight-automator/releases/latest',
+		downloadLabel: 'GitHub 下载',
+		downloadNote:
+			'GitHub Releases 提供 Windows 10/11 x64 当前用户安装包和便携 ZIP，并附 checksums.txt 供 SHA-256 校验。当前发布未进行代码签名。',
+		category: 'Windows 自动化工具',
+		status: '可用',
+		visibility: 'public',
+		tags: ['可视化工作流', 'Windows', 'OCR', 'RPA Framework'],
+	},
+	{
 		name: 'Windows 高级电源设置管理器',
 		englishName: 'PowerSettingsManager',
 		summary:

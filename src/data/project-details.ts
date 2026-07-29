@@ -48,6 +48,199 @@ function getProject(slug: string): CatalogItem {
 
 export const projectDetails: ProjectDetail[] = [
 	{
+		slug: 'cloudlight-automator',
+		item: getProject('cloudlight-automator'),
+		pageDescription:
+			'用可视化流程图编排窗口、截图、图像识别、OCR、剪贴板和键鼠操作，创建可重复运行的 Windows 自动化流程。',
+		introduction: [
+			'CloudLight 自动化工作室是一款面向 Windows 10/11 x64 的本地可视化自动化软件。用户可以把节点拖到画布上，连接执行顺序和数据端口，填写参数后直接运行工作流。',
+			'它可以把窗口操作、截图、图片识别、文字识别、剪贴板和键鼠输入组合在同一条流程中。变量、节点输出、条件分支和有限循环则用于处理识别结果与不同运行情况。',
+			'工作流可以打开、保存和重复运行，文件扩展名为 .workflow.json。软件提供简体中文与英文界面，也附带窗口与截图、图像与 OCR、变量与循环三组示例，便于从现有流程开始了解节点用法。',
+		],
+		useCases: [
+			{
+				title: '整理重复的桌面操作',
+				description: '把需要反复执行的窗口切换、截图、复制粘贴和键鼠操作整理成一条可重复运行的流程。',
+			},
+			{
+				title: '根据识别结果继续执行',
+				description: '识别屏幕中的模板图片或文字，再把识别结果交给后续节点判断和处理。',
+			},
+			{
+				title: '处理不同运行情况',
+				description: '使用变量、节点输出、可视化表达式和 If 条件，根据当前数据选择下一步操作。',
+			},
+			{
+				title: '保存并复用工作流',
+				description: '将流程保存为 .workflow.json 文件，之后可以再次打开、调整参数或在相同环境中运行。',
+			},
+		],
+		featureGroups: [
+			{
+				title: '窗口、截图与识别',
+				items: [
+					{
+						title: '窗口操作',
+						description: '查找并操作桌面窗口，为后续截图、识别和输入步骤准备目标环境。',
+					},
+					{
+						title: '多种截图范围',
+						description: '可以截取全屏、指定窗口或选定区域，并把图片交给后续节点使用。',
+					},
+					{
+						title: '模板图片识别',
+						description: '在截图中查找指定模板，利用位置和匹配结果决定后续操作。',
+					},
+					{
+						title: '离线文字识别',
+						description: '使用内置 OCR 识别简体中文和英文，无需另外安装识别程序。',
+					},
+				],
+			},
+			{
+				title: '剪贴板与键鼠输入',
+				items: [
+					{
+						title: '文本和图片剪贴板',
+						description: '读取或写入剪贴板中的文本与图片，让桌面程序之间能够传递内容。',
+					},
+					{
+						title: '键盘与鼠标操作',
+						description: '通过独立输入辅助程序执行键盘和鼠标动作；运行时目标窗口需要保持在前台。',
+					},
+				],
+			},
+			{
+				title: '流程控制与复用',
+				items: [
+					{
+						title: '变量和节点输出',
+						description: '保存前面节点产生的数据，并在后续参数和判断中继续使用。',
+					},
+					{
+						title: '条件与表达式',
+						description: '通过可视化表达式和 If 分支处理不同结果，不必把所有情况写成同一条固定路径。',
+					},
+					{
+						title: '有限循环控制',
+						description: 'Repeat 和 While 均要求明确的次数或边界，并可使用 Break 与 Continue 调整循环过程。',
+					},
+					{
+						title: '工作流管理',
+						description: '可以新建、打开、保存和运行工作流，并在简体中文与英文界面之间切换。',
+					},
+				],
+			},
+		],
+		steps: [
+			{
+				title: '下载安装包或便携版',
+				description: '前往 GitHub Releases，按需要下载 Windows x64 当前用户安装包或便携 ZIP。',
+			},
+			{
+				title: '核对 SHA-256',
+				description: '下载同一发布中的 checksums.txt，核对安装包或便携 ZIP 的 SHA-256，确认文件与发布记录一致。',
+			},
+			{
+				title: '安装或解压运行',
+				description: '安装版按当前用户安装；便携版需要先完整解压，并保留程序旁的 portable.marker 和其他文件。',
+			},
+			{
+				title: '新建或打开工作流',
+				description: '从空白画布开始，或打开已有的 .workflow.json。也可以参考内置的窗口与截图、图像与 OCR、变量与循环示例。',
+			},
+			{
+				title: '从节点库拖入节点',
+				description: '根据任务需要选择窗口、截图、识别、剪贴板、键鼠输入或流程控制节点。',
+			},
+			{
+				title: '连接端口并填写参数',
+				description: '连接执行顺序和数据端口，再填写窗口、图片、文字、坐标或表达式等参数。',
+			},
+			{
+				title: '保存工作流',
+				description: '运行前先保存 .workflow.json，并确认其中引用的本地图片和模板路径仍然有效。',
+			},
+			{
+				title: '运行并查看状态',
+				description: '启动工作流后观察节点状态和输出，确认每一步都在预期窗口和数据上执行。',
+			},
+			{
+				title: '异常时停止',
+				description: '流程出现异常、操作了错误窗口或结果偏离预期时，立即点击停止，不要让后续输入动作继续执行。',
+			},
+			{
+				title: '查看日志',
+				description: '需要排查节点失败或运行问题时，通过设置页打开日志位置并检查对应记录。',
+			},
+		],
+		requirements: [
+			{
+				term: '操作系统',
+				description: 'Windows 10 或 Windows 11 x64；当前没有 macOS、Linux、ARM64 或 x86 版本。',
+			},
+			{
+				term: '安装权限',
+				description: '安装版默认只为当前用户安装，不需要管理员权限。',
+			},
+			{
+				term: '随包运行环境',
+				description: '安装包和便携版已内置 Python worker、.NET InputHelper、Tesseract 以及简体中文和英文语言数据。普通用户无需另外安装 Node.js、Python、.NET SDK 或 Tesseract。',
+			},
+			{
+				term: '安装版数据',
+				description: '设置、日志和其他应用数据保存在 %APPDATA%\\CloudLight Automator。',
+			},
+			{
+				term: '默认工作流目录',
+				description: '默认工作流保存在 %USERPROFILE%\\Documents\\CloudLight Automator\\Workflows。',
+			},
+			{
+				term: '便携版数据',
+				description: '便携版把数据保存在可执行文件旁的 data 目录，包括设置、日志、自动保存、临时文件和工作流。移动时应复制整个解压目录，并保留 portable.marker。',
+			},
+		],
+		technicalDetails: [
+			{
+				title: '可视化编辑器',
+				description: '桌面界面由 Electron、React、TypeScript 和 React Flow 构建，负责节点画布、参数编辑和运行状态展示。',
+			},
+			{
+				title: '独立运行进程',
+				description: '每次运行都会启动一个独立 Python worker，流程停止或结束后不复用上一次的执行进程。',
+			},
+			{
+				title: '节点状态传递',
+				description: 'worker 通过逐行 JSON（NDJSON）协议返回节点开始、输出、完成和错误等状态。',
+			},
+			{
+				title: '自动化能力',
+				description: '部分桌面自动化节点基于仓库锁定版本的 RPA Framework，只开放经过筛选并列入正式目录的能力。',
+			},
+			{
+				title: '键鼠输入',
+				description: '键盘和鼠标动作由独立的 .NET 10 InputHelper 执行，与工作流编辑界面分开。',
+			},
+			{
+				title: '离线 OCR',
+				description: '文字识别使用内置 Tesseract，并附带英文与简体中文语言数据。',
+			},
+			{
+				title: '正式节点目录',
+				description: '当前版本的 62 个可执行节点来自统一白名单；未进入正式目录的实验候选节点不会显示，也不能执行。',
+			},
+		],
+		cautions: [
+			'当前版本为 0.1.0，正式目录包含 62 个可执行节点。实验候选节点不会出现在节点库中，也不能通过工作流执行。',
+			'当前执行器不支持并行执行、任意环或无限循环。Repeat 和 While 必须具有明确的有限边界。',
+			'键盘和鼠标输入会发送到当前前台窗口。运行前应确认目标窗口已经获得焦点，执行过程中不要切换到其他敏感窗口。',
+			'OCR 结果会受到字体、系统缩放、截图范围和图像质量影响。用于流程判断前，应先在实际环境中检查识别结果。',
+			'当前发布没有代码签名，Windows 可能显示 SmartScreen 或未知发布者提示。请从项目的 GitHub Releases 下载，并使用 checksums.txt 核对 SHA-256。',
+			'当前版本尚未完成独立干净 Windows 环境验证。正式使用前，应先在可控环境中测试完整流程及停止操作。',
+			'移动或分享工作流时，需要同时检查其中引用的本地图片和模板路径；只复制 .workflow.json 不一定能带走全部依赖文件。',
+		],
+	},
+	{
 		slug: 'power-settings-manager',
 		item: getProject('power-settings-manager'),
 		pageDescription:

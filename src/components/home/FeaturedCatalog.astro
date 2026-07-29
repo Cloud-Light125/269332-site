@@ -26,7 +26,7 @@ const { id, eyebrow, title, description, items, allHref, allLabel } = Astro.prop
 	<div
 		class:list={[
 			'catalog-preview',
-			{ single: items.length === 1, pair: items.length === 2 },
+			{ single: items.length === 1, pair: items.length === 2, quad: items.length === 4 },
 		]}
 	>
 		{items.map((item) => (
@@ -105,6 +105,9 @@ const { id, eyebrow, title, description, items, allHref, allLabel } = Astro.prop
 		gap: 1rem;
 	}
 	.catalog-preview.pair {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.catalog-preview.quad {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 	.catalog-preview.single {
@@ -214,7 +217,8 @@ const { id, eyebrow, title, description, items, allHref, allLabel } = Astro.prop
 	}
 	@media (max-width: 880px) {
 		.catalog-preview,
-		.catalog-preview.pair {
+		.catalog-preview.pair,
+		.catalog-preview.quad {
 			grid-template-columns: 1fr;
 		}
 	}
