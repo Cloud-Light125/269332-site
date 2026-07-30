@@ -16,6 +16,8 @@ export interface CatalogItem {
 	name: string;
 	englishName?: string;
 	summary: string;
+	featuredSummary?: string;
+	detailSummary?: string;
 	icon?: ImageMetadata;
 	screenshot?: ImageMetadata;
 	screenshotAlt?: string;
@@ -164,12 +166,16 @@ export const projects: CatalogItem[] = [
 		name: 'Windows 移动热点控制器',
 		englishName: 'MobileHotspotController',
 		summary:
-			'用于管理 Windows 11 移动热点。在设备支持时，也可以通过 Wi-Fi Direct 创建只供局域网连接的热点，并提供托盘控制和诊断信息。',
+			'解决部分 Windows 电脑在没有互联网连接时无法开启系统移动热点的问题，并在设备支持时通过 Wi-Fi Direct 创建仅供局域网通信的离线热点。',
+		featuredSummary:
+			'用于解决部分 Windows 电脑在没有互联网连接时无法开启移动热点的问题。设备支持时，可通过 Wi-Fi Direct 创建仅用于局域网通信的离线热点。',
+		detailSummary:
+			'用于解决部分 Windows 电脑在没有互联网连接时无法开启移动热点的问题。设备支持时，可以通过 Wi-Fi Direct 创建不依赖外网的无线热点，让附近设备连接电脑并组成局域网。',
 		icon: mobileHotspotControllerIcon,
 		screenshot: mobileHotspotControllerScreenshot,
 		screenshotAlt: 'Windows 移动热点控制器主界面',
 		screenshotCaption:
-			'管理 Windows 移动热点、局域网热点模式、连接状态和设备诊断。',
+			'在系统热点与“仅局域网”模式之间选择，并查看 Wi-Fi Direct 检测和连接状态。',
 		repository: 'https://github.com/yundan125/MobileHotspotController',
 		detailsPath: '/projects/mobile-hotspot-controller/',
 		downloadUrl: 'https://github.com/yundan125/MobileHotspotController/releases/latest',

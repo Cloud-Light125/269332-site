@@ -63,7 +63,7 @@ const getSourceLabel = (item: CatalogItem) =>
 						{item.englishName && <p class="english-name">{item.englishName}</p>}
 					</div>
 				</div>
-				<p class="summary">{item.summary}</p>
+				<p class="summary">{item.featuredSummary ?? item.summary}</p>
 				<ul aria-label={item.name + ' 标签'}>
 					{item.tags.slice(0, 3).map((tag) => <li>{tag}</li>)}
 				</ul>

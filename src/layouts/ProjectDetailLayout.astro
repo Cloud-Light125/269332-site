@@ -40,7 +40,7 @@ if (!downloadUrl) {
 				<p class="eyebrow">{item.category}</p>
 				<h1>{item.name}</h1>
 				{item.englishName && <p class="english-name">{item.englishName}</p>}
-				<p class="hero-summary">{item.summary}</p>
+				<p class="hero-summary">{item.detailSummary ?? item.summary}</p>
 				<div class="project-meta" aria-label="项目状态与技术标签">
 					<span class="status">{item.status}</span>
 					{item.tags.map((tag) => <span>{tag}</span>)}
