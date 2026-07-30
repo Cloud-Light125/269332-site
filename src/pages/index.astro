@@ -27,7 +27,7 @@ const websiteSchema = {
 		set:html={JSON.stringify(websiteSchema)}
 	></script>
 	<main class="home">
-		<HomeHero />
+		<HomeHero projectsCount={projects.length} gameToolsCount={gameTools.length} />
 		<HomeOverview projectsCount={projects.length} gameToolsCount={gameTools.length} />
 		<FeaturedCatalog
 			id="featured-projects"

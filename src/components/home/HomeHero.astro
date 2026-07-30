@@ -1,3 +1,12 @@
+---
+interface Props {
+	projectsCount: number;
+	gameToolsCount: number;
+}
+
+const { projectsCount, gameToolsCount } = Astro.props;
+---
+
 <section class="home-hero" aria-labelledby="home-title">
 	<div class="hero-copy">
 		<p class="eyebrow">个人开发空间</p>
@@ -22,18 +31,36 @@
 	<div class="hero-visual" aria-hidden="true">
 		<div class="window-bar">
 			<span></span><span></span><span></span>
-			<small>workspace / CloudLight</small>
+			<small>269332.xyz / CloudLight</small>
 		</div>
 		<div class="window-body">
-			<div class="code-line wide"></div>
-			<div class="code-line medium"></div>
-			<div class="module-grid">
-				<div><span>01</span><strong>GAME TOOLS</strong></div>
-				<div><span>02</span><strong>PROJECTS</strong></div>
-				<div><span>03</span><strong>ARTICLES</strong></div>
-				<div class="signature">CloudLight</div>
+			<div class="visual-heading">
+				<span>网站内容</span>
+				<strong>项目、工具与使用记录</strong>
 			</div>
-			<div class="status-line"><span></span> PROJECT NOTES / CHECK BEFORE USE</div>
+			<div class="module-grid">
+				<div>
+					<span>01 / 游戏工具</span>
+					<strong>{gameToolsCount} 个</strong>
+					<small>可直接打开使用</small>
+				</div>
+				<div>
+					<span>02 / 软件项目</span>
+					<strong>{projectsCount} 个</strong>
+					<small>下载与详细说明</small>
+				</div>
+				<div>
+					<span>03 / 内容说明</span>
+					<strong>使用记录</strong>
+					<small>安装、权限与注意事项</small>
+				</div>
+				<div class="signature">
+					<span>个人开发空间</span>
+					<strong>CloudLight</strong>
+					<small>269332.xyz</small>
+				</div>
+			</div>
+			<div class="status-line"><span></span> 项目说明与下载入口持续更新</div>
 		</div>
 	</div>
 </section>
@@ -104,18 +131,18 @@
 	.window-body {
 		padding: clamp(1.25rem, 4vw, 2rem);
 	}
-	.code-line {
-		height: 0.55rem;
-		margin-bottom: 0.7rem;
-		background: #314257;
-		border-radius: 999px;
+	.visual-heading {
+		display: grid;
+		gap: 0.3rem;
 	}
-	.code-line.wide {
-		width: 72%;
+	.visual-heading span {
+		color: #6e87a4;
+		font-size: 0.65rem;
+		letter-spacing: 0.12em;
 	}
-	.code-line.medium {
-		width: 45%;
-		background: #245da8;
+	.visual-heading strong {
+		color: #dbe7f5;
+		font-size: clamp(1rem, 2vw, 1.2rem);
 	}
 	.module-grid {
 		display: grid;
@@ -127,29 +154,29 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		min-height: 6.5rem;
+		min-height: 7rem;
 		padding: 0.9rem;
 		background: rgba(255, 255, 255, 0.04);
 		border: 1px solid rgba(255, 255, 255, 0.11);
 		border-radius: var(--radius-medium);
 		color: #dbe7f5;
 	}
-	.module-grid span {
+	.module-grid span,
+	.module-grid small {
 		color: #6e87a4;
 		font-size: 0.65rem;
 	}
 	.module-grid strong {
-		font-size: 0.72rem;
-		letter-spacing: 0.12em;
+		font-size: clamp(1.05rem, 3vw, 1.45rem);
+		letter-spacing: 0.01em;
 	}
 	.module-grid .signature {
-		align-items: flex-end;
-		justify-content: flex-end;
 		background: #e7f0fb;
 		color: #19477f;
-		font-size: clamp(0.9rem, 3vw, 1.55rem);
-		font-weight: 700;
-		letter-spacing: 0.02em;
+	}
+	.module-grid .signature span,
+	.module-grid .signature small {
+		color: #55708f;
 	}
 	.status-line {
 		color: #8294a9;
