@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import {
-	getCatalogCategory,
+	getCatalogCategories,
 	kindLabels,
 	statusLabels,
 	type CatalogAction,
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { item, compact = false, headingLevel = 'h2' } = Astro.props;
-const category = getCatalogCategory(item.category);
+const categories = getCatalogCategories(item);
 const Heading = headingLevel;
 
 const externalProps = (action: CatalogAction) =>
@@ -25,10 +25,10 @@ const externalProps = (action: CatalogAction) =>
 <article
 	class:list={['catalog-card', `accent-${item.accent}`, { compact }]}
 	data-catalog-card
-	data-category={item.category}
+	data-categories={item.categories.join(' ')}
 >
 	<div class="card-topline" aria-label="项目类型与状态">
-		<span>{category.name}</span>
+		{categories.map((category) => <span>{category.name}</span>)}
 		<span>{kindLabels[item.kind]}</span>
 		<span class="status"><i aria-hidden="true"></i>{statusLabels[item.status]}</span>
 	</div>

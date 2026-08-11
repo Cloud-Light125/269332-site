@@ -1,9 +1,10 @@
 ---
-import { catalogCategories, type CatalogItem } from '../../data/catalog';
+import { Image } from 'astro:assets';
+import { catalogCategories, hasCatalogCategory, type CatalogItem } from '../../data/catalog';
 
 interface Props { items: CatalogItem[]; }
 const { items } = Astro.props;
-const categoryMarks = { windows: 'Win', games: 'Play', scripts: '//'};
+const homeCategories = catalogCategories.filter((category) => category.showOnHome);
 ---
 
 <section class="category-section" aria-labelledby="category-title">
@@ -12,11 +13,13 @@ const categoryMarks = { windows: 'Win', games: 'Play', scripts: '//'};
 		<h2 id="category-title">从你要解决的问题开始</h2>
 	</header>
 	<div class="category-grid">
-		{catalogCategories.map((category) => {
-			const count = items.filter((item) => item.category === category.id).length;
+		{homeCategories.map((category) => {
+			const count = items.filter((item) => hasCatalogCategory(item, category.id)).length;
 			return (
 				<a href={`/projects/?category=${category.id}`}>
-					<span aria-hidden="true">{categoryMarks[category.id]}</span>
+					<span class="category-icon" aria-hidden="true">
+						{category.icon && <Image src={category.icon} alt="" widths={[52, 104]} sizes="52px" />}
+					</span>
 					<div><h3>{category.name}</h3><p>{category.description}</p></div>
 					<small>{count} 个项目 <i aria-hidden="true">→</i></small>
 				</a>
@@ -41,18 +44,17 @@ const categoryMarks = { windows: 'Win', games: 'Play', scripts: '//'};
 		text-decoration: none;
 	}
 	.category-grid a:hover { background: var(--color-surface); border-color: var(--color-accent); box-shadow: var(--shadow-small); transform: translateY(-2px); }
-	.category-grid a > span {
+	.category-icon {
 		display: grid;
 		width: 3.25rem;
 		height: 3.25rem;
 		place-items: center;
-		background: var(--color-accent-soft);
+		padding: 0.2rem;
+		overflow: hidden;
+		background: var(--color-surface-muted);
 		border-radius: 0.9rem;
-		color: var(--color-accent-hover);
-		font-family: Consolas, monospace;
-		font-size: 0.78rem;
-		font-weight: 700;
 	}
+	.category-icon :global(img) { display: block; width: 100%; height: 100%; border-radius: 0.7rem; object-fit: contain; }
 	h3 { margin: 0.1rem 0 0.35rem; font-size: 1.2rem; }
 	p { margin: 0; color: var(--color-text-muted); font-size: 0.85rem; line-height: 1.55; }
 	small { grid-column: 2; color: var(--color-text-soft); font-size: 0.74rem; }

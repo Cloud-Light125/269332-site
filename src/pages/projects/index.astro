@@ -1,10 +1,10 @@
 ---
 import CatalogCard from '../../components/CatalogCard.astro';
-import { catalogCategories, projects } from '../../data/catalog';
+import { catalogCategories, hasCatalogCategory, projects } from '../../data/catalog';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const filters = catalogCategories
-	.map((category) => ({ ...category, count: projects.filter((project) => project.category === category.id).length }))
+	.map((category) => ({ ...category, count: projects.filter((project) => hasCatalogCategory(project, category.id)).length }))
 	.filter((category) => category.count > 0);
 ---
 
@@ -45,7 +45,7 @@ const filters = catalogCategories
 		const applyFilter = (filter: string, updateUrl = true) => {
 			let visible = 0;
 			cards.forEach((card) => {
-				const show = filter === 'all' || card.dataset.category === filter;
+				const show = filter === 'all' || (card.dataset.categories?.split(' ').includes(filter) ?? false);
 				card.hidden = !show;
 				if (show) visible += 1;
 			});

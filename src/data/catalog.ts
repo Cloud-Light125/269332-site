@@ -1,4 +1,7 @@
 import type { ImageMetadata } from 'astro';
+import browserScriptsCategoryIcon from '../assets/categories/scripts.png';
+import gameStreamingCategoryIcon from '../assets/categories/game-streaming.png';
+import windowsCategoryIcon from '../assets/categories/windows.png';
 import cloudlightAutomatorIcon from '../assets/projects/cloudlight-automator/icon.png';
 import cloudlightAutomatorScreenshot from '../assets/projects/cloudlight-automator/screenshot.png';
 import cloudlightCodexBridgeIcon from '../assets/projects/codex-bridge/icon.png';
@@ -9,6 +12,8 @@ import cloudlightOverwatchYoutubeWatcherIcon from '../assets/projects/cloudlight
 import cloudlightOverwatchYoutubeWatcherScreenshot from '../assets/projects/cloudlight-overwatch-youtube-watcher/screenshot.png';
 import cloudlightSoopDropsMinerIcon from '../assets/projects/cloudlight-soop-drops-miner/icon.png';
 import cloudlightSoopDropsMinerScreenshot from '../assets/projects/cloudlight-soop-drops-miner/screenshot.png';
+import heyboxPostExportUserscriptIcon from '../assets/projects/heybox-post-export-userscript/icon.png';
+import heyboxPostExporterIcon from '../assets/projects/heybox-post-exporter/icon.png';
 import heyboxPostExporterScreenshot from '../assets/projects/heybox-post-exporter/screenshot.png';
 import microsoftPinyinCleanerIcon from '../assets/projects/microsoft-pinyin-cleaner/icon.png';
 import microsoftPinyinCleanerScreenshot from '../assets/projects/microsoft-pinyin-cleaner/screenshot.png';
@@ -16,18 +21,24 @@ import mobileHotspotControllerIcon from '../assets/projects/mobile-hotspot-contr
 import mobileHotspotControllerScreenshot from '../assets/projects/mobile-hotspot-controller/screenshot.png';
 import powerSettingsManagerIcon from '../assets/projects/power-settings-manager/icon.png';
 import powerSettingsManagerScreenshot from '../assets/projects/power-settings-manager/screenshot.png';
+import shandaPassportLoginHelperIcon from '../assets/projects/shanda-passport-login-helper/icon.png';
+import steamPlaytimePanoramaIcon from '../assets/projects/steam-playtime-panorama/icon.png';
 import tdmClaimTogglePatcherIcon from '../assets/projects/tdm-claim-toggle-patcher/icon.png';
 import tdmClaimTogglePatcherScreenshot from '../assets/projects/tdm-claim-toggle-patcher/screenshot.png';
+import twitterXMediaRenamerIcon from '../assets/projects/twitter-x-media-renamer/icon.png';
 import twitterXMediaRenamerScreenshot from '../assets/projects/twitter-x-media-renamer/screenshot.png';
+import overwatchHeroQuizIcon from '../assets/projects/overwatch-hero-quiz/icon.png';
 
 export type CatalogKind = 'desktop' | 'online' | 'userscript';
-export type CatalogCategoryId = 'windows' | 'games' | 'scripts';
+export type CatalogCategoryId = 'windows' | 'game-streaming' | 'games' | 'scripts';
 export type CatalogAccent = 'blue' | 'cyan' | 'violet' | 'amber';
 
 export interface CatalogCategory {
 	id: CatalogCategoryId;
 	name: string;
 	description: string;
+	icon?: ImageMetadata;
+	showOnHome?: boolean;
 }
 
 export interface CatalogAction {
@@ -48,7 +59,7 @@ export interface CatalogItem {
 	englishName?: string;
 	summary: string;
 	kind: CatalogKind;
-	category: CatalogCategoryId;
+	categories: CatalogCategoryId[];
 	status: 'available';
 	capabilities: string[];
 	accent: CatalogAccent;
@@ -69,16 +80,27 @@ export const catalogCategories: CatalogCategory[] = [
 		id: 'windows',
 		name: 'Windows 工具',
 		description: '安装在电脑上的系统、整理、导出与自动化工具。',
+		icon: windowsCategoryIcon,
+		showOnHome: true,
+	},
+	{
+		id: 'game-streaming',
+		name: '游戏与直播',
+		description: '游戏数据、趣味互动和直播活动辅助工具。',
+		icon: gameStreamingCategoryIcon,
+		showOnHome: true,
 	},
 	{
 		id: 'games',
-		name: '游戏与直播',
-		description: '游戏数据、趣味互动和直播活动辅助工具。',
+		name: '游戏',
+		description: '汇总网页游戏、游戏数据与桌面辅助工具。',
 	},
 	{
 		id: 'scripts',
 		name: '浏览器脚本',
 		description: '在特定网页中减少重复操作的小型脚本。',
+		icon: browserScriptsCategoryIcon,
+		showOnHome: true,
 	},
 ];
 
@@ -99,7 +121,7 @@ export const projects: CatalogItem[] = [
 		englishName: 'CloudLight Automator',
 		summary: '用可视化流程组合窗口、截图、图像识别、文字识别和键鼠操作。',
 		kind: 'desktop',
-		category: 'windows',
+		categories: ['windows'],
 		status: 'available',
 		capabilities: ['可视化流程', '图像与文字识别', '键鼠操作'],
 		accent: 'violet',
@@ -122,10 +144,11 @@ export const projects: CatalogItem[] = [
 	},
 	{
 		id: 'cloudlight-codex-bridge',
-		name: 'CloudLight Codex Bridge',
+		name: 'CloudLight Codex 桥接器',
+		englishName: 'CloudLight Codex Bridge',
 		summary: '把电脑上的 Codex 会话连接到 QQ 或 Telegram，远程发送任务并接收最终回复。',
 		kind: 'desktop',
-		category: 'windows',
+		categories: ['windows'],
 		status: 'available',
 		capabilities: ['QQ 与 Telegram', '远程继续会话', '桌面配置'],
 		accent: 'cyan',
@@ -134,32 +157,32 @@ export const projects: CatalogItem[] = [
 		screenshots: [
 			{
 				image: cloudlightCodexBridgeScreenshot,
-				alt: 'CloudLight Codex Bridge 的远程渠道页面，显示 Telegram 与 QQ 机器人连接和会话状态',
+				alt: 'CloudLight Codex 桥接器的远程渠道页面，显示 Telegram 与 QQ 机器人连接和会话状态',
 				caption: '在远程渠道页面配置、测试并管理 Telegram 与 QQ 官方机器人连接。',
 			},
 			{
 				image: cloudlightCodexBridgeScreenshot2,
-				alt: 'CloudLight Codex Bridge 的概览页面，显示 Codex、QQ、Telegram 和消息同步状态',
+				alt: 'CloudLight Codex 桥接器的概览页面，显示 Codex、QQ、Telegram 和消息同步状态',
 				caption: '概览页集中显示 Codex 会话、远程渠道、消息同步和最近活动状态。',
 			},
 			{
 				image: cloudlightCodexBridgeScreenshot3,
-				alt: '通过 QQ 与 CloudLight Codex Bridge 远程连接的 Codex 会话对话界面',
+				alt: '通过 QQ 与 CloudLight Codex 桥接器远程连接的 Codex 会话对话界面',
 				caption: '在 QQ 中用稳定的会话编号发送任务，并接收 Codex 的最终回复。',
 			},
 		],
 		detailsPath: '/projects/cloudlight-codex-bridge/',
 		primaryAction: {
-			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/Codex-Bridge/releases/download/v0.7.1/CloudLight-CodexBridge-Setup-0.7.1-win-x64.exe',
+			label: '获取 Windows 版',
+			href: 'https://github.com/yundan125/Codex-Bridge/releases/latest',
 			external: true,
 		},
 		secondaryAction: {
-			label: '下载便携版',
-			href: 'https://github.com/yundan125/Codex-Bridge/releases/download/v0.7.1/CloudLight-CodexBridge-Portable-0.7.1-win-x64.zip',
+			label: '查看源码',
+			href: 'https://github.com/yundan125/Codex-Bridge',
 			external: true,
 		},
-		ctaNote: 'v0.7.1 · 推荐安装版，已包含 .NET 8 Windows 桌面运行环境。',
+		ctaNote: '在最新发布页选择安装版或便携版；安装版已包含 .NET 8 Windows 桌面运行环境。',
 	},
 	{
 		id: 'twitter-x-media-renamer',
@@ -167,18 +190,19 @@ export const projects: CatalogItem[] = [
 		englishName: 'TwitterXMediaRenamer',
 		summary: '根据帖子正文批量重命名下载的 Twitter/X 图片和视频，执行前可先预览结果。',
 		kind: 'desktop',
-		category: 'windows',
+		categories: ['windows'],
 		status: 'available',
 		capabilities: ['自动识别帖子', '改名前预览', '避免重名覆盖'],
 		accent: 'blue',
 		featured: true,
+		icon: twitterXMediaRenamerIcon,
 		screenshot: twitterXMediaRenamerScreenshot,
 		screenshotAlt: 'Twitter/X 媒体文件批量改名工具的文件扫描与重命名预览界面',
 		screenshotCaption: '选择媒体文件夹后，扫描帖子 ID、获取正文并在表格中预览新的文件名。',
 		detailsPath: '/projects/twitter-x-media-renamer/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/TwitterXMediaRenamer/releases/download/v1.0.0/TwitterXMediaRenamer.exe',
+			href: 'https://github.com/yundan125/TwitterXMediaRenamer/releases/latest',
 			external: true,
 		},
 		secondaryAction: {
@@ -186,7 +210,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/yundan125/TwitterXMediaRenamer',
 			external: true,
 		},
-		ctaNote: '直接下载当前 Release 中的 Windows 单文件程序，无需安装 Python。',
+		ctaNote: '在最新发布页获取 Windows 单文件程序，无需安装 Python。',
 	},
 	{
 		id: 'heybox-post-exporter',
@@ -194,18 +218,19 @@ export const projects: CatalogItem[] = [
 		englishName: 'HeyboxPostExporter',
 		summary: '把小黑盒原帖、评论、楼中楼和图片完整保存为 HTML、Markdown 与 JSON。',
 		kind: 'desktop',
-		category: 'windows',
+		categories: ['windows'],
 		status: 'available',
 		capabilities: ['评论与楼中楼', '三种导出格式', '图片本地保存'],
 		accent: 'amber',
 		featured: true,
+		icon: heyboxPostExporterIcon,
 		screenshot: heyboxPostExporterScreenshot,
 		screenshotAlt: '小黑盒帖子完整导出工具的 Edge 连接状态、导出选项与运行日志界面',
 		screenshotCaption: '确认 Edge 已连接后，选择图片和导出格式，再开始保存帖子内容。',
 		detailsPath: '/projects/heybox-post-exporter/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/HeyboxPostExporter/releases/download/v0.1.0/HeyboxPostExporter.exe',
+			href: 'https://github.com/yundan125/HeyboxPostExporter/releases/latest',
 			external: true,
 		},
 		secondaryAction: {
@@ -213,7 +238,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/yundan125/HeyboxPostExporter',
 			external: true,
 		},
-		ctaNote: 'v0.1.0 · Windows 10/11 x64 单文件版本；使用前还需要准备 Microsoft Edge 和 Node.js。',
+		ctaNote: '提供 Windows 10/11 x64 单文件程序；使用前还需要准备 Microsoft Edge 和 Node.js。',
 	},
 	{
 		id: 'cloudlight-overwatch-youtube-watcher',
@@ -221,19 +246,19 @@ export const projects: CatalogItem[] = [
 		englishName: 'CloudLight Overwatch YouTube Watcher',
 		summary: '定时查找指定 YouTube 频道的直播，并用本机 Chrome 或 Brave 打开和维持播放。',
 		kind: 'desktop',
-		category: 'games',
+		categories: ['game-streaming', 'games'],
 		status: 'available',
 		capabilities: ['自动查找直播', '多个浏览器 Profile', '手动 URL 模式'],
 		accent: 'violet',
 		featured: true,
 		icon: cloudlightOverwatchYoutubeWatcherIcon,
 		screenshot: cloudlightOverwatchYoutubeWatcherScreenshot,
-		screenshotAlt: 'CloudLight Overwatch YouTube Watcher 3.0.0 的观看模式、直播地址与运行日志界面',
+		screenshotAlt: '守望先锋 YouTube 直播观看助手的观看模式、直播地址与运行日志界面',
 		screenshotCaption: '在观看页选择自动检测频道或手动直播 URL，并查看当前播放状态。',
 		detailsPath: '/projects/cloudlight-overwatch-youtube-watcher/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/CloudLight-Overwatch-YouTube-Watcher/releases/download/v3.0.0/CloudLight.Overwatch.YouTube.Watcher.exe',
+			href: 'https://github.com/yundan125/CloudLight-Overwatch-YouTube-Watcher/releases/latest',
 			external: true,
 		},
 		secondaryAction: {
@@ -241,7 +266,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/yundan125/CloudLight-Overwatch-YouTube-Watcher',
 			external: true,
 		},
-		ctaNote: '直接下载当前 Release 中的 Windows 程序；运行时需要已安装并更新的 Chrome 或 Brave。',
+		ctaNote: '在最新发布页获取 Windows 程序；运行时需要已安装并更新的 Chrome 或 Brave。',
 	},
 	{
 		id: 'cloudlight-soop-drops-miner',
@@ -249,7 +274,7 @@ export const projects: CatalogItem[] = [
 		englishName: 'CloudLight SOOP Drops Miner',
 		summary: '集中管理多个 SOOP Live 账号，按任务选择直播间并查看掉宝进度。',
 		kind: 'desktop',
-		category: 'games',
+		categories: ['game-streaming', 'games'],
 		status: 'available',
 		capabilities: ['多账号管理', '智能选台', '奖励进度'],
 		accent: 'amber',
@@ -276,7 +301,7 @@ export const projects: CatalogItem[] = [
 		englishName: 'MicrosoftPinyinCleaner',
 		summary: '移除 Windows 更新后重新加入的微软拼音，同时保留其他中文输入法。',
 		kind: 'desktop',
-		category: 'windows',
+		categories: ['windows'],
 		status: 'available',
 		capabilities: ['一键检测', '安全移除', '登录自动检查'],
 		accent: 'blue',
@@ -288,7 +313,7 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/microsoft-pinyin-cleaner/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/MicrosoftPinyinCleaner/releases/download/v1.0.0/MicrosoftPinyinCleaner.exe',
+			href: 'https://github.com/yundan125/MicrosoftPinyinCleaner/releases/latest',
 			external: true,
 		},
 		secondaryAction: {
@@ -303,7 +328,7 @@ export const projects: CatalogItem[] = [
 		englishName: 'PowerSettingsManager',
 		summary: '集中查看和管理 Windows 中隐藏的高级电源设置。',
 		kind: 'desktop',
-		category: 'windows',
+		categories: ['windows'],
 		status: 'available',
 		capabilities: ['隐藏设置扫描', '批量显示或隐藏', '修改前备份'],
 		accent: 'cyan',
@@ -330,7 +355,7 @@ export const projects: CatalogItem[] = [
 		englishName: 'MobileHotspotController',
 		summary: '在设备支持时创建不依赖互联网的 Windows 局域网热点。',
 		kind: 'desktop',
-		category: 'windows',
+		categories: ['windows'],
 		status: 'available',
 		capabilities: ['离线局域网', '热点控制', '设备诊断'],
 		accent: 'blue',
@@ -357,7 +382,7 @@ export const projects: CatalogItem[] = [
 		englishName: 'TDM Claim Toggle Patcher',
 		summary: '为 TwitchDropsMiner 增加可关闭的自动领取开关，并在修改前检查兼容性。',
 		kind: 'desktop',
-		category: 'games',
+		categories: ['game-streaming', 'games'],
 		status: 'available',
 		capabilities: ['兼容性检查', '补丁预览', '备份与恢复'],
 		accent: 'violet',
@@ -382,10 +407,11 @@ export const projects: CatalogItem[] = [
 		name: '小黑盒帖子完整展开与导出',
 		summary: '不安装桌面程序，直接在小黑盒帖子页面展开全文、评论和楼中楼并导出 HTML。',
 		kind: 'userscript',
-		category: 'scripts',
+		categories: ['scripts'],
 		status: 'available',
 		capabilities: ['完整展开内容', '原网页与阅读版', '离线保存图片'],
 		accent: 'cyan',
+		icon: heyboxPostExportUserscriptIcon,
 		detailsPath: '/projects/heybox-post-export-userscript/',
 		primaryAction: {
 			label: '安装脚本',
@@ -403,10 +429,11 @@ export const projects: CatalogItem[] = [
 		name: '盛大通行证一键登录辅助脚本',
 		summary: '打开登录页后自动勾选协议、切换登录方式并填写预先保存的账号。',
 		kind: 'userscript',
-		category: 'scripts',
+		categories: ['scripts'],
 		status: 'available',
 		capabilities: ['自动填写账号', '本地保存', '不自动提交'],
 		accent: 'amber',
+		icon: shandaPassportLoginHelperIcon,
 		detailsPath: '/projects/shanda-passport-login-helper/',
 		primaryAction: {
 			label: '安装脚本',
@@ -427,11 +454,12 @@ export const gameTools: CatalogItem[] = [
 		name: 'Steam 游玩时光全景图',
 		summary: '把一个或多个 Steam 账号的公开游玩时长排成一张游戏封面全景图。',
 		kind: 'online',
-		category: 'games',
+		categories: ['games'],
 		status: 'available',
 		capabilities: ['多账号累计', '游玩排行榜', 'PNG 导出'],
 		accent: 'cyan',
 		featured: true,
+		icon: steamPlaytimePanoramaIcon,
 		primaryAction: {
 			label: '立即使用',
 			href: 'https://playtime.269332.xyz',
@@ -448,11 +476,12 @@ export const gameTools: CatalogItem[] = [
 		name: '守望先锋看图猜英雄',
 		summary: '只看英雄图标或全身照，为每位英雄猜一个名字，提交后再揭晓答案。',
 		kind: 'online',
-		category: 'games',
+		categories: ['games'],
 		status: 'available',
 		capabilities: ['图标或全身照', '本地保存进度', '结果分享'],
 		accent: 'amber',
 		featured: true,
+		icon: overwatchHeroQuizIcon,
 		primaryAction: {
 			label: '立即使用',
 			href: '/overwatch-hero-quiz/',
@@ -469,6 +498,14 @@ export const catalogItems = [...projects, ...gameTools];
 
 export function getCatalogCategory(id: CatalogCategoryId) {
 	return catalogCategories.find((category) => category.id === id)!;
+}
+
+export function getCatalogCategories(item: CatalogItem) {
+	return item.categories.map(getCatalogCategory);
+}
+
+export function hasCatalogCategory(item: CatalogItem, id: CatalogCategoryId) {
+	return item.categories.includes(id);
 }
 
 export function getCatalogItem(id: string) {

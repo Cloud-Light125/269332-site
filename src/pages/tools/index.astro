@@ -1,10 +1,10 @@
 ---
 import CatalogCard from '../../components/CatalogCard.astro';
-import { gameTools, projects } from '../../data/catalog';
+import { catalogItems, gameTools, hasCatalogCategory } from '../../data/catalog';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const overwatchWatcher = projects.find((project) => project.id === 'cloudlight-overwatch-youtube-watcher')!;
-const gameItems = [overwatchWatcher, ...gameTools];
+const gameItems = catalogItems.filter((item) => hasCatalogCategory(item, 'games'));
+const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwatch-youtube-watcher')!;
 ---
 
 <BaseLayout
@@ -23,7 +23,7 @@ const gameItems = [overwatchWatcher, ...gameTools];
 				</div>
 			</div>
 			<div class="hero-mark" aria-hidden="true">
-				<div><span>PLAY</span><strong>03</strong></div>
+				<div><span>PLAY</span><strong>{String(gameItems.length).padStart(2, '0')}</strong></div>
 				<p>Steam<br />Overwatch<br />YouTube</p>
 				<small>网页工具 · Windows 助手</small>
 			</div>

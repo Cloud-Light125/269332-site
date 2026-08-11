@@ -515,7 +515,7 @@ export const projectDetails: ProjectDetail[] = [
 				id: 'getting-started',
 				title: '怎么开始使用',
 				items: [
-					{ title: '安装桌面端', description: '优先使用 0.7.1 安装版；便携版需要完整解压，如果提示缺少运行环境请改用安装版。' },
+					{ title: '安装桌面端', description: '在最新发布页选择安装版或便携版；便携版需要完整解压，如果提示缺少运行环境请改用安装版。' },
 					{ title: '确认本机 Codex 可用', description: '先完成 Codex 登录；没有自动找到时，可以在设置中指定 codex.exe。' },
 					{ title: '添加远程渠道', description: '选择 Telegram 或 QQ 官方机器人，填写对应平台提供的机器人凭据。' },
 					{ title: '测试并绑定会话', description: '测试凭据和网络，在聊天端用 #N 指定会话，或把当前聊天绑定到一个现有会话。' },
@@ -530,7 +530,7 @@ export const projectDetails: ProjectDetail[] = [
 					{ term: '系统', description: 'Windows 10 1809 或更高版本，x64。' },
 					{ term: 'Codex', description: '已经安装并能正常使用 Codex CLI 或 Codex Desktop，且已完成登录。' },
 					{ term: '机器人', description: '需要自行创建 Telegram 或 QQ 机器人，并能够连接对应平台；QQ 还要配置消息事件权限和允许访问的身份。' },
-					{ term: '当前版本', description: '0.7.1 正式版；完整安装包已包含 .NET 8 Windows 桌面运行环境。' },
+					{ term: '安装包', description: '完整安装包已包含 .NET 8 Windows 桌面运行环境；便携版需要电脑已有对应运行环境。' },
 				],
 			},
 			{
@@ -542,7 +542,7 @@ export const projectDetails: ProjectDetail[] = [
 					'远程端不能批准 Codex 的 Approval，也不能新建、Fork 或自动排队会话。',
 					'QQ 官方机器人当前只处理文字私聊和群聊 @消息，不支持图片、文件、语音或视频。',
 					'Bridge 不会替你登录 Codex，也不会修改当前会话的模型、权限或安全设置。',
-					'0.7.1 安装包尚未进行商业代码签名，也不包含自动更新。',
+					'安装包尚未进行商业代码签名，也不包含自动更新。',
 				],
 			},
 			{
@@ -550,7 +550,7 @@ export const projectDetails: ProjectDetail[] = [
 				id: 'source-and-release',
 				title: '源码与发布记录',
 				items: [
-					{ label: '查看 v0.7.1 Release', href: 'https://github.com/yundan125/Codex-Bridge/releases/tag/v0.7.1' },
+					{ label: '查看最新发布', href: 'https://github.com/yundan125/Codex-Bridge/releases/latest' },
 					{ label: '查看 GitHub 仓库', href: 'https://github.com/yundan125/Codex-Bridge' },
 				],
 			},

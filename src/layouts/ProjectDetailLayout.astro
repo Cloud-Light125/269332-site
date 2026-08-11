@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import {
-	getCatalogCategory,
+	getCatalogCategories,
 	kindLabels,
 	statusLabels,
 	type CatalogAction,
@@ -14,7 +14,7 @@ interface Props { project: ProjectDetail; }
 
 const { project } = Astro.props;
 const { item } = project;
-const category = getCatalogCategory(item.category);
+const categories = getCatalogCategories(item);
 const screenshots: CatalogScreenshot[] = item.screenshots ?? (item.screenshot ? [{
 	image: item.screenshot,
 	alt: item.screenshotAlt ?? `${item.name}界面截图`,
@@ -41,7 +41,7 @@ const sections = project.sections;
 		<header class:list={['project-hero', `accent-${item.accent}`, { 'no-screenshot': !heroScreenshot }]}>
 			<div class="hero-copy">
 				<p class="hero-kicker">
-					{category.name} · {kindLabels[item.kind]}
+					{categories.map((category) => category.name).join(' · ')} · {kindLabels[item.kind]}
 					<span class="status"><i aria-hidden="true"></i>{statusLabels[item.status]}</span>
 				</p>
 				<div class="project-title">
@@ -86,7 +86,7 @@ const sections = project.sections;
 					<div class:list={['script-preview', { desktop: item.kind === 'desktop' }]} aria-hidden="true">
 						<div class="script-window"><span></span><span></span><span></span><small>{item.kind === 'desktop' ? 'Windows' : 'user.js'}</small></div>
 						<div class="script-body">
-							<strong>{item.kind === 'desktop' ? '▣' : '//'}</strong>
+							{item.icon ? <span class="preview-icon"><Image src={item.icon} alt="" widths={[96, 192]} sizes="96px" /></span> : <strong>{item.kind === 'desktop' ? '▣' : '//'}</strong>}
 							<p>{item.kind === 'desktop' ? <>仓库暂未提供界面截图<br />请先查看使用要求</> : <>直接在目标网页中运行<br />由你开始和确认操作</>}</p>
 						</div>
 					</div>
@@ -247,6 +247,8 @@ const sections = project.sections;
 	.script-window small { margin-left: auto; color: #909bb0; font-family: Consolas, monospace; }
 	.script-body { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1.5rem; padding: 2rem; }
 	.script-body strong { color: #d7b1ff; font-family: Consolas, monospace; font-size: 4rem; line-height: 1; }
+	.preview-icon { display: grid; width: 6rem; height: 6rem; place-items: center; padding: 0.35rem; overflow: hidden; background: rgba(255, 255, 255, 0.08); border-radius: 1.25rem; }
+	.preview-icon :global(img) { display: block; width: 100%; height: 100%; border-radius: 0.95rem; object-fit: contain; }
 	.script-body p { margin: 0; color: #c4ccda; font-size: 1.15rem; line-height: 1.8; }
 	.project-sections { width: min(68rem, 100%); margin: 0 auto; }
 	.detail-section { margin-top: clamp(3.25rem, 6.5vw, 5.5rem); scroll-margin-top: 6rem; }
