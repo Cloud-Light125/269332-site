@@ -1,734 +1,321 @@
 ---
 import { Image } from 'astro:assets';
-import BaseLayout from './BaseLayout.astro';
+import {
+	getCatalogCategory,
+	kindLabels,
+	statusLabels,
+	type CatalogAction,
+	type CatalogScreenshot,
+} from '../data/catalog';
 import type { ProjectDetail } from '../data/project-details';
+import BaseLayout from './BaseLayout.astro';
 
-interface Props {
-	project: ProjectDetail;
-}
+interface Props { project: ProjectDetail; }
 
 const { project } = Astro.props;
 const { item } = project;
-const downloadUrl = item.downloadUrl;
-const sourceUrl = item.sourceUrl ?? item.repository;
-const heroSourceLabel =
-	item.sourceLabel ?? item.repositoryLabel ?? '查看 GitHub 仓库';
-const ctaSourceLabel = item.sourceLabel ?? item.repositoryLabel ?? '查看源码';
-const screenshotWidths = item.screenshot
-	? [...new Set([640, 960, 1280, 1600, item.screenshot.width])]
-			.filter((width) => width <= item.screenshot!.width)
-			.sort((a, b) => a - b)
-	: undefined;
-
-if (!downloadUrl) {
-	throw new Error(`Missing download URL for project: ${project.slug}`);
-}
+const category = getCatalogCategory(item.category);
+const screenshots: CatalogScreenshot[] = item.screenshots ?? (item.screenshot ? [{
+	image: item.screenshot,
+	alt: item.screenshotAlt ?? `${item.name}界面截图`,
+	caption: item.screenshotCaption,
+}] : []);
+const heroScreenshot = screenshots[0];
+const screenshotWidths = (width: number) => [...new Set([480, 720, 960, 1280, width])]
+	.filter((candidate) => candidate <= width)
+	.sort((a, b) => a - b);
+const externalProps = (action: CatalogAction) =>
+	action.external ? { target: '_blank' as const, rel: 'noopener noreferrer' } : {};
+const sectionScreenshots = (indexes: number[]) => indexes
+	.map((index) => screenshots[index])
+	.filter((screenshot): screenshot is CatalogScreenshot => screenshot !== undefined);
+const sections = project.sections;
 ---
 
-<BaseLayout title={`${item.name} · CloudLight`} description={project.pageDescription}>
+<BaseLayout title={`${item.name} · CloudLight`} description={project.pageDescription} image={heroScreenshot?.image}>
 	<main class="project-detail">
 		<nav class="breadcrumbs" aria-label="面包屑">
-			<ol>
-				<li><a href="/">首页</a></li>
-				<li><a href="/projects/">项目</a></li>
-				<li aria-current="page">{item.name}</li>
-			</ol>
+			<a href="/">首页</a><span aria-hidden="true">/</span><a href="/projects/">项目</a><span aria-hidden="true">/</span><span aria-current="page">{item.name}</span>
 		</nav>
 
-		<header class="project-hero">
-			<div class="hero-content">
-				<p class="eyebrow">{item.category}</p>
-				<h1>{item.name}</h1>
-				{item.englishName && <p class="english-name">{item.englishName}</p>}
-				<p class="hero-summary">{item.detailSummary ?? item.summary}</p>
-				<div class="project-meta" aria-label="项目状态与技术标签">
-					<span class="status">{item.status}</span>
-					{item.tags.map((tag) => <span>{tag}</span>)}
+		<header class:list={['project-hero', `accent-${item.accent}`, { 'no-screenshot': !heroScreenshot }]}>
+			<div class="hero-copy">
+				<p class="hero-kicker">
+					{category.name} · {kindLabels[item.kind]}
+					<span class="status"><i aria-hidden="true"></i>{statusLabels[item.status]}</span>
+				</p>
+				<div class="project-title">
+					{item.icon && <span class="project-icon" aria-hidden="true"><Image src={item.icon} alt="" widths={[72, 144]} sizes="72px" /></span>}
+					<div><h1>{item.name}</h1>{item.englishName && <p>{item.englishName}</p>}</div>
 				</div>
-				<div class="project-actions">
-					<a
-						class="button button-primary"
-						href={downloadUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{item.downloadLabel ?? 'GitHub 下载'}
-						<span aria-hidden="true">↗</span>
-						<span class="sr-only">（在新窗口打开）</span>
+				<p class="hero-summary">{item.summary}</p>
+				<ul class="capability-list" aria-label="主要能力">
+					{item.capabilities.slice(0, 3).map((capability) => <li>{capability}</li>)}
+				</ul>
+				<div class="hero-actions">
+					<a class="button button-primary primary-cta" href={item.primaryAction.href} {...externalProps(item.primaryAction)}>
+						{item.primaryAction.label} <span aria-hidden="true">{item.primaryAction.external ? '↗' : '→'}</span>
+						{item.primaryAction.external && <span class="sr-only">（在新窗口打开）</span>}
 					</a>
-					{sourceUrl && (
-						<a
-							class="button button-secondary"
-							href={sourceUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{heroSourceLabel}
-							<span aria-hidden="true">↗</span>
-							<span class="sr-only">（在新窗口打开）</span>
+					{item.secondaryAction && (
+						<a class="button button-secondary" href={item.secondaryAction.href} {...externalProps(item.secondaryAction)}>
+							{item.secondaryAction.label} <span aria-hidden="true">↗</span><span class="sr-only">（在新窗口打开）</span>
 						</a>
 					)}
 				</div>
-				{item.downloadNote && <p class="download-note">{item.downloadNote}</p>}
+				<p class="cta-note">
+					{item.ctaNote ?? (item.kind === 'desktop' ? '前往项目发布页获取最新版本。' : item.kind === 'userscript' ? '安装前请在脚本管理器中核对匹配范围和权限。' : '打开网页即可开始使用。')}
+				</p>
 			</div>
-			<div class="hero-mark" aria-hidden="true">
-				<span>PROJECT</span>
-				<strong>{project.slug.split('-').slice(0, 2).join(' / ')}</strong>
-				<small>CloudLight</small>
+
+			<div class="hero-preview">
+				{heroScreenshot ? (
+					<figure>
+						<a href={heroScreenshot.image.src} target="_blank" rel="noopener noreferrer">
+							<Image
+								src={heroScreenshot.image}
+								alt={heroScreenshot.alt}
+								widths={screenshotWidths(heroScreenshot.image.width)}
+								sizes="(max-width: 900px) calc(100vw - 3rem), min(48vw, 650px)"
+							/>
+							<span class="sr-only">（在新窗口打开原图）</span>
+						</a>
+						{heroScreenshot.caption && <figcaption>{heroScreenshot.caption}</figcaption>}
+					</figure>
+				) : (
+					<div class:list={['script-preview', { desktop: item.kind === 'desktop' }]} aria-hidden="true">
+						<div class="script-window"><span></span><span></span><span></span><small>{item.kind === 'desktop' ? 'Windows' : 'user.js'}</small></div>
+						<div class="script-body">
+							<strong>{item.kind === 'desktop' ? '▣' : '//'}</strong>
+							<p>{item.kind === 'desktop' ? <>仓库暂未提供界面截图<br />请先查看使用要求</> : <>直接在目标网页中运行<br />由你开始和确认操作</>}</p>
+						</div>
+					</div>
+				)}
 			</div>
 		</header>
 
-		{item.screenshot && (
-			<section class="project-section project-preview" aria-labelledby="preview-title">
-				<p class="eyebrow">Preview</p>
-				<h2 id="preview-title">界面预览</h2>
-				<figure>
-					<a
-						class="preview-link"
-						href={item.screenshot.src}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Image
-							src={item.screenshot}
-							alt={item.screenshotAlt ?? `${item.name}界面截图`}
-							widths={screenshotWidths}
-							sizes="(max-width: 720px) calc(100vw - 1.5rem), min(1120px, calc(100vw - 2rem))"
-							loading="lazy"
-							decoding="async"
-						/>
-						<span class="sr-only">（在新窗口打开原图）</span>
-					</a>
-					{item.screenshotCaption && <figcaption>{item.screenshotCaption}</figcaption>}
-				</figure>
-			</section>
-		)}
-
-		<section class="project-section reading-section" aria-labelledby="introduction-title">
-			<p class="eyebrow">Overview</p>
-			<h2 id="introduction-title">项目介绍</h2>
-			<div class="prose">
-				{project.introduction.map((paragraph) => <p>{paragraph}</p>)}
-			</div>
-		</section>
-
-		{project.importantNotice && (
-			<aside
-				class="project-section reading-section notice important-notice"
-				aria-labelledby="important-notice-title"
-			>
-				<p class="eyebrow">Important</p>
-				<h2 id="important-notice-title">{project.importantNotice.title}</h2>
-				<div class="prose">
-					{project.importantNotice.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-				</div>
-			</aside>
-		)}
-
-		<section class="project-section" aria-labelledby="use-cases-title">
-			<p class="eyebrow">Use cases</p>
-			<h2 id="use-cases-title">{project.useCasesTitle ?? '适用场景'}</h2>
-			<div class="info-grid use-case-grid">
-				{project.useCases.map((useCase) => (
-					<article class="info-card">
-						<h3>{useCase.title}</h3>
-						<p>{useCase.description}</p>
-					</article>
-				))}
-			</div>
-		</section>
-
-		<section class="project-section" aria-labelledby="features-title">
-			<p class="eyebrow">Features</p>
-			<h2 id="features-title">主要功能</h2>
-			<div class="feature-groups">
-				{project.featureGroups.map((group) => (
-					<section class="feature-group" aria-labelledby={`${project.slug}-${group.title}`}>
-						<div class="group-heading">
-							<h3 id={`${project.slug}-${group.title}`}>{group.title}</h3>
-							{group.description && <p>{group.description}</p>}
-						</div>
-						<div class="info-grid feature-grid">
-							{group.items.map((feature) => (
-								<article class="info-card">
-									<h4>{feature.title}</h4>
-									<p>{feature.description}</p>
-								</article>
-							))}
-						</div>
-					</section>
-				))}
-			</div>
-		</section>
-
-		{project.installationSteps && (
-			<section class="project-section reading-section" aria-labelledby="installation-title">
-				<p class="eyebrow">Installation</p>
-				<h2 id="installation-title">安装方法</h2>
-				<ol class="steps">
-					{project.installationSteps.map((step) => (
-						<li>
-							<div>
-								<h3>{step.title}</h3>
-								<p>{step.description}</p>
+		<div class="project-sections">
+			{sections.map((section) => (
+				<>
+					{section.type === 'features' && (
+						<section class="detail-section" id={section.id} aria-labelledby={`${section.id}-title`}>
+							<header class="section-header">
+								<h2 id={`${section.id}-title`}>{section.title}</h2>
+								{section.intro?.map((paragraph) => <p>{paragraph}</p>)}
+							</header>
+							<div class:list={['feature-list', `layout-${section.layout ?? 'list'}`]}>
+								{section.items.map((feature) => <article><h3>{feature.title}</h3><p>{feature.description}</p></article>)}
 							</div>
-						</li>
-					))}
-				</ol>
-			</section>
-		)}
+						</section>
+					)}
 
-		<section class="project-section reading-section" aria-labelledby="steps-title">
-			<p class="eyebrow">Guide</p>
-			<h2 id="steps-title">{project.stepsTitle ?? '使用方法'}</h2>
-			<ol class="steps">
-				{project.steps.map((step) => (
-					<li>
-						<div>
-							<h3>{step.title}</h3>
-							<p>{step.description}</p>
-							{step.command && (
-								<pre aria-label={`${step.title}命令示例`}><code>{step.command}</code></pre>
-							)}
-						</div>
-					</li>
-				))}
-			</ol>
-		</section>
+					{section.type === 'feature-groups' && (
+						<section class="detail-section" id={section.id} aria-labelledby={`${section.id}-title`}>
+							<header class="section-header">
+								<h2 id={`${section.id}-title`}>{section.title}</h2>
+								{section.intro?.map((paragraph) => <p>{paragraph}</p>)}
+							</header>
+							<div class="feature-groups">
+								{section.groups.map((group) => (
+									<section class="feature-group">
+										<h3>{group.title}</h3>
+										<div>{group.items.map((feature) => <article><h4>{feature.title}</h4><p>{feature.description}</p></article>)}</div>
+									</section>
+								))}
+							</div>
+						</section>
+					)}
 
-		<section class="project-section reading-section" aria-labelledby="requirements-title">
-			<p class="eyebrow">Requirements</p>
-			<h2 id="requirements-title">{project.requirementsTitle ?? '系统与运行要求'}</h2>
-			<dl class="requirements">
-				{project.requirements.map((requirement) => (
-					<div>
-						<dt>{requirement.term}</dt>
-						<dd>{requirement.description}</dd>
-					</div>
-				))}
-			</dl>
-		</section>
+					{section.type === 'steps' && (
+						<section class="detail-section split-section" id={section.id} aria-labelledby={`${section.id}-title`}>
+							<header class="section-header">
+								<h2 id={`${section.id}-title`}>{section.title}</h2>
+								{section.intro?.map((paragraph) => <p>{paragraph}</p>)}
+							</header>
+							<ol class="steps">{section.items.map((step) => <li><div><h3>{step.title}</h3><p>{step.description}</p></div></li>)}</ol>
+						</section>
+					)}
 
-		<section class="project-section" aria-labelledby="technical-title">
-			<p class="eyebrow">Technical</p>
-			<h2 id="technical-title">{project.technicalTitle ?? '技术信息'}</h2>
-			<div class="info-grid technical-grid">
-				{project.technicalDetails.map((detail) => (
-					<article class="info-card">
-						<h3>{detail.title}</h3>
-						<p>{detail.description}</p>
-					</article>
-				))}
-			</div>
-		</section>
+					{section.type === 'facts' && (
+						<section class="detail-section split-section" id={section.id} aria-labelledby={`${section.id}-title`}>
+							<header class="section-header">
+								<h2 id={`${section.id}-title`}>{section.title}</h2>
+								{section.intro?.map((paragraph) => <p>{paragraph}</p>)}
+							</header>
+							<dl class="facts">{section.items.map((fact) => <div><dt>{fact.term}</dt><dd>{fact.description}</dd></div>)}</dl>
+						</section>
+					)}
 
-		{project.relatedLinks && project.relatedLinks.length > 0 && (
-			<section class="project-section reading-section" aria-labelledby="related-links-title">
-				<p class="eyebrow">Related</p>
-				<h2 id="related-links-title">相关教程</h2>
-				<div class="related-links">
-					{project.relatedLinks.map((link) => (
-						<article class="info-card">
-							<h3>
-								<a href={link.href}>{link.title} <span aria-hidden="true">→</span></a>
-							</h3>
-							{link.description && <p>{link.description}</p>}
-						</article>
-					))}
-				</div>
-			</section>
-		)}
+					{section.type === 'bullets' && (
+						<section class:list={['detail-section', 'split-section', { warning: section.tone === 'warning' }]} id={section.id} aria-labelledby={`${section.id}-title`}>
+							<header class="section-header">
+								<h2 id={`${section.id}-title`}>{section.title}</h2>
+								{section.intro?.map((paragraph) => <p>{paragraph}</p>)}
+							</header>
+							<ul class="bullet-list">{section.items.map((item) => <li>{item}</li>)}</ul>
+						</section>
+					)}
 
-		<aside class="project-section notice" aria-labelledby="notice-title">
-			<p class="eyebrow">Before you start</p>
-			<h2 id="notice-title">注意事项</h2>
-			<ul>
-				{project.cautions.map((caution) => <li>{caution}</li>)}
-			</ul>
-		</aside>
+					{section.type === 'note' && (
+						<aside class="important-note" id={section.id} aria-labelledby={`${section.id}-title`}>
+							<div aria-hidden="true">!</div><div><h2 id={`${section.id}-title`}>{section.title}</h2><p>{section.description}</p></div>
+						</aside>
+					)}
 
-		<section class="project-cta" aria-labelledby="download-title">
-			<div>
-				<p class="eyebrow">Download</p>
-				<h2 id="download-title">{project.ctaTitle ?? '获取项目'}</h2>
-				<p>{item.downloadNote}</p>
-				{project.downloadInfo && (
-					<dl class="download-info">
-						<div>
-							<dt>版本</dt>
-							<dd>{project.downloadInfo.version}</dd>
-						</div>
-						<div>
-							<dt>文件大小</dt>
-							<dd>{project.downloadInfo.fileSize}</dd>
-						</div>
-						<div>
-							<dt>SHA-256</dt>
-							<dd><code>{project.downloadInfo.sha256}</code></dd>
-						</div>
-					</dl>
-				)}
-			</div>
-			<div class="project-actions">
-				<a
-					class="button button-primary"
-					href={downloadUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					{item.downloadLabel ?? 'GitHub 下载'}
-					<span aria-hidden="true">↗</span>
-					<span class="sr-only">（在新窗口打开）</span>
-				</a>
-				{sourceUrl && (
-					<a
-						class="button button-secondary"
-						href={sourceUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{ctaSourceLabel}
-						<span aria-hidden="true">↗</span>
-						<span class="sr-only">（在新窗口打开）</span>
-					</a>
-				)}
-				<a class="text-link" href="/projects/">返回项目列表</a>
-			</div>
-		</section>
+					{section.type === 'screenshots' && (
+						<section class="detail-section" id={section.id} aria-labelledby={`${section.id}-title`}>
+							<header class="section-header">
+								<h2 id={`${section.id}-title`}>{section.title}</h2>
+								{section.intro?.map((paragraph) => <p>{paragraph}</p>)}
+							</header>
+							<div class="body-gallery">
+								{sectionScreenshots(section.indexes).map((screenshot) => (
+									<figure>
+										<a href={screenshot.image.src} target="_blank" rel="noopener noreferrer">
+											<Image src={screenshot.image} alt={screenshot.alt} widths={screenshotWidths(screenshot.image.width)} sizes="(max-width: 700px) calc(100vw - 3rem), min(44vw, 540px)" />
+											<span class="sr-only">（在新窗口打开原图）</span>
+										</a>
+										{screenshot.caption && <figcaption>{screenshot.caption}</figcaption>}
+									</figure>
+								))}
+							</div>
+						</section>
+					)}
+
+					{section.type === 'links' && (
+						<section class="detail-section links-section" id={section.id} aria-labelledby={`${section.id}-title`}>
+							<h2 id={`${section.id}-title`}>{section.title}</h2>
+							<div>{section.items.map((link) => <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label} <span aria-hidden="true">↗</span><span class="sr-only">（在新窗口打开）</span></a>)}</div>
+						</section>
+					)}
+				</>
+			))}
+		</div>
+
+		<footer class="project-footer"><a href="/projects/">← 返回项目列表</a></footer>
 	</main>
 </BaseLayout>
 
 <style>
-	.project-detail {
-		width: min(var(--content-width), calc(100% - 2rem));
-		padding-top: clamp(2rem, 5vw, 3.75rem);
-		padding-bottom: clamp(4rem, 8vw, 7rem);
-	}
-	.breadcrumbs {
-		margin-bottom: 1.25rem;
-		color: var(--color-text-muted);
-		font-size: 0.82rem;
-	}
-	.breadcrumbs ol {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.35rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.breadcrumbs li:not(:last-child)::after {
-		margin-left: 0.35rem;
-		color: #93a0b0;
-		content: '/';
-	}
-	.breadcrumbs a {
-		color: inherit;
-		text-decoration: none;
-	}
-	.breadcrumbs a:hover {
-		color: var(--color-accent-hover);
-	}
+	.project-detail { width: min(var(--content-width), calc(100% - 2rem)); max-width: none; padding-top: 2rem; padding-bottom: clamp(4rem, 8vw, 6.5rem); }
+	.breadcrumbs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; color: var(--color-text-soft); font-size: 0.78rem; }
+	.breadcrumbs a { color: inherit; text-decoration: none; }
+	.breadcrumbs a:hover { color: var(--color-accent); }
 	.project-hero {
+		--detail-accent: var(--color-accent);
 		display: grid;
-		grid-template-columns: minmax(0, 1.6fr) minmax(13rem, 0.7fr);
-		gap: clamp(2rem, 6vw, 4.5rem);
+		grid-template-columns: minmax(0, 0.92fr) minmax(25rem, 1.08fr);
 		align-items: center;
-		padding: clamp(2rem, 6vw, 4.25rem);
+		gap: clamp(2rem, 5vw, 4.5rem);
+		padding: clamp(1.5rem, 4vw, 3.5rem);
 		overflow: hidden;
-		background:
-			linear-gradient(135deg, rgba(231, 240, 251, 0.9), rgba(255, 255, 255, 0.96)),
-			var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-large);
+		background: linear-gradient(135deg, color-mix(in srgb, var(--detail-accent) 9%, white), rgba(255, 255, 255, 0.96) 62%);
+		border: 1px solid color-mix(in srgb, var(--detail-accent) 22%, var(--color-border));
+		border-radius: var(--radius-xlarge);
 		box-shadow: var(--shadow-medium);
 	}
-	.project-hero h1 {
-		max-width: 17ch;
-		margin-bottom: 0.35rem;
-		font-size: clamp(2.1rem, 5.6vw, 4rem);
-		overflow-wrap: anywhere;
+	.project-hero.accent-cyan { --detail-accent: #238f91; }
+	.project-hero.accent-violet { --detail-accent: #7b55d9; }
+	.project-hero.accent-amber { --detail-accent: #c47a20; }
+	.project-hero.no-screenshot { grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.55fr); }
+	.hero-copy { min-width: 0; }
+	.hero-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin: 0 0 1.15rem; color: var(--color-text-soft); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.04em; }
+	.hero-kicker .status { display: inline-flex; align-items: center; gap: 0.32rem; color: var(--color-success); }
+	.hero-kicker i { width: 0.38rem; height: 0.38rem; background: currentColor; border-radius: 50%; }
+	.project-title { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.15rem; }
+	.project-title > div:last-child { min-width: 0; }
+	.project-icon { display: grid; width: 4.5rem; height: 4.5rem; flex: 0 0 4.5rem; place-items: center; padding: 0.42rem; background: rgba(255, 255, 255, 0.86); border: 1px solid color-mix(in srgb, var(--detail-accent) 24%, var(--color-border)); border-radius: 1.1rem; box-shadow: var(--shadow-small); }
+	.project-icon :global(img) { width: 100%; height: 100%; object-fit: contain; }
+	h1 { margin: 0; font-size: clamp(2.2rem, 5.2vw, 4.2rem); overflow-wrap: anywhere; }
+	.project-title p { margin: 0.3rem 0 0; color: var(--color-text-soft); font-size: 0.85rem; line-height: 1.35; overflow-wrap: anywhere; }
+	.hero-summary { max-width: 41rem; margin-bottom: 1.2rem; color: var(--color-text-muted); font-size: clamp(1rem, 1.8vw, 1.12rem); }
+	.capability-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0 0 1.5rem; padding: 0; list-style: none; }
+	.capability-list li { padding: 0.28rem 0.58rem; background: color-mix(in srgb, var(--detail-accent) 8%, white); border: 1px solid color-mix(in srgb, var(--detail-accent) 18%, var(--color-border)); border-radius: 0.5rem; color: color-mix(in srgb, var(--detail-accent) 72%, var(--color-text)); font-size: 0.72rem; font-weight: 700; }
+	.hero-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+	.primary-cta { min-height: 3.4rem; padding-right: 1.3rem; padding-left: 1.3rem; background: var(--detail-accent); box-shadow: 0 12px 28px color-mix(in srgb, var(--detail-accent) 25%, transparent); font-size: 0.96rem; }
+	.primary-cta:hover { background: color-mix(in srgb, var(--detail-accent) 82%, black); }
+	.cta-note { margin: 0.8rem 0 0; color: var(--color-text-soft); font-size: 0.74rem; }
+	.hero-preview { min-width: 0; }
+	.hero-preview figure, .body-gallery figure { margin: 0; }
+	.hero-preview figure > a, .body-gallery figure > a { display: grid; place-items: center; padding: 0.45rem; background: rgba(255, 255, 255, 0.88); border: 1px solid var(--color-border); border-radius: 1.2rem; box-shadow: 0 24px 50px rgba(34, 43, 66, 0.16); }
+	.hero-preview figure > a:hover, .body-gallery figure > a:hover { border-color: var(--detail-accent, var(--color-accent)); transform: translateY(-2px); }
+	.hero-preview figure :global(img), .body-gallery figure :global(img) { display: block; width: auto; max-width: 100%; height: auto; max-height: 31rem; object-fit: contain; border-radius: 0.85rem; }
+	.hero-preview figcaption, .body-gallery figcaption { margin-top: 0.7rem; color: var(--color-text-muted); font-size: 0.76rem; line-height: 1.5; text-align: center; }
+	.script-preview { overflow: hidden; background: #191f30; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-large); box-shadow: var(--shadow-medium); color: #fff; }
+	.script-window { display: flex; align-items: center; gap: 0.4rem; padding: 0.75rem 0.9rem; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+	.script-window > span { width: 0.5rem; height: 0.5rem; background: #626d83; border-radius: 50%; }
+	.script-window small { margin-left: auto; color: #909bb0; font-family: Consolas, monospace; }
+	.script-body { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1.5rem; padding: 2rem; }
+	.script-body strong { color: #d7b1ff; font-family: Consolas, monospace; font-size: 4rem; line-height: 1; }
+	.script-body p { margin: 0; color: #c4ccda; font-size: 1.15rem; line-height: 1.8; }
+	.project-sections { width: min(68rem, 100%); margin: 0 auto; }
+	.detail-section { margin-top: clamp(3.25rem, 6.5vw, 5.5rem); scroll-margin-top: 6rem; }
+	.section-header { max-width: 47rem; margin-bottom: 1.5rem; }
+	.section-header h2 { margin-bottom: 0.75rem; font-size: clamp(1.65rem, 3vw, 2.35rem); }
+	.section-header p { margin: 0 0 0.65rem; color: var(--color-text-muted); font-size: 1rem; }
+	.section-header p:last-child { margin-bottom: 0; }
+	.split-section { display: grid; grid-template-columns: minmax(13rem, 0.62fr) minmax(0, 1.38fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+	.split-section > .section-header { margin: 0; }
+	.feature-list { display: grid; }
+	.feature-list article { min-width: 0; }
+	.feature-list h3 { margin-bottom: 0.4rem; font-size: 1.08rem; }
+	.feature-list p { margin: 0; color: var(--color-text-muted); font-size: 0.9rem; }
+	.feature-list.layout-list { border-top: 1px solid var(--color-border); }
+	.feature-list.layout-list article { display: grid; grid-template-columns: minmax(10rem, 0.42fr) minmax(0, 1fr); gap: 1.5rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border); }
+	.feature-list.layout-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 2.5rem; border-top: 1px solid var(--color-border); }
+	.feature-list.layout-columns article { padding: 1.15rem 0; border-bottom: 1px solid var(--color-border); }
+	.feature-list.layout-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.9rem; }
+	.feature-list.layout-cards article { padding: 1.25rem; background: rgba(255, 255, 255, 0.7); border: 1px solid var(--color-border); border-radius: var(--radius-medium); }
+	.feature-groups { display: grid; gap: 2.25rem; }
+	.feature-group > h3 { margin-bottom: 0.9rem; font-size: 1.15rem; }
+	.feature-group > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--color-border); }
+	.feature-group article { min-width: 0; padding: 1rem 1.25rem 1rem 0; border-bottom: 1px solid var(--color-border); }
+	.feature-group h4 { margin-bottom: 0.35rem; }
+	.feature-group p { margin: 0; color: var(--color-text-muted); font-size: 0.86rem; }
+	.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+	.steps li { display: grid; grid-template-columns: 2.55rem minmax(0, 1fr); gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border); counter-increment: step; }
+	.steps li:first-child { padding-top: 0; }
+	.steps li::before { display: grid; width: 2.3rem; height: 2.3rem; place-items: center; background: var(--color-accent-soft); border-radius: 0.72rem; color: var(--color-accent-hover); content: counter(step, decimal-leading-zero); font-size: 0.7rem; font-weight: 700; }
+	.steps h3 { margin: 0.12rem 0 0.3rem; font-size: 1.02rem; }
+	.steps p { margin: 0; color: var(--color-text-muted); font-size: 0.89rem; }
+	.facts { margin: 0; border-top: 1px solid var(--color-border); }
+	.facts > div { display: grid; grid-template-columns: minmax(6.5rem, 0.3fr) minmax(0, 1fr); gap: 1.25rem; padding: 0.9rem 0; border-bottom: 1px solid var(--color-border); }
+	.facts dt { font-weight: 700; }
+	.facts dd { margin: 0; color: var(--color-text-muted); }
+	.bullet-list { margin: 0; padding: 0; list-style: none; }
+	.bullet-list li { position: relative; padding: 0 0 0.85rem 1.2rem; color: var(--color-text-muted); }
+	.bullet-list li::before { position: absolute; top: 0.65em; left: 0; width: 0.42rem; height: 0.42rem; background: var(--color-accent); border-radius: 50%; content: ''; }
+	.warning .bullet-list li::before { background: #d39545; }
+	.important-note { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; margin-top: clamp(3rem, 6vw, 4.75rem); padding: 1.25rem 1.35rem; background: var(--color-warning-soft); border: 1px solid #efd6b0; border-radius: var(--radius-large); }
+	.important-note > div:first-child { display: grid; width: 2.3rem; height: 2.3rem; place-items: center; background: #fff; border-radius: 0.7rem; color: var(--color-warning); font-weight: 700; }
+	.important-note h2 { margin-bottom: 0.3rem; font-size: 1.18rem; }
+	.important-note p { margin: 0; color: #77552e; font-size: 0.88rem; }
+	.body-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
+	.body-gallery figure:only-child { grid-column: 1 / -1; width: min(48rem, 100%); }
+	.links-section { padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
+	.links-section h2 { margin-bottom: 0.8rem; font-size: 1.15rem; }
+	.links-section > div { display: flex; flex-wrap: wrap; gap: 0.55rem 1.25rem; }
+	.links-section a { font-size: 0.9rem; font-weight: 700; text-decoration: none; }
+	.project-footer { width: min(68rem, 100%); margin: clamp(3.25rem, 6vw, 5rem) auto 0; padding-top: 1.1rem; border-top: 1px solid var(--color-border); }
+	.project-footer a { color: var(--color-text-muted); font-size: 0.82rem; font-weight: 700; text-decoration: none; }
+	.project-footer a:hover { color: var(--color-accent); }
+	@media (max-width: 980px) {
+		.project-hero, .project-hero.no-screenshot { grid-template-columns: 1fr; }
+		.hero-preview { width: 100%; }
+		.feature-list.layout-cards, .feature-group > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+		.split-section { grid-template-columns: 1fr; gap: 1.35rem; }
 	}
-	.english-name {
-		margin-bottom: 1rem;
-		color: var(--color-accent-hover);
-		font-family: Consolas, 'SFMono-Regular', monospace;
-		font-size: clamp(0.9rem, 2vw, 1.05rem);
-		font-weight: 700;
-		overflow-wrap: anywhere;
-	}
-	.hero-summary {
-		max-width: 42rem;
-		margin-bottom: 1.4rem;
-		color: var(--color-text-muted);
-		font-size: clamp(1rem, 2vw, 1.08rem);
-	}
-	.project-meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.45rem;
-		margin-bottom: 1.5rem;
-	}
-	.project-meta span {
-		padding: 0.24rem 0.58rem;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: 999px;
-		color: var(--color-text-muted);
-		font-size: 0.72rem;
-		font-weight: 700;
-	}
-	.project-meta .status {
-		background: var(--color-success-soft);
-		border-color: transparent;
-		color: var(--color-success);
-	}
-	.project-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem;
-		align-items: center;
-	}
-	.download-note {
-		max-width: 42rem;
-		margin: 0.85rem 0 0;
-		color: var(--color-text-muted);
-		font-size: 0.8rem;
-		overflow-wrap: anywhere;
-	}
-	.hero-mark {
-		display: flex;
-		min-height: 14rem;
-		padding: 1.4rem;
-		flex-direction: column;
-		justify-content: space-between;
-		background: #18202b;
-		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: var(--radius-large);
-		color: white;
-		box-shadow: var(--shadow-medium);
-		font-family: Consolas, 'SFMono-Regular', monospace;
-	}
-	.hero-mark span,
-	.hero-mark small {
-		color: #adc8eb;
-		font-size: 0.72rem;
-		font-weight: 700;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-	}
-	.hero-mark strong {
-		font-size: clamp(1.15rem, 3vw, 1.7rem);
-		line-height: 1.25;
-		overflow-wrap: anywhere;
-		text-transform: uppercase;
-	}
-	.project-section {
-		padding-top: var(--section-space);
-		scroll-margin-top: 6rem;
-	}
-	.reading-section {
-		max-width: 52rem;
-		margin-right: auto;
-		margin-left: auto;
-	}
-	.project-section > h2,
-	.project-cta h2 {
-		margin-bottom: 1.5rem;
-	}
-	.project-preview figure {
-		margin: 0;
-	}
-	.preview-link {
-		display: block;
-		padding: clamp(0.45rem, 1.5vw, 0.8rem);
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-large);
-		box-shadow: var(--shadow-small);
-	}
-	.preview-link:hover {
-		border-color: rgba(36, 93, 168, 0.5);
-		box-shadow: var(--shadow-medium);
-	}
-	.preview-link :global(img) {
-		display: block;
-		width: 100%;
-		height: auto;
-		object-fit: contain;
-		border-radius: calc(var(--radius-large) - 0.45rem);
-	}
-	.project-preview figcaption {
-		max-width: 52rem;
-		margin: 0.85rem auto 0;
-		color: var(--color-text-muted);
-		font-size: 0.84rem;
-		text-align: center;
-	}
-	.info-grid {
-		display: grid;
-		gap: 1rem;
-	}
-	.use-case-grid {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-	.feature-grid,
-	.technical-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-	.info-card {
-		min-width: 0;
-		padding: 1.35rem;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-medium);
-		box-shadow: var(--shadow-small);
-	}
-	.info-card h3,
-	.info-card h4 {
-		margin-bottom: 0.45rem;
-	}
-	.info-card p,
-	.group-heading p {
-		margin: 0;
-		color: var(--color-text-muted);
-		font-size: 0.9rem;
-	}
-	.related-links {
-		display: grid;
-		gap: 1rem;
-	}
-	.related-links h3 {
-		margin-bottom: 0.45rem;
-	}
-	.related-links a {
-		text-decoration: none;
-	}
-	.feature-groups {
-		display: grid;
-		gap: 2.25rem;
-	}
-	.group-heading {
-		max-width: 48rem;
-		margin-bottom: 1rem;
-	}
-	.group-heading h3 {
-		margin-bottom: 0.45rem;
-	}
-	.steps {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		counter-reset: project-step;
-	}
-	.steps li {
-		display: grid;
-		grid-template-columns: 2.6rem minmax(0, 1fr);
-		gap: 1rem;
-		padding: 1.2rem 0;
-		border-bottom: 1px solid var(--color-border);
-		counter-increment: project-step;
-	}
-	.steps li::before {
-		display: inline-flex;
-		width: 2.4rem;
-		height: 2.4rem;
-		align-items: center;
-		justify-content: center;
-		background: var(--color-accent-soft);
-		border-radius: 999px;
-		color: var(--color-accent-hover);
-		content: counter(project-step, decimal-leading-zero);
-		font-size: 0.72rem;
-		font-weight: 700;
-	}
-	.steps h3 {
-		margin: 0.1rem 0 0.35rem;
-		font-size: 1.08rem;
-	}
-	.steps p {
-		margin: 0;
-		color: var(--color-text-muted);
-	}
-	.steps pre {
-		margin: 1rem 0 0;
-		background: #18202b;
-		color: #eef4fb;
-		font-size: 0.8rem;
-		line-height: 1.65;
-		white-space: pre;
-	}
-	.requirements {
-		display: grid;
-		margin: 0;
-		border-top: 1px solid var(--color-border);
-	}
-	.requirements > div {
-		display: grid;
-		grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
-		gap: 1.5rem;
-		min-width: 0;
-		padding: 1rem 0;
-		border-bottom: 1px solid var(--color-border);
-	}
-	.requirements dt {
-		min-width: 0;
-		font-weight: 700;
-		overflow-wrap: anywhere;
-	}
-	.requirements dd {
-		min-width: 0;
-		margin: 0;
-		color: var(--color-text-muted);
-		overflow-wrap: anywhere;
-	}
-	.notice {
-		padding: clamp(1.5rem, 4vw, 2.25rem);
-		margin-top: var(--section-space);
-		background: #fff9ed;
-		border: 1px solid #ead9b7;
-		border-radius: var(--radius-large);
-	}
-	.notice.project-section {
-		padding-top: clamp(1.5rem, 4vw, 2.25rem);
-	}
-	.notice .eyebrow {
-		color: #815b19;
-	}
-	.notice h2 {
-		margin-bottom: 1rem;
-	}
-	.notice ul {
-		margin: 0;
-		padding-left: 1.25rem;
-	}
-	.notice li + li {
-		margin-top: 0.6rem;
-	}
-	.important-notice {
-		background: #fff5e8;
-		border-color: #e4bd83;
-	}
-	.important-notice .prose p:last-child {
-		margin-bottom: 0;
-	}
-	.project-cta {
-		display: flex;
-		justify-content: space-between;
-		gap: 2rem;
-		align-items: center;
-		padding: clamp(1.5rem, 5vw, 2.5rem);
-		margin-top: var(--section-space);
-		background: var(--color-accent-soft);
-		border: 1px solid rgba(36, 93, 168, 0.2);
-		border-radius: var(--radius-large);
-	}
-	.project-cta > div:first-child {
-		max-width: 37rem;
-	}
-	.project-cta h2,
-	.project-cta p {
-		margin-bottom: 0.5rem;
-	}
-	.project-cta p:last-child {
-		margin-bottom: 0;
-		color: var(--color-text-muted);
-	}
-	.download-info {
-		display: grid;
-		gap: 0.55rem;
-		margin: 1rem 0 0;
-	}
-	.download-info > div {
-		display: grid;
-		grid-template-columns: 5.5rem minmax(0, 1fr);
-		gap: 0.75rem;
-		min-width: 0;
-	}
-	.download-info dt {
-		font-weight: 700;
-	}
-	.download-info dd {
-		min-width: 0;
-		margin: 0;
-		color: var(--color-text-muted);
-	}
-	.download-info code {
-		display: block;
-		font-family: Consolas, 'SFMono-Regular', monospace;
-		font-size: 0.78rem;
-		overflow-wrap: anywhere;
-		user-select: all;
-		white-space: normal;
-		word-break: break-all;
-	}
-	.text-link {
-		font-size: 0.86rem;
-		font-weight: 700;
-		text-decoration: none;
-	}
-	@media (max-width: 880px) {
-		.project-hero {
-			grid-template-columns: 1fr;
-		}
-		.hero-mark {
-			min-height: 9rem;
-		}
-		.use-case-grid {
-			grid-template-columns: 1fr;
-		}
-		.project-cta {
-			display: block;
-		}
-		.project-cta .project-actions {
-			margin-top: 1.25rem;
-		}
-	}
-	@media (max-width: 720px) {
-		.project-detail {
-			width: min(var(--content-width), calc(100% - 1.5rem));
-		}
-		.project-hero {
-			padding: 1.4rem;
-		}
-		.hero-mark {
-			display: none;
-		}
-		.feature-grid,
-		.technical-grid {
-			grid-template-columns: 1fr;
-		}
-		.requirements > div {
-			grid-template-columns: 1fr;
-			gap: 0.25rem;
-		}
-		.download-info > div {
-			grid-template-columns: 1fr;
-			gap: 0.15rem;
-		}
-		.steps pre {
-			overflow-wrap: anywhere;
-			white-space: pre-wrap;
-		}
-		.steps code {
-			display: block;
-			max-width: 100%;
-			overflow-wrap: anywhere;
-			white-space: inherit;
-			word-break: break-word;
-		}
-		.project-actions .button {
-			width: 100%;
-		}
-		.project-cta .text-link {
-			width: 100%;
-			margin-top: 0.35rem;
-			text-align: center;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.info-card:hover {
-			transform: none;
-		}
+	@media (max-width: 700px) {
+		.project-detail { width: min(var(--content-width), calc(100% - 1.5rem)); padding-top: 1.25rem; }
+		.project-hero { padding: 1.25rem; border-radius: var(--radius-large); }
+		.project-title { align-items: flex-start; }
+		.project-icon { width: 3.8rem; height: 3.8rem; flex-basis: 3.8rem; }
+		h1 { font-size: clamp(2.1rem, 11vw, 3.4rem); }
+		.hero-actions .button { width: 100%; }
+		.hero-preview figure > a, .body-gallery figure > a { padding: 0.3rem; border-radius: 1rem; }
+		.detail-section { margin-top: 3.5rem; }
+		.feature-list.layout-columns, .feature-list.layout-cards, .feature-group > div, .body-gallery { grid-template-columns: 1fr; }
+		.feature-list.layout-list article { grid-template-columns: 1fr; gap: 0.3rem; }
+		.facts > div { grid-template-columns: 1fr; gap: 0.2rem; }
 	}
 </style>

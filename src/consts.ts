@@ -3,4 +3,4 @@
 
 export const SITE_TITLE = 'CloudLight';
 export const SITE_DESCRIPTION =
-	'CloudLight 整理 Windows 工具、游戏网页、项目说明、使用指南和开发文章。';
+	'CloudLight 提供 Windows 软件、游戏与网页工具、浏览器脚本，以及实用博客和教程。';

@@ -1,4 +1,4 @@
-import { projects, type CatalogItem } from './catalog';
+import { getCatalogItem, type CatalogItem } from './catalog';
 
 export interface DetailItem {
 	title: string;
@@ -7,14 +7,12 @@ export interface DetailItem {
 
 export interface ProjectFeatureGroup {
 	title: string;
-	description?: string;
 	items: DetailItem[];
 }
 
 export interface ProjectStep {
 	title: string;
 	description: string;
-	command?: string;
 }
 
 export interface ProjectRequirement {
@@ -22,1232 +20,856 @@ export interface ProjectRequirement {
 	description: string;
 }
 
-export interface ProjectRelatedLink {
-	title: string;
+export interface ProjectLink {
+	label: string;
 	href: string;
-	description?: string;
 }
 
-export interface ProjectDownloadInfo {
-	version: string;
-	fileSize: string;
-	sha256: string;
-}
-
-export interface ProjectNotice {
+interface ProjectSectionBase {
+	id: string;
 	title: string;
-	paragraphs: string[];
+	intro?: string[];
 }
+
+export interface ProjectFeaturesSection extends ProjectSectionBase {
+	type: 'features';
+	items: DetailItem[];
+	layout?: 'list' | 'columns' | 'cards';
+}
+
+export interface ProjectFeatureGroupsSection extends ProjectSectionBase {
+	type: 'feature-groups';
+	groups: ProjectFeatureGroup[];
+}
+
+export interface ProjectStepsSection extends ProjectSectionBase {
+	type: 'steps';
+	items: ProjectStep[];
+}
+
+export interface ProjectFactsSection extends ProjectSectionBase {
+	type: 'facts';
+	items: ProjectRequirement[];
+}
+
+export interface ProjectBulletsSection extends ProjectSectionBase {
+	type: 'bullets';
+	items: string[];
+	tone?: 'default' | 'warning';
+}
+
+export interface ProjectNoteSection extends ProjectSectionBase {
+	type: 'note';
+	description: string;
+}
+
+export interface ProjectScreenshotsSection extends ProjectSectionBase {
+	type: 'screenshots';
+	indexes: number[];
+}
+
+export interface ProjectLinksSection extends ProjectSectionBase {
+	type: 'links';
+	items: ProjectLink[];
+}
+
+export type ProjectSection =
+	| ProjectFeaturesSection
+	| ProjectFeatureGroupsSection
+	| ProjectStepsSection
+	| ProjectFactsSection
+	| ProjectBulletsSection
+	| ProjectNoteSection
+	| ProjectScreenshotsSection
+	| ProjectLinksSection;
 
 export interface ProjectDetail {
 	slug: string;
 	item: CatalogItem;
 	pageDescription: string;
-	introduction: string[];
-	importantNotice?: ProjectNotice;
-	useCases: DetailItem[];
-	useCasesTitle?: string;
-	featureGroups: ProjectFeatureGroup[];
-	installationSteps?: ProjectStep[];
-	steps: ProjectStep[];
-	stepsTitle?: string;
-	requirements: ProjectRequirement[];
-	requirementsTitle?: string;
-	technicalDetails: DetailItem[];
-	technicalTitle?: string;
-	cautions: string[];
-	relatedLinks?: ProjectRelatedLink[];
-	downloadInfo?: ProjectDownloadInfo;
-	ctaTitle?: string;
-}
-
-function getProject(slug: string): CatalogItem {
-	const detailsPath = `/projects/${slug}/`;
-	const project = projects.find((item) => item.detailsPath === detailsPath);
-
-	if (!project) {
-		throw new Error(`Missing catalog data for project: ${slug}`);
-	}
-
-	return project;
+	sections: ProjectSection[];
 }
 
 export const projectDetails: ProjectDetail[] = [
 	{
 		slug: 'cloudlight-automator',
-		item: getProject('cloudlight-automator'),
-		pageDescription:
-			'用可视化流程图编排窗口、截图、图像识别、OCR、剪贴板和键鼠操作，创建可重复运行的 Windows 自动化流程。',
-		introduction: [
-			'CloudLight 自动化工作室是一款面向 Windows 10/11 x64 的本地可视化自动化软件。用户可以把节点拖到画布上，连接执行顺序和数据端口，填写参数后直接运行工作流。',
-			'它可以把窗口操作、截图、图片识别、文字识别、剪贴板和键鼠输入组合在同一条流程中。变量、节点输出、条件分支和有限循环则用于处理识别结果与不同运行情况。',
-			'工作流可以打开、保存和重复运行，文件扩展名为 .workflow.json。软件提供简体中文与英文界面，也附带窗口与截图、图像与 OCR、变量与循环三组示例，便于从现有流程开始了解节点用法。',
-		],
-		useCases: [
+		item: getCatalogItem('cloudlight-automator'),
+		pageDescription: '用可视化流程组合窗口、截图、图像识别、文字识别和键鼠操作，创建可重复运行的 Windows 自动化任务。',
+		sections: [
 			{
-				title: '整理重复的桌面操作',
-				description: '把需要反复执行的窗口切换、截图、复制粘贴和键鼠操作整理成一条可重复运行的流程。',
-			},
-			{
-				title: '根据识别结果继续执行',
-				description: '识别屏幕中的模板图片或文字，再把识别结果交给后续节点判断和处理。',
-			},
-			{
-				title: '处理不同运行情况',
-				description: '使用变量、节点输出、可视化表达式和 If 条件，根据当前数据选择下一步操作。',
-			},
-			{
-				title: '保存并复用工作流',
-				description: '将流程保存为 .workflow.json 文件，之后可以再次打开、调整参数或在相同环境中运行。',
-			},
-		],
-		featureGroups: [
-			{
-				title: '窗口、截图与识别',
-				items: [
+				type: 'feature-groups',
+				id: 'workflow',
+				title: '把桌面操作连成工作流',
+				intro: ['把节点拖到画布上，连接执行顺序和数据，再填写参数，就能把窗口操作、识别和键鼠输入保存成一条可重复运行的流程。软件附带示例工作流，并提供简体中文和英文界面。'],
+				groups: [
 					{
-						title: '窗口操作',
-						description: '查找并操作桌面窗口，为后续截图、识别和输入步骤准备目标环境。',
+						title: '读取屏幕内容',
+						items: [
+							{ title: '窗口与截图', description: '查找桌面窗口，截取全屏、指定窗口或选定区域。' },
+							{ title: '图片识别', description: '在截图中查找指定图片，把位置和匹配结果交给后续节点。' },
+							{ title: '离线文字识别', description: '识别简体中文和英文，不需要另装识别程序。' },
+						],
 					},
 					{
-						title: '多种截图范围',
-						description: '可以截取全屏、指定窗口或选定区域，并把图片交给后续节点使用。',
+						title: '完成桌面操作',
+						items: [
+							{ title: '剪贴板', description: '读取或写入文本和图片，在程序之间传递内容。' },
+							{ title: '键盘与鼠标', description: '向当前前台窗口发送键盘和鼠标操作。' },
+							{ title: '变量与条件', description: '保存前面节点的结果，并按条件选择后续步骤。' },
+						],
 					},
 					{
-						title: '模板图片识别',
-						description: '在截图中查找指定模板，利用位置和匹配结果决定后续操作。',
-					},
-					{
-						title: '离线文字识别',
-						description: '使用内置 OCR 识别简体中文和英文，无需另外安装识别程序。',
+						title: '保存和复用',
+						items: [
+							{ title: '可视化编排', description: '直接连接节点的顺序和数据，不必从空白脚本开始。' },
+							{ title: '有限循环', description: '重复执行有明确次数或停止边界的步骤。' },
+							{ title: '打开与保存', description: '工作流可以保存、再次打开，并在相同环境中继续运行。' },
+						],
 					},
 				],
 			},
 			{
-				title: '剪贴板与键鼠输入',
+				type: 'steps',
+				id: 'build-workflow',
+				title: '从示例开始搭一条流程',
 				items: [
-					{
-						title: '文本和图片剪贴板',
-						description: '读取或写入剪贴板中的文本与图片，让桌面程序之间能够传递内容。',
-					},
-					{
-						title: '键盘与鼠标操作',
-						description: '通过独立输入辅助程序执行键盘和鼠标动作；运行时目标窗口需要保持在前台。',
-					},
+					{ title: '安装或解压', description: '下载 Windows x64 安装包，或把便携 ZIP 完整解压。' },
+					{ title: '打开示例', description: '先查看内置示例了解节点连接方式，也可以新建空白工作流。' },
+					{ title: '添加节点', description: '选择窗口、截图、识别、剪贴板、键鼠输入或流程控制节点。' },
+					{ title: '连接并填参数', description: '连接执行顺序与数据端口，再填写窗口、图片、文字、坐标或判断条件。' },
+					{ title: '保存后运行', description: '先保存工作流，再运行并观察每个节点的状态与输出。' },
 				],
 			},
 			{
-				title: '流程控制与复用',
+				type: 'facts',
+				id: 'files-and-installation',
+				title: '安装版、便携版与工作流文件',
 				items: [
-					{
-						title: '变量和节点输出',
-						description: '保存前面节点产生的数据，并在后续参数和判断中继续使用。',
-					},
-					{
-						title: '条件与表达式',
-						description: '通过可视化表达式和 If 分支处理不同结果，不必把所有情况写成同一条固定路径。',
-					},
-					{
-						title: '有限循环控制',
-						description: 'Repeat 和 While 均要求明确的次数或边界，并可使用 Break 与 Continue 调整循环过程。',
-					},
-					{
-						title: '工作流管理',
-						description: '可以新建、打开、保存和运行工作流，并在简体中文与英文界面之间切换。',
-					},
+					{ term: '系统', description: 'Windows 10 或 Windows 11 x64。' },
+					{ term: '运行环境', description: '普通使用无需另装 Python、.NET 或 OCR 组件。' },
+					{ term: '工作流', description: '文件扩展名为 .workflow.json；引用本地图片时要同时保留图片文件。' },
+					{ term: '数据位置', description: '安装版位于 %APPDATA%\\CloudLight Automator，便携版位于程序旁的 data 目录。' },
 				],
 			},
-		],
-		steps: [
 			{
-				title: '下载安装包或便携版',
-				description: '前往 GitHub Releases，按需要下载 Windows x64 当前用户安装包或便携 ZIP。',
+				type: 'bullets',
+				id: 'running-safely',
+				title: '运行工作流时请留意',
+				tone: 'warning',
+				items: [
+					'当前执行器不支持并行流程、任意环或无限循环。',
+					'键鼠操作会发送到当前前台窗口，运行时不要切换到其他敏感窗口。',
+					'文字和图片识别会受到系统缩放、截图范围与图像质量影响，正式使用前应先测试。',
+					'当前发布未进行代码签名，Windows 可能显示未知发布者提示。',
+				],
 			},
-			{
-				title: '核对 SHA-256',
-				description: '下载同一发布中的 checksums.txt，核对安装包或便携 ZIP 的 SHA-256，确认文件与发布记录一致。',
-			},
-			{
-				title: '安装或解压运行',
-				description: '安装版按当前用户安装；便携版需要先完整解压，并保留程序旁的 portable.marker 和其他文件。',
-			},
-			{
-				title: '新建或打开工作流',
-				description: '从空白画布开始，或打开已有的 .workflow.json。也可以参考内置的窗口与截图、图像与 OCR、变量与循环示例。',
-			},
-			{
-				title: '从节点库拖入节点',
-				description: '根据任务需要选择窗口、截图、识别、剪贴板、键鼠输入或流程控制节点。',
-			},
-			{
-				title: '连接端口并填写参数',
-				description: '连接执行顺序和数据端口，再填写窗口、图片、文字、坐标或表达式等参数。',
-			},
-			{
-				title: '保存工作流',
-				description: '运行前先保存 .workflow.json，并确认其中引用的本地图片和模板路径仍然有效。',
-			},
-			{
-				title: '运行并查看状态',
-				description: '启动工作流后观察节点状态和输出，确认每一步都在预期窗口和数据上执行。',
-			},
-			{
-				title: '异常时停止',
-				description: '流程出现异常、操作了错误窗口或结果偏离预期时，立即点击停止，不要让后续输入动作继续执行。',
-			},
-			{
-				title: '查看日志',
-				description: '需要排查节点失败或运行问题时，通过设置页打开日志位置并检查对应记录。',
-			},
-		],
-		requirements: [
-			{
-				term: '操作系统',
-				description: 'Windows 10 或 Windows 11 x64；当前没有 macOS、Linux、ARM64 或 x86 版本。',
-			},
-			{
-				term: '安装权限',
-				description: '安装版默认只为当前用户安装，不需要管理员权限。',
-			},
-			{
-				term: '随包运行环境',
-				description: '安装包和便携版已内置 Python worker、.NET InputHelper、Tesseract 以及简体中文和英文语言数据。普通用户无需另外安装 Node.js、Python、.NET SDK 或 Tesseract。',
-			},
-			{
-				term: '安装版数据',
-				description: '设置、日志和其他应用数据保存在 %APPDATA%\\CloudLight Automator。',
-			},
-			{
-				term: '默认工作流目录',
-				description: '默认工作流保存在 %USERPROFILE%\\Documents\\CloudLight Automator\\Workflows。',
-			},
-			{
-				term: '便携版数据',
-				description: '便携版把数据保存在可执行文件旁的 data 目录，包括设置、日志、自动保存、临时文件和工作流。移动时应复制整个解压目录，并保留 portable.marker。',
-			},
-		],
-		technicalDetails: [
-			{
-				title: '可视化编辑器',
-				description: '桌面界面由 Electron、React、TypeScript 和 React Flow 构建，负责节点画布、参数编辑和运行状态展示。',
-			},
-			{
-				title: '独立运行进程',
-				description: '每次运行都会启动一个独立 Python worker，流程停止或结束后不复用上一次的执行进程。',
-			},
-			{
-				title: '节点状态传递',
-				description: 'worker 通过逐行 JSON（NDJSON）协议返回节点开始、输出、完成和错误等状态。',
-			},
-			{
-				title: '自动化能力',
-				description: '部分桌面自动化节点基于仓库锁定版本的 RPA Framework，只开放经过筛选并列入正式目录的能力。',
-			},
-			{
-				title: '键鼠输入',
-				description: '键盘和鼠标动作由独立的 .NET 10 InputHelper 执行，与工作流编辑界面分开。',
-			},
-			{
-				title: '离线 OCR',
-				description: '文字识别使用内置 Tesseract，并附带英文与简体中文语言数据。',
-			},
-			{
-				title: '正式节点目录',
-				description: '当前版本的 62 个可执行节点来自统一白名单；未进入正式目录的实验候选节点不会显示，也不能执行。',
-			},
-		],
-		cautions: [
-			'当前版本为 0.1.0，正式目录包含 62 个可执行节点。实验候选节点不会出现在节点库中，也不能通过工作流执行。',
-			'当前执行器不支持并行执行、任意环或无限循环。Repeat 和 While 必须具有明确的有限边界。',
-			'键盘和鼠标输入会发送到当前前台窗口。运行前应确认目标窗口已经获得焦点，执行过程中不要切换到其他敏感窗口。',
-			'OCR 结果会受到字体、系统缩放、截图范围和图像质量影响。用于流程判断前，应先在实际环境中检查识别结果。',
-			'当前发布没有代码签名，Windows 可能显示 SmartScreen 或未知发布者提示。请从项目的 GitHub Releases 下载，并使用 checksums.txt 核对 SHA-256。',
-			'当前版本尚未完成独立干净 Windows 环境验证。正式使用前，应先在可控环境中测试完整流程及停止操作。',
-			'移动或分享工作流时，需要同时检查其中引用的本地图片和模板路径；只复制 .workflow.json 不一定能带走全部依赖文件。',
 		],
 	},
 	{
 		slug: 'cloudlight-soop-drops-miner',
-		item: getProject('cloudlight-soop-drops-miner'),
-		pageDescription:
-			'在 Windows 上管理多个 SOOP Live 账号，按 Drops 任务选择直播间，并集中查看任务进度、奖励背包和兑换码。',
-		introduction: [
-			'CloudLight SOOP Drops Miner 是面向 SOOP Live Drops 活动的第三方 Windows 桌面辅助工具。SOOP Live 原名 AfreecaTV；本工具与 SOOP Live 官方无关，也未获得官方授权。',
-			'程序可以为多个账号分别维护登录会话，按任务和频道规则选择直播间，并在一个界面中查看账号状态、当前直播间、任务进度与奖励背包。它不会下载直播音视频，而是通过平台相关接口维持观看会话和查询 Drops 数据。',
-			'实际结果会受到平台活动、账号状态、直播间分类和网络环境影响，工具不保证一定获得奖励，也不提供验证码绕过、账号限制绕过、反检测或其他规避平台安全机制的功能。',
-		],
-		importantNotice: {
-			title: '同一账号一次只能观看一个直播间',
-			paragraphs: [
-				'只有当前直播间的分类或官方频道与任务规则匹配时，对应任务才会增加进度。一个账号同时存在多个不同要求的任务时，需要切换直播间，或在智能选台中设置优先任务。',
-				'手动粘贴不匹配的直播间，或在活动没有符合条件的直播间时，任务进度可能不会增加。',
-			],
-		},
-		useCases: [
+		item: getCatalogItem('cloudlight-soop-drops-miner'),
+		pageDescription: '在 Windows 上管理多个 SOOP Live 账号，按掉宝任务选择直播间，并集中查看进度和奖励。',
+		sections: [
 			{
-				title: '同时管理多个账号',
-				description: '在同一桌面界面中分别启动、停止和查看多个账号，每个账号使用独立的登录会话。',
+				type: 'note',
+				id: 'one-stream-per-account',
+				title: '一个账号同一时间只会观看一个直播间',
+				description: '直播间需要符合当前任务规则，任务才会增加进度。存在多个不同任务时，请选择优先任务或手工切换直播间。',
 			},
 			{
-				title: '按任务选择直播间',
-				description: '根据当前 Drops 任务使用智能、手动或仅 owesports 模式选择直播间，并可指定优先任务。',
-			},
-			{
-				title: '汇总进度与奖励',
-				description: '集中查看当前直播间对应的任务进度、奖励背包和兑换码，减少在多个账号间反复切换。',
-			},
-		],
-		featureGroups: [
-			{
-				title: '账号与挂机控制',
-				items: [
+				type: 'feature-groups',
+				id: 'accounts-and-drops',
+				title: '账号、直播间和掉宝进度',
+				intro: ['每个账号使用独立登录会话。工具按任务规则选择直播间，并在一个窗口中显示当前直播、任务进度和已经获得的奖励；它不会下载直播音视频。'],
+				groups: [
 					{
-						title: '多账号并行管理',
-						description: '各账号使用独立的 Cookie、网络会话和运行状态，可同时执行 Drops 任务。',
+						title: '选择直播间',
+						items: [
+							{ title: '多账号运行', description: '分别启动、停止和查看多个账号，也可以统一控制。' },
+							{ title: '智能选台', description: '根据任务类型、频道分类和官方频道规则选择直播间。' },
+							{ title: '手动选台', description: '粘贴直播间链接或频道 ID，分类不匹配时会显示提示。' },
+						],
 					},
 					{
-						title: '全部开始与全部停止',
-						description: '可以一键启动所有已保存账号，也可以统一停止正在运行的账号会话。',
-					},
-					{
-						title: '会话自动恢复',
-						description: 'HTTP 请求或心跳连续失败、超时或连接异常后，程序会按冷却时间重建会话并继续尝试。',
+						title: '查看进度',
+						items: [
+							{ title: '任务进度', description: '显示当前直播间以及与它匹配的任务进度。' },
+							{ title: '奖励背包', description: '刷新已经获得的奖励，并按需复制完整兑换码。' },
+							{ title: '运行设置', description: '支持托盘、开机启动、HTTP/HTTPS 代理和主题设置。' },
+						],
 					},
 				],
 			},
 			{
-				title: '任务与直播间选择',
+				type: 'steps',
+				id: 'first-run',
+				title: '第一次运行',
 				items: [
-					{
-						title: '多种 Drops 类型',
-						description: '识别并处理固定型、抽奖型和随机型 Drops 任务，根据活动状态和可用直播间筛选候选频道。',
-					},
-					{
-						title: '智能选台与优先任务',
-						description: '智能模式会结合任务类型、频道分类和官方频道规则选台；存在多个任务时可以指定优先任务。',
-					},
-					{
-						title: '手动选台',
-						description: '支持粘贴 SOOP Live 直播间链接，或直接填写频道 ID；选择错误分类时会提示任务可能不匹配。',
-					},
-					{
-						title: '仅等待 owesports',
-						description: '可设置为只进入 owesports 官方频道；频道未开播时保持等待，不自动改挂其他直播间。',
-					},
+					{ title: '下载并启动', description: '下载 Windows 单文件 EXE，普通使用无需安装 Python。' },
+					{ title: '添加账号', description: '完成 SOOP 登录。程序保存登录会话，并在登录后清空界面中的密码字段。' },
+					{ title: '选择直播间方式', description: '选择智能选台、手动直播间，或只等待 owesports 官方频道。' },
+					{ title: '检查任务进度', description: '启动账号后查看当前直播间和任务进度；没有增长时检查频道分类与任务要求。' },
+					{ title: '先停止再退出', description: '结束时先停止运行中的账号会话，再退出程序或系统托盘。' },
 				],
 			},
 			{
-				title: '进度、奖励与设置',
+				type: 'facts',
+				id: 'account-data',
+				title: '账号数据与网络',
 				items: [
-					{
-						title: '当前任务进度',
-						description: '账号卡片会显示当前直播间及与其匹配的任务进度，帮助判断所选频道是否正在推进任务。',
-					},
-					{
-						title: '奖励背包',
-						description: '可以刷新各账号的奖励背包，并从界面复制完整兑换码；界面列表会对兑换码进行遮盖显示。',
-					},
-					{
-						title: '桌面运行设置',
-						description: '提供当前用户开机启动、启动或关闭到托盘、HTTP/HTTPS 代理、可选自动领取、低流量轮询和系统/明暗主题设置。',
-					},
-					{
-						title: '可选 CLI 模式',
-						description: '除默认图形界面外，源码入口也提供命令行模式，可通过参数传入账号并输出运行日志。',
-					},
+					{ term: '系统', description: 'Windows 10 或 Windows 11。' },
+					{ term: '网络', description: '需要访问 SOOP Live 的登录、直播和掉宝服务；代理仅支持 HTTP 或 HTTPS 地址。' },
+					{ term: '账号数据', description: '登录会话保存在程序旁的 accounts 文件夹，其中可能包含敏感 Cookie。' },
+					{ term: '程序', description: '提供 Windows 单文件 EXE，当前发布未进行代码签名。' },
+				],
+			},
+			{
+				type: 'bullets',
+				id: 'drops-boundaries',
+				title: '掉宝活动的边界',
+				tone: 'warning',
+				items: [
+					'这是非官方工具，与 SOOP Live 官方无关联，也不保证一定获得奖励。',
+					'实际进度取决于活动、账号、频道分类和网络状态；平台接口或规则变化后，部分功能可能失效。',
+					'accounts 文件夹中的登录会话应像密码一样保管，不要上传或分享。',
+					'工具不会绕过验证码、账号限制或平台安全机制。',
 				],
 			},
 		],
-		steps: [
-			{
-				title: '下载 Windows EXE',
-				description: '从 GitHub Releases 下载 CloudLight_SOOP_Drops_Miner.exe。v1.0.2 为单文件发布版，普通使用无需另装 Python。',
-			},
-			{
-				title: '阅读免责声明',
-				description: '首次启动时阅读软件内的第三方工具与账号风险说明，并在理解后决定是否同意继续。',
-			},
-			{
-				title: '添加账号并登录',
-				description: '输入 SOOP 账号和密码完成登录。程序会保存登录返回的会话 Cookie，登录结束后清空界面中的密码字段。',
-			},
-			{
-				title: '选择选台方式',
-				description: '根据需要选择智能选台、手动粘贴直播间链接或频道 ID，或设置为仅等待 owesports 官方频道。',
-			},
-			{
-				title: '设置优先任务',
-				description: '同一账号存在多个不同任务时，按需要选择优先任务，以便智能选台先匹配该任务。',
-			},
-			{
-				title: '开始运行',
-				description: '点击“全部开始”，让程序为已保存账号建立会话并进入符合当前选择规则的直播间。',
-			},
-			{
-				title: '查看运行状态',
-				description: '在账号列表中查看当前状态、直播间和与该直播间匹配的任务进度；进度不增加时检查频道分类和任务要求。',
-			},
-			{
-				title: '查看奖励背包',
-				description: '进入奖励背包刷新结果；需要使用兑换码时，从对应奖励项复制完整代码并按活动规则兑换。',
-			},
-			{
-				title: '停止并退出',
-				description: '结束使用时先点击“全部停止”，确认账号会话停止后再关闭程序或退出托盘。',
-			},
-		],
-		requirements: [
-			{
-				term: '操作系统',
-				description: 'Windows 10 或 Windows 11。当前公开 Release 提供 Windows 单文件 EXE。',
-			},
-			{
-				term: '网络访问',
-				description: '需要能够正常访问 SOOP Live 的登录、直播、Drops、搜索和日志收集等相关域名；代理功能只接受 HTTP 或 HTTPS 代理地址。',
-			},
-			{
-				term: '发布版运行环境',
-				description: 'v1.0.2 EXE 由 PyInstaller 打包，普通使用无需另装 Python。该可执行文件未进行代码签名，Windows 可能显示来源未知提示。',
-			},
-			{
-				term: '从源码运行',
-				description: '需要 Python 3.10 或更高版本，主要依赖 aiohttp、yarl 和 CustomTkinter 5.2.2。',
-			},
-		],
-		technicalTitle: '本地数据与隐私',
-		technicalDetails: [
-			{
-				title: '账号会话',
-				description: 'accounts/<账号>/cookies.json 保存在 EXE 同目录，内容可能包括 AuthTicket、BbsTicket 等敏感 Cookie。源码以普通 JSON 写入，没有实现 Cookie 加密。',
-			},
-			{
-				title: '密码处理',
-				description: '密码用于向 SOOP Live 登录接口提交登录请求；源码随后保存返回的 Cookie，并清空图形界面的密码字段，没有把密码写入本地配置文件。',
-			},
-			{
-				title: '程序设置',
-				description: 'settings.json 保存在程序数据目录，记录代理、托盘、开机启动、自动领取、低流量、主题和轮询间隔等设置。',
-			},
-			{
-				title: '免责声明状态',
-				description: '.disclaimer_accepted 文件只用于记录已确认免责声明；旧版根目录 cookies.json 可能在启动时迁移到对应账号目录。',
-			},
-			{
-				title: '敏感数据保护',
-				description: '不要上传、提交或分享 accounts/、cookies.json、HAR 或抓包数据。它们可能允许他人复用登录会话，应像密码一样妥善保管。',
-			},
-			{
-				title: '本站边界',
-				description: '本项目页面只提供说明和外部下载链接，不收集、接收或保存任何 SOOP 账号、密码、Cookie 或 Drops 数据。',
-			},
-		],
-		cautions: [
-			'这是第三方工具，与 SOOP Live 官方无关联，也未获得官方授权；使用者应自行确认平台规则和账号风险。',
-			'平台接口、活动规则、任务格式或页面发生变化后，部分或全部功能可能暂时失效。',
-			'登录会话属于敏感数据；不要分享 accounts/、cookies.json、HAR 或抓包数据，也不要在公共电脑上保存账号。',
-			'手动选择错误分类的直播间时，任务进度可能不会增加；同一账号一次只能观看一个直播间。',
-			'Mission 页面可能需要先进入带 Drops 的直播间并观看一段时间，之后才会出现任务。',
-			'工具不保证获得奖励，也不提供验证码绕过、账号限制绕过、反检测或其他规避安全机制的功能。',
-			'当前仓库没有单独声明许可证，本站不为项目补充或推断许可证。',
-		],
-		downloadInfo: {
-			version: 'v1.0.2',
-			fileSize: '30,060,743 字节',
-			sha256: 'DBE616D0796CD2FC71F72372B00FF8BFE55922E4A4BF5958D1D2290588D902A4',
-		},
-		ctaTitle: '下载与源码',
 	},
 	{
 		slug: 'microsoft-pinyin-cleaner',
-		item: getProject('microsoft-pinyin-cleaner'),
-		pageDescription:
-			'检测并安全移除 Windows 更新后重新加入当前用户输入法列表的微软拼音，并可在登录时自动检查。',
-		introduction: [
-			'Windows 更新有时会把微软拼音重新加入当前用户的输入法列表。微软拼音清理工具用于检测这一状态，并在满足安全条件时从当前用户列表中移除它，适合已经使用搜狗拼音、微信输入法或其他中文输入法的用户。',
-			'程序只修改当前 Windows 用户的输入法列表，不删除中文语言包、系统文件或系统级输入法注册信息，也不会修改搜狗拼音、微信输入法等其他输入法。',
-			'发布版默认以当前用户的普通权限运行，应用清单使用 asInvoker，不申请管理员权限。输入法读取和修改通过系统自带的 Windows PowerShell 完成。',
-		],
-		useCases: [
+		item: getCatalogItem('microsoft-pinyin-cleaner'),
+		pageDescription: '检测并移除 Windows 更新后重新加入当前用户输入法列表的微软拼音，同时保留其他中文输入法。',
+		sections: [
 			{
-				title: '处理更新后的自动恢复',
-				description: 'Windows 更新重新加入微软拼音后，检测当前用户输入法列表并按需移除。',
-			},
-			{
-				title: '保留正在使用的中文输入法',
-				description: '适合已确认搜狗拼音、微信输入法或其他中文输入法能够正常使用的用户。',
-			},
-			{
-				title: '当前用户范围内维护',
-				description: '只调整当前 Windows 用户的语言列表和登录启动项，不执行系统级输入法卸载。',
-			},
-		],
-		featureGroups: [
-			{
-				title: '检测与安全移除',
+				type: 'features',
+				id: 'clean-pinyin',
+				title: '一键清理微软拼音',
+				intro: ['Windows 更新把微软拼音重新加入输入法列表后，可以直接检测并移除。程序是面向 Windows 10/11 x64 的单文件 EXE，使用当前用户权限，依赖系统自带 PowerShell，无需另装 .NET。'],
+				layout: 'columns',
 				items: [
-					{
-						title: '检测微软拼音',
-						description: '读取当前用户的 Windows 语言列表，判断其中是否存在微软拼音。',
-					},
-					{
-						title: '精确 TIP 匹配',
-						description: '只匹配微软拼音的完整 TIP 标识，忽略大小写，不按名称或模糊条件删除其他输入法。',
-					},
-					{
-						title: '一键移除',
-						description: '检测到微软拼音后，可通过界面按钮从当前用户输入法列表中移除。',
-					},
-					{
-						title: '保留其他中文输入法',
-						description: '删除前确认仍有至少一个其他中文输入法，并确认整个列表中至少保留一个输入法。',
-					},
-					{
-						title: '条件不足时拒绝写入',
-						description: '没有备用中文输入法、读取失败、操作超时或安全检查失败时，不调用语言列表写入命令。',
-					},
+					{ title: '精确检测', description: '只匹配微软拼音的完整标识，不按模糊名称删除其他输入法。' },
+					{ title: '保留备用输入法', description: '确认仍有其他中文输入法，并保证列表不会被清空。' },
+					{ title: '只改当前用户', description: '不删除语言包、系统文件或其他输入法。' },
+					{ title: '条件不足时停止', description: '读取失败、操作超时或没有备用输入法时不会写入。' },
 				],
 			},
 			{
-				title: '登录自动清理与辅助操作',
+				type: 'features',
+				id: 'automatic-check',
+				title: '登录时自动检查',
+				intro: ['需要长期处理这个问题时，可以把自动清理加入当前用户启动项。'],
+				layout: 'list',
 				items: [
-					{
-						title: '开启或关闭自动清理',
-						description: '通过当前用户的 HKCU Run 启动项管理登录自动清理，不创建系统级启动项。',
-					},
-					{
-						title: '延迟静默执行',
-						description: '登录启动后使用 --silent-clean 模式等待约 10 秒，再执行检查和安全移除，不显示主窗口或消息框。',
-					},
-					{
-						title: '兼容中文和空格路径',
-						description: '启动项保存带引号的完整 EXE 路径，支持路径中包含中文字符和空格。',
-					},
-					{
-						title: '保存最近日志',
-						description: '静默清理会覆盖写入最近一次操作时间、事件和结果，便于确认登录清理是否执行。',
-					},
-					{
-						title: '打开语言设置',
-						description: '可从程序直接打开 Windows“语言和区域”设置，安装或管理备用输入法。',
-					},
+					{ title: '延迟执行', description: '登录后等待约 10 秒再检查，减少与系统启动过程冲突。' },
+					{ title: '保留结果', description: '记录最近一次自动检查的时间和结果，方便确认是否运行。' },
+					{ title: '路径随 EXE', description: '移动或重命名程序后，需要从新位置重新开启自动清理。' },
+				],
+			},
+			{
+				type: 'steps',
+				id: 'how-to-use',
+				title: '使用方法',
+				items: [
+					{ title: '先准备备用输入法', description: '确认另一个中文输入法已经安装并能正常输入；微软拼音是唯一中文输入法时，程序会拒绝删除。' },
+					{ title: '下载后直接运行', description: '打开 MicrosoftPinyinCleaner.exe，点击“立即检测”。' },
+					{ title: '确认并移除', description: '检测到微软拼音后执行清理，条件不满足时程序会停止。' },
+					{ title: '按需开启自动清理', description: 'Windows 更新以后仍可能重新加入微软拼音；需要时开启登录自动检查。' },
+					{ title: '删除前先关闭', description: '不再使用时，先关闭登录自动清理，再删除 EXE。' },
 				],
 			},
 		],
-		steps: [
-			{
-				title: '准备其他中文输入法',
-				description: '先安装并确认搜狗拼音、微信输入法或其他中文输入法可以正常输入中文。',
-			},
-			{
-				title: '下载并运行程序',
-				description: '从本页下载 MicrosoftPinyinCleaner.exe，并直接运行这个自包含单文件程序。',
-			},
-			{
-				title: '立即检测',
-				description: '点击“立即检测”，刷新当前用户输入法列表中的微软拼音状态。',
-			},
-			{
-				title: '确认并移除',
-				description: '检测到微软拼音后，点击“立即删除微软拼音”。条件不满足时，程序会拒绝删除并显示提示。',
-			},
-			{
-				title: '按需开启登录自动清理',
-				description: '需要长期处理 Windows 更新后的恢复问题时，点击“开启登录自动清理”。',
-			},
-			{
-				title: '移动后更新启动项',
-				description: '如果移动或重命名 EXE，请从新位置运行程序并重新开启自动清理，以更新启动项中的完整路径。',
-			},
-			{
-				title: '不再需要时关闭',
-				description: '删除 EXE 前先点击“关闭登录自动清理”，移除本程序的当前用户启动项。',
-			},
-		],
-		requirements: [
-			{
-				term: '操作系统',
-				description: 'Windows 10 或 Windows 11 x64。',
-			},
-			{
-				term: '发布形式',
-				description: '正式版为 win-x64 自包含单文件 EXE，无需另外安装 .NET 运行时。',
-			},
-			{
-				term: 'PowerShell',
-				description: '依赖系统自带 Windows PowerShell，并使用隐藏、非交互进程执行输入法操作。',
-			},
-			{
-				term: '系统命令',
-				description: '系统需要提供 Get-WinUserLanguageList 和 Set-WinUserLanguageList。',
-			},
-			{
-				term: '运行权限',
-				description: '应用清单声明 asInvoker，默认不申请管理员权限。',
-			},
-		],
-		technicalTitle: '数据与技术说明',
-		technicalDetails: [
-			{
-				title: '当前用户启动项',
-				description: '登录自动清理保存到 HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run，值名为 MicrosoftPinyinCleaner。',
-			},
-			{
-				title: '最近一次日志',
-				description: '静默清理日志位于 %LOCALAPPDATA%\\MicrosoftPinyinCleaner\\logs\\latest.log，每次保留最近一条简短结果。',
-			},
-			{
-				title: '离线与数据边界',
-				description: '程序不联网，不含账户、遥测或自动更新；不会把输入法列表或操作结果发送到服务器。',
-			},
-			{
-				title: '.NET 8 与 WPF',
-				description: '桌面界面使用 .NET 8 和 WPF；输入法列表操作通过 Windows PowerShell 调用系统命令完成。',
-			},
-			{
-				title: '静默模式',
-				description: '命令行参数为 --silent-clean，启动后等待约 10 秒执行清理，写入日志后退出。',
-			},
-		],
-		cautions: [
-			'使用前应先准备并实际测试另一个中文输入法，确认它能够正常输入中文。',
-			'如果微软拼音是唯一中文输入法，或移除后会没有任何输入法，程序会拒绝删除。',
-			'Windows 更新后仍可能再次加入微软拼音；登录自动清理用于在登录后处理这种情况。',
-			'移动或重命名 EXE 后，需要从新位置重新开启自动清理，更新启动项路径。',
-			'删除 EXE 前应先关闭登录自动清理，避免留下指向不存在文件的启动项。',
-			'本工具不是中文语言包卸载器，也不会永久删除 Windows 的系统输入法组件。',
-			'登录自动清理不能保证阻止所有未来 Windows 更新行为；系统行为变化后仍需重新确认实际效果。',
-		],
-		downloadInfo: {
-			version: 'v1.0.0',
-			fileSize: '77,603,721 字节',
-			sha256: 'B8FE5E85E380E55EBD02512A15691CECA47332DE1AC0ED82F8E4846A3F0DBBE2',
-		},
-		ctaTitle: '下载信息',
 	},
 	{
 		slug: 'power-settings-manager',
-		item: getProject('power-settings-manager'),
-		pageDescription:
-			'查找 Windows 10/11 中被隐藏的高级电源选项，并管理它们的显示、隐藏和恢复。修改前会保存快照和注册表备份。',
-		introduction: [
-			'Windows 的经典“高级电源设置”中有不少选项默认不会显示，查找对应的注册表位置也很麻烦。这个工具会扫描系统中的电源选项，把名称、分组、GUID 和当前显示状态集中列出来。',
-			'它只管理选项是否出现在经典设置窗口中，不会替你修改交流电或电池模式下的具体参数。扫描过程只读取系统信息，不需要管理员权限。',
-			'真正执行显示、隐藏或恢复时，程序会先展示完整注册表路径、原值和目标值。确认后才请求 UAC，并在写入前保存注册表备份，方便之后检查或恢复。',
-		],
-		useCases: [
+		item: getCatalogItem('power-settings-manager'),
+		pageDescription: '查找 Windows 10/11 中被隐藏的高级电源选项，并集中管理显示、隐藏和恢复。',
+		sections: [
 			{
-				title: '找出隐藏的电源选项',
-				description: '按名称、分组、GUID 或显示状态，查找经典控制面板中没有出现的设置。',
-			},
-			{
-				title: '集中调整显示状态',
-				description: '核对原值后，可以批量显示、隐藏或恢复选中的电源设置。',
-			},
-			{
-				title: '保留修改记录',
-				description: '通过状态快照、注册表备份、导出文件和日志，了解修改前后的变化。',
-			},
-		],
-		featureGroups: [
-			{
-				title: '扫描、筛选与恢复',
+				type: 'features',
+				id: 'find-settings',
+				title: '找到被隐藏的电源选项',
+				intro: ['工具会读取 Windows 电源配置和注册表，把经典“高级电源设置”里默认隐藏的项目集中列出来。扫描只读取信息，不需要管理员权限。'],
+				layout: 'columns',
 				items: [
-					{
-						title: '完整扫描',
-						description: '先运行 powercfg.exe /q，再读取 64 位 PowerSettings 注册表，尽量收集完整的设置列表。',
-					},
-					{
-						title: '中文名称与 GUID',
-						description: '把两处数据按 GUID 对应起来，同时显示英文名称、中文名称、分组和完整路径。',
-					},
-					{
-						title: '搜索和筛选',
-						description: '可以按名称、分组、GUID、显示状态或是否已选中来缩小列表范围。',
-					},
-					{
-						title: '批量显示、隐藏和恢复',
-						description: '勾选多个项目后统一处理，也可以恢复软件记录过的全部修改。',
-					},
-					{
-						title: '启动时保存状态快照',
-						description: '每次启动后的第一次完整扫描成功时，程序会保存一份全部设置的状态快照。',
-					},
-					{
-						title: '修改前保存注册表备份',
-						description: '写入前记录 Attributes 原值以及该值原本是否存在，恢复时以这份记录为准。',
-					},
-					{
-						title: '导出和导入',
-						description: '扫描结果可以导出为 JSON 或 CSV，注册表原值可以导出为 .reg；软件备份也能重新导入并验证。',
-					},
-					{
-						title: '逐项结果和日志',
-						description: '操作结束后可以查看每一项的结果。遇到失败时，日志会保留路径、错误和验证信息。',
-					},
+					{ title: '完整扫描', description: '整理设置名称、分组、标识和当前显示状态。' },
+					{ title: '搜索与筛选', description: '按名称、分组、标识、显示状态或选中状态缩小列表。' },
+					{ title: '中英文名称', description: '尽量合并系统数据，显示便于核对的名称、分组和完整路径。' },
+					{ title: '只看目标项目', description: '选择一个或多个设置，再决定显示、隐藏还是恢复。' },
 				],
 			},
-		],
-		steps: [
 			{
-				title: '下载并解压',
-				description: '从 GitHub Releases 下载 Windows x64 便携 ZIP，解压到当前用户有写入权限的普通文件夹。',
+				type: 'features',
+				id: 'backup-and-restore',
+				title: '修改前先核对和备份',
+				layout: 'cards',
+				items: [
+					{ title: '原值与目标值', description: '确认窗口会显示完整路径、当前值和准备写入的值。' },
+					{ title: '修改前备份', description: '记录原值以及该值是否原本存在，便于之后恢复。' },
+					{ title: '逐项结果', description: '完成后显示成功、失败、跳过和验证结果，并保留日志。' },
+				],
 			},
 			{
-				title: '运行程序',
-				description: '打开 PowerSettingsManager.exe，并保留同目录中的 PowerSettingsManager.ElevatedHelper.exe。',
+				type: 'steps',
+				id: 'change-visibility',
+				title: '显示、隐藏或恢复设置',
+				items: [
+					{ title: '下载并完整解压', description: '把 Windows x64 便携 ZIP 解压到当前用户可写入的文件夹。' },
+					{ title: '扫描电源设置', description: '打开主程序并扫描系统，这一步不会写入设置。' },
+					{ title: '选择目标项目', description: '用搜索、分组和状态筛选找到需要处理的设置。' },
+					{ title: '核对后确认修改', description: '选择显示、隐藏或恢复，检查原值与目标值，再通过本次操作的 UAC 请求。' },
+					{ title: '重新打开系统设置', description: '关闭并重新打开 Windows 高级电源设置，检查变化是否生效。' },
+				],
 			},
 			{
-				title: '扫描电源设置',
-				description: '点击扫描并等待列表生成。扫描只读取 powercfg 和注册表，不会请求管理员权限。',
+				type: 'facts',
+				id: 'portable-data',
+				title: '便携版和数据目录',
+				items: [
+					{ term: '系统', description: 'Windows 10 x64 或 Windows 11 x64。' },
+					{ term: '下载包', description: '便携 ZIP 已包含运行组件，需要保留主程序和辅助程序。' },
+					{ term: '权限', description: '扫描不提权；写入或恢复系统设置时才会请求 UAC。' },
+					{ term: 'Data 文件夹', description: '保存在程序目录中，包含快照、备份、日志和配置。' },
+				],
 			},
 			{
-				title: '查找目标项目',
-				description: '使用搜索、分组、GUID 和状态筛选找到需要处理的设置，然后勾选对应项目。',
+				type: 'bullets',
+				id: 'before-changing',
+				title: '改动系统设置前',
+				tone: 'warning',
+				items: [
+					'只处理自己理解并核对过的电源设置。',
+					'不同 Windows 版本、电脑厂商和电源驱动会影响设置是否显示或生效。',
+					'不要单独删除辅助程序或 Data 文件夹，否则修改和恢复功能可能无法工作。',
+					'当前下载包没有代码签名和自动更新。',
+				],
 			},
-			{
-				title: '核对原值和目标值',
-				description: '在确认窗口中检查完整注册表路径、扫描到的原值和准备写入的目标值。',
-			},
-			{
-				title: '确认修改',
-				description: '选择显示、隐藏或恢复，阅读风险提示后通过 UAC，让辅助程序执行这一次修改。',
-			},
-			{
-				title: '查看操作结果',
-				description: '逐项检查成功、失败、跳过和写入后验证结果。失败项目可以结合日志继续排查。',
-			},
-			{
-				title: '重新打开电源设置',
-				description: '关闭并重新打开 Windows 高级电源设置窗口，确认目标选项是否已经出现或隐藏。',
-			},
-			{
-				title: '保留备份',
-				description: '不要随意删除 Data 文件夹。卸载前先在应用中恢复修改，再备份 Data 并删除便携程序目录。',
-			},
-		],
-		requirements: [
-			{
-				term: '操作系统',
-				description: 'Windows 10 x64 或 Windows 11 x64；没有 x86 和 ARM64 构建。',
-			},
-			{
-				term: '运行环境',
-				description: 'GitHub 上的便携包已经包含运行所需组件。自行发布框架依赖版本时，需要 x64 .NET 8 Desktop Runtime；从源码构建需要 .NET 8 SDK。',
-			},
-			{
-				term: '管理员权限',
-				description: '扫描和保存快照不需要管理员权限。写入、删除或恢复 HKLM 中的值时才会触发 UAC。',
-			},
-			{
-				term: '数据目录',
-				description: '程序需要在自身目录中创建和写入 Data 文件夹。',
-			},
-			{
-				term: '程序形式',
-				description: '目前是便携程序，没有安装器、代码签名和自动更新。不建议放在 Program Files 中运行。',
-			},
-		],
-		technicalDetails: [
-			{
-				title: '界面与核心功能',
-				description: '程序使用 .NET 8 和 WPF。界面、数据处理、系统读取和提权写入分别放在不同模块中。',
-			},
-			{
-				title: '合并两处系统数据',
-				description: '程序解析中英文 powercfg 输出，再按 GUID 合并注册表中的名称、说明和 Attributes 状态。',
-			},
-			{
-				title: '按需提权',
-				description: '主程序保持普通权限。辅助程序只接受经过验证的 GUID，不接收任意命令或注册表路径。',
-			},
-			{
-				title: '本地数据保存',
-				description: '快照、备份、日志和配置都保存在程序目录的 Data 文件夹中；关键 JSON 通过临时文件和原子替换写入。',
-			},
-		],
-		cautions: [
-			'修改 HKLM 注册表存在系统配置风险。只处理自己理解并已经核对路径与原值的项目。',
-			'不要删除或单独移动 PowerSettingsManager.ElevatedHelper.exe，否则显示、隐藏和恢复功能无法工作。',
-			'不要随意删除 Data 文件夹。StartupSnapshots 中的状态快照不能代替 RegistryBackups 中的恢复记录。',
-			'不同 Windows 版本、电脑厂商、电源驱动和 Modern Standby 配置会影响结果；有些设置即使改为显示，也可能仍不出现或不生效。',
-			'当前下载包没有商业代码签名，Windows 可能显示未知发布者提示。可以使用 Release 附带的 SHA-256 文件校验 ZIP。',
 		],
 	},
 	{
 		slug: 'mobile-hotspot-controller',
-		item: getProject('mobile-hotspot-controller'),
-		pageDescription:
-			'Windows 离线局域网热点工具，解决部分电脑在没有互联网连接时无法开启移动热点的问题，并在设备支持时通过 Wi-Fi Direct 创建本地无线网络。',
-		introduction: [
-			'Windows 自带的移动热点通常用于共享现有互联网连接。在部分系统环境中，当电脑没有连接网络或没有可共享的互联网连接时，系统移动热点可能无法开启。',
-			'Windows 移动热点控制器针对这一使用场景，在无线网卡和驱动支持时，通过 Wi-Fi Direct 创建一个不依赖互联网连接的无线热点。手机、平板和其他设备可以连接到电脑，与电脑组成临时局域网。',
-			'这种模式只负责建立本地网络，不会提供互联网访问。实际可用性取决于 Windows 版本、无线网卡和驱动能力，程序会显示检测结果和失败原因，帮助判断当前设备是否支持。',
-		],
-		useCases: [
+		item: getCatalogItem('mobile-hotspot-controller'),
+		pageDescription: '在设备支持时通过 Wi-Fi Direct 创建不依赖互联网的 Windows 局域网热点。',
+		sections: [
 			{
-				title: '无网络时建立局域网热点',
-				description: '当电脑没有连接互联网、系统移动热点无法直接开启时，尝试通过 Wi-Fi Direct 建立离线热点，让附近设备连接电脑进行局域网通信。',
-			},
-			{
-				title: '连接手机或其他局域网设备',
-				description: '让手机、平板或其他无线设备连接电脑，用于局域网网页、文件传输、设备控制、测试或其他本地通信场景。',
-			},
-			{
-				title: '管理 Windows 系统热点',
-				description: '电脑存在可共享网络时，也可以在同一界面启动、停止或重新启动 Windows 系统移动热点。',
-			},
-			{
-				title: '检查热点无法开启的原因',
-				description: '查看系统热点、Wi-Fi Direct、无线网卡和驱动的检测结果，了解当前电脑为什么无法建立热点。',
-			},
-		],
-		featureGroups: [
-			{
-				title: '热点控制与日常使用',
+				type: 'features',
+				id: 'hotspot-modes',
+				title: '先分清两种热点模式',
+				intro: ['工具会先检查本机能力，再决定可以使用哪种方式。手机、平板或其他设备连接后，可以与电脑组成临时局域网。'],
+				layout: 'cards',
 				items: [
-					{
-						title: '离线局域网热点',
-						description: '不要求电脑已经连接互联网。在设备支持时，通过 Wi-Fi Direct 创建仅用于本地通信的无线热点。',
-					},
-					{
-						title: '系统热点与局域网模式',
-						description: '存在可共享网络时可以使用 Windows 系统热点；没有互联网连接时可以尝试局域网热点模式。',
-					},
-					{
-						title: '自动检查可用方式',
-						description: '检查 Windows 系统热点、Wi-Fi Direct 和旧版 Hosted Network 能力，并显示每种方式的检测结果。',
-					},
-					{
-						title: '检查热点名称和密码',
-						description: '输入时会检查 SSID 长度和密码格式，避免把明显无效的配置交给 Windows。',
-					},
-					{
-						title: '后台保持热点',
-						description: '主窗口关闭或隐藏后，后台 Agent 可以继续保持需要常驻的 Wi-Fi Direct 热点。',
-					},
-					{
-						title: '托盘和启动设置',
-						description: '可以从系统托盘控制热点，并设置开机启动、启动时最小化、延迟自动开启和退出行为。',
-					},
-					{
-						title: '诊断和日志',
-						description: '界面会显示网络和热点状态，也可以复制或导出诊断信息，保留 Windows 返回的原始错误码。',
-					},
-					{
-						title: '保护热点密码',
-						description: '密码使用当前 Windows 用户的数据保护功能加密，普通设置文件和日志不会记录明文密码。',
-					},
+					{ title: '仅局域网模式', description: '在设备支持时通过 Wi-Fi Direct 创建热点，不需要可共享网络，也不提供互联网访问。' },
+					{ title: '系统热点模式', description: '电脑已有可共享网络时，启动或停止 Windows 自带移动热点。' },
+					{ title: '自动能力检测', description: '检查系统热点、Wi-Fi Direct、旧版 Hosted Network、无线网卡和驱动。' },
 				],
 			},
 			{
-				title: '硬件和驱动差异',
-				description: '不同电脑上的可用方式可能不同，以下功能都需要以本机检测结果为准。',
+				type: 'features',
+				id: 'background-and-diagnostics',
+				title: '后台运行和设备诊断',
+				layout: 'list',
 				items: [
-					{
-						title: 'Wi-Fi Direct 局域网热点',
-						description: '这个模式只建立局域网，不共享互联网。设备发现、地址分配和双向通信仍由网卡驱动决定。',
-					},
-					{
-						title: 'Hosted Network',
-						description: '只有旧版 Hosted Network 能力可用时才会尝试。许多新网卡已经不再提供这项能力。',
-					},
-					{
-						title: '连接设备信息',
-						description: '连接数量以 Windows 返回的结果为准；名称、IP 和 MAC 地址会尽量从系统邻居表补充。',
-					},
+					{ title: '托盘与后台', description: '关闭主窗口后，可以让后台程序继续保持热点。' },
+					{ title: '启动设置', description: '设置开机启动、最小化、延迟自动开启和退出行为。' },
+					{ title: '诊断报告', description: '复制或导出检测信息，并保留 Windows 返回的错误码。' },
 				],
 			},
-		],
-		steps: [
 			{
-				title: '下载程序',
-				description: '从 GitHub Releases 下载 MobileHotspotController.exe。发布文件适用于 Windows 11 x64，并已包含运行时。',
+				type: 'steps',
+				id: 'create-local-hotspot',
+				title: '创建仅局域网热点',
+				items: [
+					{ title: '下载并运行', description: '下载 Windows 11 x64 单文件程序。' },
+					{ title: '先检查设备', description: '打开系统诊断，查看无线设备、当前网络和可用热点方式。' },
+					{ title: '填写热点信息', description: '设置热点名称和 8–63 位可打印 ASCII 密码。' },
+					{ title: '选择模式', description: '有可共享网络时选系统热点；只需本地通信时选“仅局域网”。' },
+					{ title: '启动并检查连接', description: '查看实际使用的方式、连接状态和设备数量；失败时保留错误码和诊断报告。' },
+				],
 			},
 			{
-				title: '运行并检查设备',
-				description: '启动程序后先打开“系统诊断”，查看无线设备、当前网络和可用热点方式。',
+				type: 'facts',
+				id: 'device-support',
+				title: '设备支持决定能否使用',
+				items: [
+					{ term: '系统', description: 'Windows 11 x64，最低版本为 build 22000。' },
+					{ term: '无线设备', description: '需要 Windows 能识别的 Wi-Fi 设备，具体模式由网卡和驱动决定。' },
+					{ term: '程序', description: '发布版是已经包含运行组件的单文件 EXE。' },
+					{ term: '数据位置', description: '设置、加密密码、日志和诊断保存在 %AppData%\\MobileHotspotController。' },
+				],
 			},
 			{
-				title: '填写热点信息',
-				description: '输入热点名称和密码。密码需由 8–63 个可打印 ASCII 字符组成。',
+				type: 'bullets',
+				id: 'no-internet',
+				title: '看到“无互联网”时',
+				items: [
+					'“仅局域网”模式本来就不提供互联网；只要设备仍能与电脑通信，就属于正常状态。',
+					'Wi-Fi Direct 是否可用完全取决于无线网卡、驱动和系统能力。',
+					'热点无法启动时先查看诊断和错误码，不建议直接关闭防火墙或重置网络。',
+				],
 			},
-			{
-				title: '选择模式',
-				description: '如果电脑已有可共享的互联网连接，可以选择系统热点模式。如果电脑没有网络，只需要让设备与电脑组成局域网，请选择“仅局域网”模式。',
-			},
-			{
-				title: '打开热点',
-				description: '点击“打开热点”。程序会根据所选模式尝试启动系统热点或 Wi-Fi Direct 局域网热点，并显示实际使用的热点方式和启动结果。',
-			},
-			{
-				title: '按需设置托盘和启动行为',
-				description: '可以设置开机启动、启动时最小化、自动开启、重试次数和关闭窗口后的行为。',
-			},
-			{
-				title: '查看失败原因',
-				description: '热点无法启动时，复制或导出诊断报告并记录错误码。不要把关闭防火墙或重置网络当作默认解决办法。',
-			},
-			{
-				title: '退出或移除',
-				description: '先根据需要关闭热点，再退出托盘中的程序。删除 EXE 不会同时删除 %AppData%\\MobileHotspotController 中的用户数据。',
-			},
-		],
-		requirements: [
-			{
-				term: '操作系统',
-				description: 'Windows 11 x64，最低系统版本为 Windows 11 build 22000。',
-			},
-			{
-				term: '运行环境',
-				description: '已发布的单文件 EXE 包含运行所需组件。从源码构建时，请按仓库 global.json 安装对应 .NET SDK；应用目标为 .NET 8。',
-			},
-			{
-				term: '无线设备',
-				description: '需要 Windows 能识别的 Wi-Fi 设备。可用的热点方式由网卡、驱动和系统能力决定。',
-			},
-			{
-				term: '权限',
-				description: '主界面和后台 Agent 以普通用户权限运行。个别系统修复操作能否执行，仍取决于 Windows 权限和服务状态。',
-			},
-			{
-				term: '数据位置',
-				description: '设置、加密后的密码、日志、诊断和备份保存在 %AppData%\\MobileHotspotController。',
-			},
-		],
-		technicalDetails: [
-			{
-				title: '桌面界面',
-				description: '程序使用 .NET 8、WPF 和 MVVM，把界面状态与 Windows 热点调用分开处理。',
-			},
-			{
-				title: '热点方式切换',
-				description: '核心模块统一处理热点的启动、停止和重试；Windows 相关调用集中在独立模块中。',
-			},
-			{
-				title: '后台 Agent',
-				description: '同一个 EXE 可以通过 --agent 参数启动后台模式，并通过当前用户范围内的进程间通信维持热点状态。',
-			},
-			{
-				title: '本地数据保护',
-				description: '普通设置保存为 JSON；热点密码使用 DPAPI CurrentUser 加密，日志会隐藏凭据内容。',
-			},
-		],
-		cautions: [
-			'“仅局域网”模式不会提供互联网访问。它解决的是电脑没有互联网连接时无法建立无线局域网的问题，而不是让无网络的电脑获得互联网。',
-			'Wi-Fi Direct 是否可用取决于无线网卡和驱动，部分电脑可能完全不支持创建 Wi-Fi Direct 热点。',
-			'Windows 系统热点仍可能要求存在可共享的网络连接；没有可共享网络时，应根据本机检测结果尝试“仅局域网”模式。',
-			'手机、平板等设备连接离线热点后提示“无互联网”属于正常现象，设备仍可与电脑进行局域网通信。',
-			'不要承诺所有 Windows 设备都能成功创建热点，实际结果取决于 Windows 版本、无线网卡和驱动能力。',
-			'热点无法启动时，应先查看诊断信息和错误码；不建议把关闭防火墙、重置网络或修改无关系统设置作为默认解决方法。',
-			'保存的热点密码只能由当前 Windows 用户解密。把配置复制到其他账户后，原密码可能无法读取。',
-			'启用开机启动、自动开启或“退出后保持热点”前，建议先确认本机在休眠和恢复后的实际表现。',
 		],
 	},
 	{
 		slug: 'tdm-claim-toggle-patcher',
-		item: getProject('tdm-claim-toggle-patcher'),
-		pageDescription:
-			'为 TwitchDropsMiner 增加可开关的自动领取掉宝功能。修改前会检查源码兼容性，并保存可以恢复的备份。',
-		introduction: [
-			'TwitchDropsMiner 默认会自动领取已经完成的掉宝。如果想暂时停止领取，同时保留其他运行流程，就需要修改源码中的领取逻辑。',
-			'这个补丁工具会在 TwitchDropsMiner 设置中加入“自动领取掉宝”开关。开关默认开启；关闭后不再执行领取操作，选择结果会保存在原有设置中。',
-			'工具只修改你选中的 TwitchDropsMiner 源码目录，不会注入 DLL、修改进程内存、劫持网络或直接改写 EXE。开始写入前，它会检查源码结构并创建备份；无法确定兼容性时会停止。',
-			'检查和补丁过程不会读取或复制 cookies.jar、登录令牌、用户名密码、代理凭据或目标 settings.json。',
-		],
-		useCases: [
+		item: getCatalogItem('tdm-claim-toggle-patcher'),
+		pageDescription: '为 TwitchDropsMiner 增加可关闭的自动领取开关，并在修改源码前检查兼容性和创建备份。',
+		sections: [
 			{
-				title: '暂时关闭自动领取',
-				description: '不改变 TwitchDropsMiner 的其他运行流程，只控制是否提交掉宝领取操作。',
+				type: 'features',
+				id: 'claim-toggle',
+				title: '给自动领取加一个开关',
+				intro: ['工具会修改你选择的 TwitchDropsMiner 源码，在设置中加入“自动领取掉宝”开关。关闭后不再提交领取操作，观看和进度等其他流程仍会继续。'],
+				layout: 'list',
+				items: [
+					{ title: '图形界面', description: '选择源码目录后完成检查、预览、应用、状态查看和恢复。' },
+					{ title: '命令行', description: '需要批量或脚本化使用时，可以执行同样的操作。' },
+					{ title: '可恢复修改', description: '工具保留修改前的文件，之后可以恢复最近一次补丁。' },
+				],
 			},
 			{
-				title: '修改前确认兼容性',
-				description: '先检查源码结构，再通过干运行预览准备修改的文件，避免直接改动未知版本。',
+				type: 'features',
+				id: 'before-writing',
+				title: '写入源码前先检查',
+				layout: 'cards',
+				items: [
+					{ title: '兼容性检查', description: '确认设置、领取和调度位置符合已知源码布局。' },
+					{ title: '干运行预览', description: '先列出准备修改的文件，出现不支持或歧义时不会继续。' },
+					{ title: '备份与冲突保护', description: '记录修改前后的文件状态，恢复前检查文件是否被再次改动。' },
+				],
 			},
 			{
-				title: '留下可恢复的备份',
-				description: '修改前记录文件和哈希。更新 TwitchDropsMiner 之前，可以先恢复最近一次补丁。',
-			},
-		],
-		featureGroups: [
-			{
+				type: 'steps',
+				id: 'apply-and-restore',
 				title: '检查、应用与恢复',
 				items: [
-					{
-						title: '图形界面和命令行',
-						description: '既可以使用图形界面，也可以运行 CLI 命令。界面、帮助、报告和日志提供简体中文与英文。',
-					},
-					{
-						title: '先检查再修改',
-						description: '程序会分析 Python 代码结构和调用关系，确认设置、领取和调度位置是否符合已知布局。',
-					},
-					{
-						title: '干运行',
-						description: '写入前列出准备修改的文件和检查结果；出现歧义或验证失败时不会继续。',
-					},
-					{
-						title: '自动领取开关',
-						description: '默认保持原有自动领取行为。关闭后不会调用 Drop.claim，也不会发送领取请求。',
-					},
-					{
-						title: '备份和冲突保护',
-						description: '只备份实际要修改的文件，并记录前后哈希。文件后来被改过时，恢复操作会先提示冲突。',
-					},
-					{
-						title: '保留原文件格式',
-						description: '修改范围限制在已经定位的代码片段，尽量保留 BOM、换行方式、注释和周边排版。',
-					},
-					{
-						title: '状态和 JSON 报告',
-						description: '可以查看补丁状态；命令行模式还可以用 --json 输出便于保存和排查的报告。',
-					},
-					{
-						title: '构建目标程序',
-						description: '可以调用目标项目的 build.spec 构建 TwitchDropsMiner EXE。这个操作只应在可信源码上执行。',
-					},
+					{ title: '打开补丁工具', description: '下载 Windows 单文件程序，或使用 Python 3.10 及更高版本从源码运行。' },
+					{ title: '选择可信源码目录', description: '选择完整的 TwitchDropsMiner 源码，不要选择打包后的 EXE 或用户数据目录。' },
+					{ title: '检查并预览', description: '确认工具能够识别当前版本，再用干运行查看准备修改的文件。' },
+					{ title: '应用补丁', description: '确认后写入；工具会先创建备份，再检查写入结果。' },
+					{ title: '更新前恢复', description: '更新 TwitchDropsMiner 前先恢复补丁，更新后再重新检查兼容性。' },
+				],
+			},
+			{
+				type: 'facts',
+				id: 'requirements',
+				title: '需要准备什么',
+				items: [
+					{ term: '下载版', description: 'Windows 单文件 EXE，包含图形界面和命令行功能，不需要管理员权限。' },
+					{ term: '目标源码', description: '需要完整且可信的 TwitchDropsMiner 源码目录，不能直接修改已打包 EXE。' },
+					{ term: '源码运行', description: '需要 Python 3.10 或更高版本。' },
+					{ term: '本地设置', description: '保存在 %LOCALAPPDATA%\\TDMClaimTogglePatcher。' },
+				],
+			},
+			{
+				type: 'bullets',
+				id: 'before-updating',
+				title: '更新 TwitchDropsMiner 前',
+				tone: 'warning',
+				items: [
+					'TwitchDropsMiner 更新后源码结构可能变化，每次更新都应重新检查。',
+					'关闭自动领取后，要求先领取前置奖励的活动可能无法继续推进。',
+					'构建目标程序会运行目标仓库脚本并安装依赖，只能对可信源码执行。',
+					'不要分享 TwitchDropsMiner 的 Cookie、令牌、代理凭据或用户数据。',
 				],
 			},
 		],
-		steps: [
+	},
+	{
+		slug: 'cloudlight-codex-bridge',
+		item: getCatalogItem('cloudlight-codex-bridge'),
+		pageDescription: '把本机 Codex 会话连接到 QQ 官方机器人或 Telegram，远程发送任务、接收最终回复并继续已有会话。',
+		sections: [
 			{
-				title: '下载并启动',
-				description: '从 GitHub Releases 下载 Windows 单文件程序并运行。也可以使用 Python 3.10 或更高版本从源码启动。',
-				command: `python -m tdm_claim_toggle_patcher
-python -m tdm_claim_toggle_patcher gui --target "C:\\path\\to\\TwitchDropsMiner"`,
+				type: 'features',
+				id: 'remote-channels',
+				title: '远程连接 Codex',
+				intro: ['电脑上的 Codex 已经登录并可用后，可以把现有会话连接到 QQ 或 Telegram。离开电脑时，也能查看会话、发送后续任务并接收最终回复。'],
+				layout: 'cards',
+				items: [
+					{ title: 'QQ 官方机器人', description: '处理私聊和群聊中 @机器人的文字消息，并可限制允许使用的账号或群。' },
+					{ title: 'Telegram', description: '通过 Telegram Bot 查看会话、绑定目标会话并发送后续消息。' },
+					{ title: '稳定会话编号', description: '为发现的 Codex 会话分配易于输入的 #N 编号，远程消息可明确指定目标。' },
+				],
 			},
 			{
-				title: '选择源码目录',
-				description: '选择可信的 TwitchDropsMiner 源码根目录，不要选择已经打包的 EXE、用户数据目录或来历不明的副本。',
+				type: 'screenshots',
+				id: 'desktop-and-chat',
+				title: '桌面端和聊天端',
+				intro: ['桌面端集中显示 Codex、远程渠道和消息同步状态；聊天端使用同一个会话编号继续任务。'],
+				indexes: [1, 2],
 			},
 			{
-				title: '检查兼容性',
-				description: '点击“检测兼容性”，确认工具能够识别这个版本，并阅读界面中的警告和错误。',
+				type: 'features',
+				id: 'sessions-and-sync',
+				title: '会话绑定与消息同步',
+				layout: 'list',
+				items: [
+					{ title: '查看和切换会话', description: '列出最近会话、检查当前绑定，并切换聊天端后续消息的目标。' },
+					{ title: '发送与停止任务', description: '在已有会话中继续对话；由当前远程地址发起的任务可在允许时停止。' },
+					{ title: '只发最终回复', description: '一次任务完成后，聊天端收到一条最终回答，不被过程消息连续刷屏。' },
+				],
 			},
 			{
-				title: '先做干运行',
-				description: '使用“干运行”预览准备修改的文件。检查结果为不支持、歧义或失败时不要继续。',
+				type: 'steps',
+				id: 'getting-started',
+				title: '怎么开始使用',
+				items: [
+					{ title: '安装桌面端', description: '优先使用 0.7.1 安装版；便携版需要完整解压，如果提示缺少运行环境请改用安装版。' },
+					{ title: '确认本机 Codex 可用', description: '先完成 Codex 登录；没有自动找到时，可以在设置中指定 codex.exe。' },
+					{ title: '添加远程渠道', description: '选择 Telegram 或 QQ 官方机器人，填写对应平台提供的机器人凭据。' },
+					{ title: '测试并绑定会话', description: '测试凭据和网络，在聊天端用 #N 指定会话，或把当前聊天绑定到一个现有会话。' },
+					{ title: '从聊天端继续任务', description: '发送普通消息，任务完成后接收最终回复。' },
+				],
 			},
 			{
-				title: '应用补丁',
-				description: '确认结果后应用补丁。工具会先创建备份，再写入并检查修改后的源码。',
+				type: 'facts',
+				id: 'connection-requirements',
+				title: '安装与连接要求',
+				items: [
+					{ term: '系统', description: 'Windows 10 1809 或更高版本，x64。' },
+					{ term: 'Codex', description: '已经安装并能正常使用 Codex CLI 或 Codex Desktop，且已完成登录。' },
+					{ term: '机器人', description: '需要自行创建 Telegram 或 QQ 机器人，并能够连接对应平台；QQ 还要配置消息事件权限和允许访问的身份。' },
+					{ term: '当前版本', description: '0.7.1 正式版；完整安装包已包含 .NET 8 Windows 桌面运行环境。' },
+				],
 			},
 			{
-				title: '使用自动领取开关',
-				description: '启动补丁后的 TwitchDropsMiner，在设置中打开或关闭自动领取掉宝。',
+				type: 'bullets',
+				id: 'remote-boundaries',
+				title: '远程端有哪些边界',
+				tone: 'warning',
+				items: [
+					'远程端不能批准 Codex 的 Approval，也不能新建、Fork 或自动排队会话。',
+					'QQ 官方机器人当前只处理文字私聊和群聊 @消息，不支持图片、文件、语音或视频。',
+					'Bridge 不会替你登录 Codex，也不会修改当前会话的模型、权限或安全设置。',
+					'0.7.1 安装包尚未进行商业代码签名，也不包含自动更新。',
+				],
 			},
 			{
-				title: '按需使用命令行',
-				description: '从源码运行时，可以按下面的顺序检查、预览、应用、查看状态和恢复。',
-				command: `python -m tdm_claim_toggle_patcher check --target "C:\\path\\to\\TwitchDropsMiner"
-python -m tdm_claim_toggle_patcher dry-run --target "C:\\path\\to\\TwitchDropsMiner"
-python -m tdm_claim_toggle_patcher apply --target "C:\\path\\to\\TwitchDropsMiner"
-python -m tdm_claim_toggle_patcher status --target "C:\\path\\to\\TwitchDropsMiner"
-python -m tdm_claim_toggle_patcher restore --target "C:\\path\\to\\TwitchDropsMiner"`,
-			},
-			{
-				title: '更新前先恢复',
-				description: '更新 TwitchDropsMiner 前先恢复补丁。更新完成后，重新检查兼容性并执行干运行。',
+				type: 'links',
+				id: 'source-and-release',
+				title: '源码与发布记录',
+				items: [
+					{ label: '查看 v0.7.1 Release', href: 'https://github.com/yundan125/Codex-Bridge/releases/tag/v0.7.1' },
+					{ label: '查看 GitHub 仓库', href: 'https://github.com/yundan125/Codex-Bridge' },
+				],
 			},
 		],
-		requirements: [
+	},
+	{
+		slug: 'twitter-x-media-renamer',
+		item: getCatalogItem('twitter-x-media-renamer'),
+		pageDescription: '从下载文件名识别 Twitter/X 帖子，根据帖子正文预览并批量重命名图片和视频。',
+		sections: [
 			{
-				term: 'Windows 下载版本',
-				description: 'GitHub Releases 提供同时包含图形界面和命令行功能的单文件 EXE，不需要管理员权限。',
+				type: 'features',
+				id: 'rename-rules',
+				title: '文件会怎样改名',
+				intro: ['选择媒体文件夹后，程序会从文件名中识别 Twitter/X 帖子 ID，读取公开可访问的帖子正文，再生成更容易辨认的新文件名。'],
+				layout: 'columns',
+				items: [
+					{ title: '识别帖子 ID', description: '从文件名中的 17～20 位数字识别帖子，并尽量同时识别用户名。' },
+					{ title: '使用帖子正文', description: '去掉不适合文件名的内容，把公开正文整理进目标名称。' },
+					{ title: '保留媒体顺序', description: '同一帖子有多个媒体时，自动追加 _01、_02 等编号。' },
+					{ title: '避免重名覆盖', description: '同时检查磁盘已有文件和当前批次，发生重名时自动追加后缀。' },
+				],
 			},
 			{
-				term: '从源码运行',
-				description: '需要 Python 3.10 或更高版本；补丁工具本身只使用 Python 标准库。',
+				type: 'features',
+				id: 'preview',
+				title: '改名前可以逐项确认',
+				intro: ['所有结果都会先显示在表格中，确认后才会修改文件。'],
+				layout: 'list',
+				items: [
+					{ title: '预览目标名称', description: '先核对程序识别出的用户名、帖子 ID 和新文件名。' },
+					{ title: '手工编辑', description: '双击修改目标名称，也可以把单个文件标记为跳过。' },
+					{ title: '统一执行', description: '最后再次确认文件数量，再批量完成改名。' },
+				],
 			},
 			{
-				term: '目标源码',
-				description: '需要完整的 TwitchDropsMiner 源码目录。当前兼容布局包含 settings.py、gui.py、inventory.py、twitch.py、translate.py、main.py 和 lang/*.json。',
+				type: 'features',
+				id: 'supported-files',
+				title: '支持哪些下载文件',
+				layout: 'cards',
+				items: [
+					{ title: '图片', description: 'JPG、PNG、WebP、GIF 和 AVIF。' },
+					{ title: '视频', description: 'MP4、WebM、MOV 和 M4V。' },
+					{ title: '原文件名', description: '需要包含可识别的 17～20 位帖子 ID。' },
+				],
 			},
 			{
-				term: '构建 TwitchDropsMiner',
-				description: '构建操作会运行目标仓库的 build.spec，并按 requirements 安装依赖和 PyInstaller。只对可信源码执行。',
+				type: 'steps',
+				id: 'how-to-use',
+				title: '使用方法',
+				items: [
+					{ title: '选择媒体文件夹', description: '在 Windows 10/11 x64 上运行单文件 EXE，选择文件夹，需要时勾选包含子文件夹。' },
+					{ title: '扫描媒体文件', description: '检查程序识别出的用户名和帖子 ID。' },
+					{ title: '获取帖子正文', description: '联网读取公开内容，为能够访问的帖子生成目标名称。' },
+					{ title: '调整预览', description: '双击编辑新文件名，或跳过不想修改的文件。' },
+					{ title: '批量改名', description: '点击“全部重命名”，确认文件数量后执行。' },
+				],
 			},
 			{
-				term: '配置位置',
-				description: '补丁工具的设置保存在 %LOCALAPPDATA%\\TDMClaimTogglePatcher\\settings.json。',
+				type: 'bullets',
+				id: 'when-skipped',
+				title: '哪些文件会保持原样',
+				items: [
+					'没有可识别帖子 ID 的文件不会被修改。',
+					'已删除、受保护或无法公开访问的帖子不能生成正文文件名。',
+					'正文读取依赖 FxTwitter 或 VxTwitter 的可用性和返回格式，服务不可用时可能获取失败。',
+					'当前程序没有商业代码签名，Windows 首次运行时可能显示 SmartScreen 提示。',
+				],
 			},
 		],
-		technicalDetails: [
+	},
+	{
+		slug: 'heybox-post-exporter',
+		item: getCatalogItem('heybox-post-exporter'),
+		pageDescription: '连接日常使用的 Microsoft Edge，把小黑盒帖子、评论、楼中楼和图片保存到电脑。',
+		sections: [
 			{
-				title: '识别源码位置',
-				description: '工具使用 Python 抽象语法树（AST）和调用关系定位相关代码，再对找到的片段做小范围文本修改。',
+				type: 'features',
+				id: 'saved-content',
+				title: '可以保存哪些内容',
+				intro: ['输入小黑盒帖子链接后，可以把原帖、评论、楼中楼和图片一起保存到电脑。工具会继续使用页面上的加载入口，尽量取回当前账号能够看到的完整讨论。'],
+				layout: 'columns',
+				items: [
+					{ title: '原帖', description: '保存标题、作者、发布时间、正文、图片和原帖链接。' },
+					{ title: '评论与楼中楼', description: '保存一级评论、楼中楼、置顶标记、时间、点赞和页面可读取的回复。' },
+					{ title: '帖子图片', description: '把帖子、评论和回复中的图片下载到同一个本地目录。' },
+					{ title: '后续回复', description: '继续点击页面已有的加载和展开入口，直到没有更多可读取内容。' },
+				],
 			},
 			{
-				title: '不确定时停止',
-				description: '兼容适配器会检查已知源码布局。缺少关键位置、出现多个候选或修改后验证失败时，工具不会继续写入。',
+				type: 'features',
+				id: 'export-formats',
+				title: '导出格式',
+				layout: 'cards',
+				items: [
+					{ title: 'HTML', description: '直接在浏览器中阅读，正文、图片、评论和楼中楼都在一个页面里。' },
+					{ title: 'Markdown', description: '保留原帖、评论和缩进回复，方便搜索和继续编辑。' },
+					{ title: 'JSON', description: '保存完整结构化数据，适合后续整理或自行处理。' },
+				],
 			},
 			{
-				title: '备份记录',
-				description: 'manifest.json 会记录目标目录、兼容结果、文件大小和修改前后哈希，方便检查与恢复。',
+				type: 'steps',
+				id: 'export-post',
+				title: '怎么导出帖子',
+				items: [
+					{ title: '准备 Edge', description: '打开日常使用的 Microsoft Edge，在地址栏进入 edge://inspect，并允许当前浏览器实例进行远程调试。' },
+					{ title: '打开软件', description: '运行 HeyboxPostExporter.exe。Edge 弹出授权提示时，手工点击允许。' },
+					{ title: '输入帖子链接', description: '等界面显示浏览器已连接，再粘贴普通帖子链接或包含 link_id 的分享链接。' },
+					{ title: '选择导出内容', description: '勾选需要的格式和图片，并确认保存目录。' },
+					{ title: '开始导出', description: '点击“开始导出”。如果遇到验证码，回到 Edge 手工完成；结束后可直接打开生成的帖子目录。' },
+				],
 			},
 			{
-				title: '领取状态边界',
-				description: '关闭开关只阻止领取调用，不会伪造 Twitch 返回的 is_claimed 状态，也不会把估算进度当成已经完成。',
+				type: 'facts',
+				id: 'preparation',
+				title: '使用前准备',
+				items: [
+					{ term: '系统', description: 'Windows 10 或 Windows 11 x64。' },
+					{ term: '浏览器', description: 'Microsoft Edge，并在 edge://inspect 中允许当前实例进行远程调试。' },
+					{ term: 'Node.js', description: '需要安装 Node.js 和 npx；首次连接时需要联网准备浏览器连接组件。' },
+					{ term: '保存位置', description: 'EXE 所在目录需要可写，用于保存设置和日志；帖子可导出到其他目录。' },
+				],
+			},
+			{
+				type: 'bullets',
+				id: 'notes',
+				title: '注意事项',
+				tone: 'warning',
+				items: [
+					'验证码和访问频率限制需要在 Edge 中手工处理，软件不会自动绕过。',
+					'被删除且服务端不再返回的评论无法恢复。',
+					'小黑盒网页结构或接口变化后，部分内容可能暂时无法导出。',
+				],
 			},
 		],
-		cautions: [
-			'Twitch 的部分活动要求先领取前置奖励。关闭自动领取后，后续掉宝可能无法继续推进。',
-			'未领取的奖励可能按活动规则过期。关闭自动领取前，请确认活动期限和领取条件。',
-			'TwitchDropsMiner 更新后，源码结构可能变化。每次更新都应重新检查兼容性并执行干运行。',
-			'构建 TwitchDropsMiner EXE 会运行目标仓库的脚本并安装依赖，只对可信源码目录执行。',
-			'不要分享 cookies.jar、Token、settings.json、代理凭据，或任何可能包含认证信息的文件和日志。',
+	},
+	{
+		slug: 'cloudlight-overwatch-youtube-watcher',
+		item: getCatalogItem('cloudlight-overwatch-youtube-watcher'),
+		pageDescription: '定时查找指定守望先锋 YouTube 频道的直播，并用本机 Chrome 或 Brave Profile 打开和维持播放。',
+		sections: [
+			{
+				type: 'features',
+				id: 'find-live-streams',
+				title: '自动寻找直播',
+				intro: ['软件会定时检查已启用的守望先锋 YouTube 频道，确认公开信息显示正在直播后，用本机 Chrome 或 Brave 打开页面。'],
+				layout: 'cards',
+				items: [
+					{ title: '自动检测频道', description: '依次检查已启用频道，只在明确显示正在直播时打开。' },
+					{ title: '手动 URL 模式', description: '自动检测暂时不可用时，可以粘贴 youtube.com/watch 或 youtu.be 地址。' },
+					{ title: '维持播放', description: '浏览器意外退出后重新打开直播，并尝试恢复意外暂停。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'browser-profiles',
+				title: '设置浏览器 Profile',
+				intro: ['每个 Profile 独立保存 Google 和 YouTube 登录状态，可以分别启动。软件不会读取或填写账号密码。'],
+				layout: 'columns',
+				items: [
+					{ title: 'Chrome 或 Brave', description: '自动查找本机浏览器，也可以手工选择浏览器 EXE。' },
+					{ title: '可见登录窗口', description: 'Google / YouTube 登录由用户本人在真实浏览器页面中完成。' },
+					{ title: '独立登录状态', description: '不同 Profile 可以保存不同账号，并按需分别开始观看。' },
+					{ title: '本地 Profile 数据', description: '保存在软件目录的 profiles 文件夹；删除 Profile 会同时删除对应登录数据。' },
+				],
+			},
+			{
+				type: 'steps',
+				id: 'start-watching',
+				title: '开始观看',
+				items: [
+					{ title: '下载并打开程序', description: '把当前 Windows 程序放到普通可写目录后运行。' },
+					{ title: '选择浏览器', description: '选择 Chrome 或 Brave；没有自动识别时手工选择浏览器 EXE。' },
+					{ title: '准备 Profile', description: '打开 Profile 登录窗口，由本人完成 Google 和 YouTube 登录，再重新打开一次确认状态仍然保留。' },
+					{ title: '选择观看模式', description: '自动模式启用需要检查的频道；手动模式直接粘贴直播地址。' },
+					{ title: '检查真实播放页面', description: '点击开始后确认没有验证码、地区限制、年龄提示或 Cookie 提示阻挡播放。' },
+				],
+			},
+			{
+				type: 'facts',
+				id: 'browser-requirements',
+				title: '浏览器和本地数据',
+				items: [
+					{ term: '系统', description: 'Windows 10 或 Windows 11 x64。' },
+					{ term: '浏览器', description: '已经安装并更新的 Google Chrome 或 Brave。' },
+					{ term: '账号登录', description: '由用户本人在可见窗口中登录，软件不会读取或填写密码。' },
+					{ term: 'Profile', description: '保存在软件目录的 profiles 文件夹。' },
+				],
+			},
+			{
+				type: 'bullets',
+				id: 'event-rules',
+				title: '观看活动仍以官方规则为准',
+				tone: 'warning',
+				items: [
+					'请自行确认活动时间、合资格频道和账号连接要求，并在可见浏览器中检查直播确实持续播放。',
+					'软件只能帮助打开和维持直播，不保证奖励、观看时长或活动资格一定被平台记录。',
+					'YouTube 页面和公开信息变化后，自动检测可能失效；此时可改用手动 URL 模式。',
+					'同时运行多个 Profile 会增加内存和网络占用，首次使用建议先用一个账号确认。',
+				],
+			},
+		],
+	},
+	{
+		slug: 'heybox-post-export-userscript',
+		item: getCatalogItem('heybox-post-export-userscript'),
+		pageDescription: '直接在小黑盒帖子页面展开全文、全部评论和楼中楼，并导出原网页或纯净阅读版 HTML。',
+		sections: [
+			{
+				type: 'features',
+				id: 'in-page-export',
+				title: '直接在帖子页展开和导出',
+				intro: ['这个用户脚本会在小黑盒帖子页面加入一个操作面板，不需要安装桌面程序。它和 HeyboxPostExporter 是两种不同方案：脚本直接处理当前浏览器页面，主要导出原网页或纯净阅读版 HTML。'],
+				layout: 'list',
+				items: [
+					{ title: '运行页面', description: '当前只匹配 https://www.xiaoheihe.cn/app/bbs/link/* 帖子页面。' },
+					{ title: '操作入口', description: '使用页面右下角面板开始展开、选择图片选项并导出。' },
+					{ title: '适合偶尔保存', description: '打开目标帖子后直接处理，不需要另外准备桌面运行环境。' },
+				],
+			},
+			{
+				type: 'steps',
+				id: 'install-and-use',
+				title: '安装与使用',
+				items: [
+					{ title: '安装脚本管理器', description: '先在桌面浏览器中安装 Tampermonkey、Violentmonkey 或其他兼容扩展。' },
+					{ title: '安装脚本', description: '点击本页“安装脚本”，核对名称、匹配页面和图片访问权限。' },
+					{ title: '打开小黑盒帖子', description: '进入 www.xiaoheihe.cn/app/bbs/link/ 下的帖子详情页。' },
+					{ title: '展开并导出', description: '用右下角面板开始完整展开，选择是否嵌入图片，再下载原网页或阅读版。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'automatic-expansion',
+				title: '脚本会自动展开什么',
+				layout: 'columns',
+				items: [
+					{ title: '帖子全文', description: '识别“展开全文”“查看全文”等入口，并解除文字截断。' },
+					{ title: '更多评论', description: '继续滚动并点击加载入口，直到页面稳定或需要人工处理。' },
+					{ title: '楼中楼回复', description: '处理“查看全部回复”“查看更多回复”等入口，并统计已经识别的回复。' },
+					{ title: '长评论', description: '展开页面中折叠的长评论，尽量保留当前账号能看到的文字。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'html-exports',
+				title: '两种 HTML 导出方式',
+				layout: 'cards',
+				items: [
+					{ title: '原网页', description: '移除脚本面板等注入内容后，保存当前已经展开的网页快照。' },
+					{ title: '纯净阅读版', description: '按原帖、评论和楼中楼重新组织，生成更适合本地阅读的页面。' },
+					{ title: '离线图片', description: '可把允许读取的图片嵌入 HTML；失败时保留原在线地址。' },
+				],
+			},
+			{
+				type: 'bullets',
+				id: 'export-notes',
+				title: '导出时需要注意',
+				items: [
+					'小黑盒页面结构或按钮文字变化后，部分展开操作可能暂时失效。',
+					'遇到验证码或访问过于频繁时，脚本会暂停，需要手工验证后继续。',
+					'脚本只能导出当前账号和页面能够加载的内容，已删除或服务端未返回的回复无法恢复。',
+					'离线图片下载失败时会保留在线 URL，因此文件不一定能完全离线显示所有图片。',
+				],
+			},
 		],
 	},
 	{
 		slug: 'shanda-passport-login-helper',
-		item: getProject('shanda-passport-login-helper'),
-		pageDescription:
-			'在盛大通行证登录页面自动勾选协议、切换到一键登录方式，并填写保存在用户脚本管理器本地存储中的账号。',
-		introduction: [
-			'盛大通行证一键登录辅助脚本是一款运行在浏览器用户脚本管理器中的登录页面辅助工具。Greasy Fork 上的正式名称为“盛大通行证自动切换一键登录并填写账号”，当前公开版本为 1.1.0。',
-			'脚本在匹配的盛大通行证登录页面进入空闲状态后运行：勾选登录协议复选框、点击“一键登录”切换项，并把预先保存的账号写入账号输入框。页面重新渲染时，它会在前 30 秒内继续检查这些元素。',
-			'它不会点击最终登录按钮，也没有处理短信确认、手机确认、验证码或其他安全验证的代码。账号之外的登录步骤仍需由用户本人在盛大通行证页面完成。',
-		],
-		useCasesTitle: '适用页面',
-		useCases: [
+		item: getCatalogItem('shanda-passport-login-helper'),
+		pageDescription: '在盛大通行证登录页自动勾选协议、切换一键登录方式，并填写保存在浏览器脚本管理器中的账号。',
+		sections: [
 			{
-				title: '匹配的网站范围',
-				description: '脚本的 @match 为 *://login.u.sdo.com/*，即该主机下通过 HTTP 或 HTTPS 打开的路径。',
-			},
-			{
-				title: '实际生效条件',
-				description: '页面需要包含登录协议、切换一键登录和账号输入框对应的元素；缺少相应元素时，该项操作会跳过。',
-			},
-			{
-				title: '兼容边界',
-				description: '源码没有匹配其他盛大或盛趣域名，也没有声明适配 login.u.sdo.com 之外的登录页面。',
-			},
-		],
-		featureGroups: [
-			{
-				title: '登录页面辅助',
+				type: 'features',
+				id: 'automatic-actions',
+				title: '打开登录页后会自动做什么',
+				intro: ['脚本运行在 Tampermonkey、Violentmonkey 等用户脚本管理器中，当前只匹配 *://login.u.sdo.com/*，本身没有跨域网络请求权限。'],
+				layout: 'columns',
 				items: [
-					{
-						title: '勾选登录协议',
-						description: '找到登录协议复选框后将其设为已勾选，并触发 input 与 change 事件。使用前仍应由用户自行阅读并确认相关协议。',
-					},
-					{
-						title: '切换一键登录',
-						description: '找到“一键登录”导航按钮后自动点击；同一次页面运行中只执行一次该点击。',
-					},
-					{
-						title: '填写保存的账号',
-						description: '读取本地保存的账号，写入 username 输入框，并触发 input、change 与 blur 事件以兼容页面自身逻辑。',
-					},
-					{
-						title: '处理页面重新渲染',
-						description: 'MutationObserver 会观察页面结构变化，并配合每 500 毫秒一次的检查；30 秒后停止观察与定时检查。',
-					},
+					{ title: '勾选协议', description: '找到登录协议后自动勾选；使用前仍应自行阅读协议内容。' },
+					{ title: '切换登录方式', description: '自动点击“一键登录”切换项。' },
+					{ title: '填写保存账号', description: '写入已经保存的账号，并触发页面需要的输入事件。' },
+					{ title: '等待页面重绘', description: '页面加载后的前 30 秒内继续检查需要的元素。' },
 				],
 			},
 			{
-				title: '账号管理',
+				type: 'steps',
+				id: 'install-and-configure',
+				title: '安装和设置账号',
 				items: [
-					{
-						title: '设置登录账号',
-						description: '通过用户脚本管理器菜单打开输入框，保存去除首尾空格后的账号，并立即尝试填入当前页面。',
-					},
-					{
-						title: '清除登录账号',
-						description: '通过菜单把已保存值设为空字符串；如果账号输入框存在，也会同时清空当前页面中的账号。',
-					},
+					{ title: '安装脚本管理器', description: '先安装 Tampermonkey、Violentmonkey 或其他兼容扩展。' },
+					{ title: '安装脚本', description: '点击本页“安装脚本”，核对名称、匹配范围和权限。' },
+					{ title: '保存账号', description: '从脚本菜单选择“设置登录账号”，输入需要自动填写的账号。' },
+					{ title: '打开登录页', description: '访问 login.u.sdo.com，脚本会尝试完成协议勾选、方式切换和账号填写。' },
+					{ title: '本人完成登录', description: '检查页面状态，完成验证码、短信或手机确认，并决定是否提交登录。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'local-account',
+				title: '账号保存在脚本管理器里',
+				layout: 'list',
+				items: [
+					{ title: '只保存账号字符串', description: '不读取或保存密码，数据留在当前浏览器的脚本管理器中。' },
+					{ title: '随时清除', description: '从脚本菜单清空保存值和当前页面输入框，也可以在设置账号时提交空内容。' },
+				],
+			},
+			{
+				type: 'bullets',
+				id: 'manual-login',
+				title: '脚本不会替你登录',
+				tone: 'warning',
+				items: [
+					'脚本不会填写密码、绕过验证码或安全验证，也不会点击最终登录按钮。',
+					'这是非官方脚本，与盛趣游戏、盛大网络及登录平台无官方关联。',
+					'登录页结构变化后，自动操作可能暂时失效。',
+					'不要在公共电脑、共享浏览器配置或不受信任的设备上保存账号。',
 				],
 			},
 		],
-		installationSteps: [
-			{
-				title: '安装用户脚本管理器',
-				description: '先在浏览器中安装 Tampermonkey、Violentmonkey 或其他兼容的用户脚本管理器。',
-			},
-			{
-				title: '从 Greasy Fork 打开安装文件',
-				description: '使用本页的“安装脚本”入口打开 Greasy Fork 提供的 .user.js 文件。',
-			},
-			{
-				title: '核对并确认安装',
-				description: '在脚本管理器的安装界面核对名称、版本、匹配范围和权限，确认后再完成安装。',
-			},
-		],
-		stepsTitle: '使用方法',
-		steps: [
-			{
-				title: '确认脚本已启用',
-				description: '在用户脚本管理器中确认脚本处于启用状态。',
-			},
-			{
-				title: '打开账号设置',
-				description: '从用户脚本管理器的脚本菜单选择“设置登录账号”。',
-			},
-			{
-				title: '保存账号',
-				description: '在提示框中输入绑定手机的账号或手机账号。脚本会把去除首尾空格后的内容保存到脚本管理器本地存储。',
-			},
-			{
-				title: '打开支持的登录页面',
-				description: '访问 login.u.sdo.com 下的登录页面；脚本会尝试勾选协议、切换一键登录并填写已保存账号。',
-			},
-			{
-				title: '完成安全验证',
-				description: '由用户本人完成短信、手机确认、验证码或页面要求的其他安全步骤，并自行确认最终登录。',
-			},
-			{
-				title: '按需清除账号',
-				description: '不再使用时，从脚本菜单选择“清除登录账号”；也可以在设置账号时提交空内容来清除保存值。',
-			},
-		],
-		requirementsTitle: '数据与隐私说明',
-		requirements: [
-			{
-				term: '保存位置',
-				description: '账号通过 GM_setValue 保存在当前用户脚本管理器的本地值存储中，键名为 sdo_login_account；不使用网站的 localStorage。',
-			},
-			{
-				term: '保存内容',
-				description: '只保存用户在“设置登录账号”提示框中输入并去除首尾空格后的账号字符串。主站不会接收或保存这项数据。',
-			},
-			{
-				term: '密码',
-				description: '当前源码没有读取、填写或保存密码，也没有查询密码输入框。',
-			},
-			{
-				term: '网络传输',
-				description: '当前源码没有网络请求代码，也未申请跨域连接权限；脚本本身不会把保存值发送到第三方服务器。账号被填入目标登录页后，仍受该页面自身的数据处理方式约束。',
-			},
-			{
-				term: '清除方法',
-				description: '选择脚本菜单中的“清除登录账号”，或在“设置登录账号”时提交空内容。两种方式都会把 sdo_login_account 设为空字符串。',
-			},
-		],
-		technicalTitle: '权限说明',
-		technicalDetails: [
-			{
-				title: '@match',
-				description: '*://login.u.sdo.com/*，只在该主机范围的页面加载脚本。',
-			},
-			{
-				title: 'GM_getValue 与 GM_setValue',
-				description: '用于读取和保存账号字符串。保存位置由 Tampermonkey、Violentmonkey 等脚本管理器管理。',
-			},
-			{
-				title: 'GM_registerMenuCommand',
-				description: '用于注册“设置登录账号”和“清除登录账号”两个脚本菜单命令。',
-			},
-			{
-				title: '运行与网络权限',
-				description: '脚本在 document-idle 时运行，没有 @connect、GM_xmlhttpRequest 或同类网络权限；安装与更新地址由 Greasy Fork 元数据提供。',
-			},
-		],
-		cautions: [
-			'这是非官方用户脚本，与盛趣游戏、盛大网络及相关登录平台无官方关联。',
-			'登录页面结构变化后，脚本依赖的元素可能找不到，功能可能暂时失效。',
-			'安装或更新前应自行确认脚本权限、匹配范围和源代码，并留意 Greasy Fork 上的版本变化。',
-			'脚本不自动绕过验证码、短信验证、手机确认或其他安全机制，也不会替用户点击最终登录按钮。',
-			'不要在公共电脑、共享浏览器配置或不受信任的设备上保存账号。',
-			'具体兼容范围以当前 Greasy Fork 页面和源码为准；当前 @match 仅为 *://login.u.sdo.com/*。',
-		],
-		ctaTitle: '安装入口',
 	},
 ];

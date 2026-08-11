@@ -1,4 +1,4 @@
-﻿---
+---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
@@ -6,114 +6,58 @@ import { SITE_TITLE } from '../consts';
 import BaseLayout from './BaseLayout.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
-
 const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
 ---
 
-<BaseLayout title={title + ' · ' + SITE_TITLE} description={description} image={heroImage} type="article">
+<BaseLayout title={`${title} · ${SITE_TITLE}`} description={description} image={heroImage} type="article">
 	<main class="post-main">
 		<article>
-			{heroImage && (
-				<div class="hero-image">
-					<Image width={1020} height={510} src={heroImage} alt="" />
-				</div>
-			)}
-			<div class="prose">
-				<nav class="breadcrumbs" aria-label="面包屑">
-					<a href="/">首页</a>
-					<span aria-hidden="true">/</span>
-					<a href="/blog/">文章</a>
-				</nav>
-				<header class="post-title">
-					<p class="date">
-						<FormattedDate date={pubDate} />
-					</p>
-					{updatedDate && (
-						<p class="last-updated-on">
-							更新于 <FormattedDate date={updatedDate} />
-						</p>
-					)}
-					<h1>{title}</h1>
-					{tags.length > 0 && (
-						<ul class="post-tags" aria-label="文章标签">
-							{tags.map((tag) => <li>{tag}</li>)}
-						</ul>
-					)}
-				</header>
-				<slot />
-			</div>
+			<header class="post-header">
+				<nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/blog/">博客</a></nav>
+				<div class="post-meta"><span><FormattedDate date={pubDate} /></span>{updatedDate && <span>更新于 <FormattedDate date={updatedDate} /></span>}</div>
+				<h1>{title}</h1>
+				<p class="description">{description}</p>
+				{tags.length > 0 && <ul class="post-tags" aria-label="文章标签">{tags.map((tag) => <li>{tag}</li>)}</ul>}
+			</header>
+
+			{heroImage && <figure class="hero-image"><Image src={heroImage} alt={`${title}文章配图`} widths={[720, 1080, 1440]} sizes="(max-width: 760px) calc(100vw - 1.5rem), min(1080px, calc(100vw - 2rem))" /><figcaption class="sr-only">{title}文章配图</figcaption></figure>}
+
+			<div class="article-body"><slot /></div>
 		</article>
 	</main>
 </BaseLayout>
 
 <style>
-	.post-main {
-		width: 100%;
-		max-width: none;
-		margin: 0;
-		padding: 0 0 3rem;
-	}
-	.hero-image {
-		width: 100%;
-	}
-	.hero-image img {
-		display: block;
-		width: min(1020px, 100%);
-		margin: 0 auto;
-		border-radius: 0 0 12px 12px;
-		box-shadow: var(--box-shadow);
-	}
-	.prose {
-		width: 720px;
-		max-width: calc(100% - 2rem);
-		margin: auto;
-		padding: 2rem 1rem;
-		color: rgb(var(--gray-dark));
-	}
-	.breadcrumbs {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.45rem;
-		margin-bottom: 1.5rem;
-		color: var(--color-text-muted);
-		font-size: 0.82rem;
-	}
-	.breadcrumbs a {
-		color: inherit;
-	}
-	.post-title {
-		margin-bottom: 2rem;
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid rgb(var(--gray-light));
-		text-align: center;
-	}
-	.post-title h1 {
-		margin: 0.5rem 0 0;
-	}
-	.date,
-	.last-updated-on {
-		margin: 0.25rem 0;
-		color: rgb(var(--gray));
-		font-size: 0.9rem;
-	}
-	.last-updated-on {
-		font-style: italic;
-	}
-	.post-tags {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 0.45rem;
-		margin: 1rem 0 0;
-		padding: 0;
-		list-style: none;
-	}
-	.post-tags li {
-		padding: 0.25rem 0.55rem;
-		background: var(--color-accent-soft);
-		border-radius: 999px;
-		color: var(--color-accent-hover);
-		font-size: 0.75rem;
-		font-weight: 700;
+	.post-main { width: min(1080px, calc(100% - 2rem)); max-width: none; padding-top: clamp(2.5rem, 6vw, 5rem); }
+	.post-header { width: min(820px, 100%); margin: 0 auto clamp(2rem, 5vw, 3.5rem); text-align: center; }
+	.breadcrumbs { display: flex; justify-content: center; gap: 0.45rem; margin-bottom: 2rem; color: var(--color-text-soft); font-size: 0.78rem; }
+	.breadcrumbs a { color: inherit; text-decoration: none; }
+	.post-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem 1rem; margin-bottom: 0.85rem; color: var(--color-text-soft); font-size: 0.78rem; }
+	.post-header h1 { margin-bottom: 1rem; font-size: clamp(2.5rem, 6.5vw, 4.8rem); }
+	.description { max-width: 43rem; margin: 0 auto; color: var(--color-text-muted); font-size: clamp(1.02rem, 2vw, 1.16rem); }
+	.post-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
+	.post-tags li { padding: 0.22rem 0.52rem; background: var(--color-accent-soft); border-radius: 99px; color: var(--color-accent-hover); font-size: 0.7rem; font-weight: 700; }
+	.hero-image { margin: 0 0 clamp(3rem, 7vw, 5rem); }
+	.hero-image :global(img) { display: block; width: 100%; max-height: 36rem; object-fit: cover; border: 1px solid var(--color-border); border-radius: var(--radius-xlarge); box-shadow: var(--shadow-medium); }
+	.article-body { width: min(var(--reading-width), 100%); margin: 0 auto; color: #303a4d; font-size: 1.02rem; }
+	.article-body :global(p) { margin-bottom: 1.55rem; }
+	.article-body :global(h2) { margin-top: 3.25rem; margin-bottom: 1rem; font-size: clamp(1.65rem, 3.2vw, 2.2rem); }
+	.article-body :global(h3) { margin-top: 2.3rem; margin-bottom: 0.8rem; }
+	.article-body :global(h4) { margin-top: 1.8rem; }
+	.article-body :global(ul), .article-body :global(ol) { margin: 0 0 1.6rem; padding-left: 1.4rem; }
+	.article-body :global(li + li) { margin-top: 0.45rem; }
+	.article-body :global(a) { font-weight: 600; }
+	.article-body :global(img) { display: block; width: auto; max-width: 100%; margin: 2rem auto; border: 1px solid var(--color-border); border-radius: var(--radius-medium); box-shadow: var(--shadow-small); }
+	.article-body :global(table) { display: table; margin: 2rem 0; font-size: 0.9rem; }
+	.article-body :global(th), .article-body :global(td) { padding: 0.65rem 0.75rem; border: 1px solid var(--color-border); text-align: left; }
+	.article-body :global(th) { background: var(--color-surface-muted); }
+	.article-body :global(blockquote p:last-child) { margin-bottom: 0; }
+	@media (max-width: 760px) {
+		.post-main { width: min(1080px, calc(100% - 1.5rem)); }
+		.post-header { text-align: left; }
+		.breadcrumbs, .post-meta, .post-tags { justify-content: flex-start; }
+		.hero-image :global(img) { border-radius: var(--radius-large); }
+		.article-body { font-size: 1rem; }
+		.article-body :global(table) { display: block; overflow-x: auto; }
 	}
 </style>

@@ -1,4 +1,4 @@
-﻿---
+---
 import { SITE_TITLE } from '../consts';
 
 const year = new Date().getFullYear();
@@ -8,43 +8,31 @@ const year = new Date().getFullYear();
 	<div class="footer-inner">
 		<div class="footer-brand">
 			<a href="/">{SITE_TITLE}</a>
-			<p>整理个人项目、游戏工具、文章和使用说明。</p>
+			<p>个人制作的 Windows 软件、游戏工具、浏览器脚本和实用文章。</p>
 		</div>
 		<nav aria-label="页脚导航">
-			<p>站内导航</p>
-			<a href="/">首页</a>
-			<a href="/blog/">文章</a>
-			<a href="/tools/">游戏工具箱</a>
 			<a href="/projects/">项目</a>
+			<a href="/tools/">游戏</a>
+			<a href="/blog/">博客</a>
 			<a href="/about/">关于</a>
 		</nav>
 		<div class="footer-links">
-			<p>源码与反馈</p>
-			<a href="https://github.com/yundan125" target="_blank" rel="noopener noreferrer">
-				GitHub 主页<span class="sr-only">（在新窗口打开）</span>
-			</a>
-			<a
-				href="https://github.com/yundan125/269332-site"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				网站源码<span class="sr-only">（在新窗口打开）</span>
-			</a>
-			<span>项目问题请前往对应仓库</span>
+			<a href="/rss.xml">RSS</a>
+			<a href="https://github.com/yundan125" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only">（在新窗口打开）</span></a>
 		</div>
 	</div>
 	<div class="footer-bottom">
 		<p>&copy; {year} {SITE_TITLE}</p>
-		<p>个人网站 · 内容随项目与文章更新</p>
+		<p>项目下载与反馈以对应页面中的链接为准。</p>
 	</div>
 </footer>
 
 <style>
 	.site-footer {
-		margin-top: 2rem;
-		padding: 3.5rem 1rem 2rem;
-		background: #101923;
-		color: #bdc8d5;
+		margin-top: 1rem;
+		padding: 4rem 1rem 2rem;
+		background: #171c2b;
+		color: #aeb7ca;
 	}
 	.footer-inner,
 	.footer-bottom {
@@ -53,65 +41,53 @@ const year = new Date().getFullYear();
 	}
 	.footer-inner {
 		display: grid;
-		grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(10rem, 0.75fr));
-		gap: 2rem;
-		padding-bottom: 2.5rem;
+		grid-template-columns: minmax(0, 1.4fr) auto auto;
+		align-items: start;
+		gap: clamp(2rem, 6vw, 5rem);
+		padding-bottom: 3rem;
+	}
+	.footer-brand {
+		max-width: 31rem;
 	}
 	.footer-brand > a {
-		color: white;
-		font-size: 1.25rem;
+		color: #fff;
+		font-size: 1.2rem;
 		font-weight: 700;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.04em;
 		text-decoration: none;
 	}
 	.footer-brand p {
-		max-width: 24rem;
 		margin: 0.75rem 0 0;
 	}
 	nav,
 	.footer-links {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 0.55rem;
-	}
-	nav p,
-	.footer-links p {
-		margin: 0 0 0.25rem;
-		color: white;
-		font-size: 0.8rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
+		display: grid;
+		gap: 0.6rem;
 	}
 	nav a,
 	.footer-links a {
-		color: #bdc8d5;
-		overflow-wrap: anywhere;
+		color: #c2c9d8;
+		font-size: 0.88rem;
 		text-decoration: none;
 	}
 	nav a:hover,
 	.footer-links a:hover {
-		color: white;
-	}
-	.footer-links span,
-	nav a,
-	.footer-links a {
-		font-size: 0.88rem;
+		color: #fff;
 	}
 	.footer-bottom {
 		display: flex;
 		justify-content: space-between;
 		gap: 1rem;
-		padding-top: 1.25rem;
-		border-top: 1px solid rgba(255, 255, 255, 0.12);
+		padding-top: 1.4rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.11);
 		font-size: 0.78rem;
 	}
 	.footer-bottom p {
 		margin: 0;
 	}
-	@media (max-width: 720px) {
+	@media (max-width: 680px) {
 		.site-footer {
-			padding-top: 2.5rem;
+			padding-top: 3rem;
 		}
 		.footer-inner {
 			grid-template-columns: repeat(2, minmax(0, 1fr));

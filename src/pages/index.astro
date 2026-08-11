@@ -1,14 +1,27 @@
 ---
+import CategoryBrowse from '../components/home/CategoryBrowse.astro';
 import FeaturedCatalog from '../components/home/FeaturedCatalog.astro';
-import FocusAreas from '../components/home/FocusAreas.astro';
 import HomeHero from '../components/home/HomeHero.astro';
-import HomeOverview from '../components/home/HomeOverview.astro';
-import ContentUpdates from '../components/home/ContentUpdates.astro';
+import LatestPosts from '../components/home/LatestPosts.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { gameTools, projects } from '../data/catalog';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../utils/posts';
 
-const featuredProjects = projects.slice(0, 6);
+const pickProject = (id: string) => projects.find((project) => project.id === id)!;
+
+const heroItems = [
+	pickProject('cloudlight-automator'),
+	pickProject('cloudlight-codex-bridge'),
+	pickProject('heybox-post-exporter'),
+];
+const featuredProjects = [
+	pickProject('cloudlight-overwatch-youtube-watcher'),
+	pickProject('twitter-x-media-renamer'),
+	pickProject('heybox-post-exporter'),
+];
+const directUseItems = [...gameTools, pickProject('heybox-post-export-userscript')];
+const latestPosts = (await getPublishedPosts()).slice(0, 3);
 
 const websiteSchema = {
 	'@context': 'https://schema.org',
@@ -19,54 +32,41 @@ const websiteSchema = {
 };
 ---
 
-<BaseLayout title="CloudLight · 项目、游戏工具与文章" description={SITE_DESCRIPTION}>
-	<script
-		slot="head"
-		is:inline
-		type="application/ld+json"
-		set:html={JSON.stringify(websiteSchema)}
-	></script>
+<BaseLayout title="CloudLight · 实用软件、网页工具与博客" description={SITE_DESCRIPTION}>
+	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
 	<main class="home">
-		<HomeHero projectsCount={projects.length} gameToolsCount={gameTools.length} />
-		<HomeOverview projectsCount={projects.length} gameToolsCount={gameTools.length} />
+		<HomeHero items={heroItems} />
+
 		<FeaturedCatalog
 			id="featured-projects"
-			eyebrow="精选项目"
-			title="正在维护的项目"
-			description="从桌面自动化、系统工具到直播辅助和源码补丁，这些项目都来自实际需求。页面中可以查看用途、下载方式和使用说明。"
+			label="精选项目"
+			title="先看看这些实用工具"
+			description="每个项目都写清楚了用途、适合的场景、使用步骤和获取方式。"
 			items={featuredProjects}
 			allHref="/projects/"
-			allLabel="查看全部项目"
+			allLabel="浏览全部项目"
 		/>
+
 		<FeaturedCatalog
-			id="featured-game-tools"
-			eyebrow="游戏工具箱"
-			title="游戏相关网页工具"
-			description="收录我制作的游戏相关网页工具，包括游戏数据可视化、趣味测试和实用辅助功能。"
-			items={gameTools}
+			id="direct-use"
+			label="直接使用"
+			title="不用下载安装的工具"
+			description="打开在线工具即可开始；浏览器脚本会跳转到安装页面。"
+			items={directUseItems}
 			allHref="/tools/"
-			allLabel="查看游戏工具箱"
+			allLabel="查看游戏工具"
 		/>
-		<FocusAreas />
-		<ContentUpdates />
-		<section class="about-callout" aria-labelledby="about-callout-title">
+
+		<CategoryBrowse items={projects} />
+		{latestPosts.length > 0 && <LatestPosts posts={latestPosts} />}
+
+		<section class="about-strip" aria-labelledby="about-strip-title">
 			<div>
-				<p class="eyebrow">关于本站</p>
-				<h2 id="about-callout-title">了解这个网站</h2>
-				<p>这里集中介绍网站收录的项目、游戏工具、文章、使用说明和反馈入口。</p>
+				<p class="eyebrow">关于 CloudLight</p>
+				<h2 id="about-strip-title">一个持续整理中的个人网站</h2>
+				<p>这里的工具来自实际使用需求。项目页面负责把用途和用法说清楚，博客记录更完整的问题处理过程。</p>
 			</div>
-			<div class="callout-actions">
-				<a class="button button-primary" href="/about/">关于本站</a>
-				<a
-					class="button button-secondary"
-					href="https://github.com/yundan125"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					GitHub <span aria-hidden="true">↗</span>
-					<span class="sr-only">（在新窗口打开）</span>
-				</a>
-			</div>
+			<a class="button button-secondary" href="/about/">了解更多</a>
 		</section>
 	</main>
 </BaseLayout>
@@ -75,47 +75,30 @@ const websiteSchema = {
 	.home {
 		width: min(var(--content-width), calc(100% - 2rem));
 		max-width: none;
-		padding: 0 0 clamp(4rem, 8vw, 7rem);
+		padding: 0 0 clamp(5rem, 9vw, 8rem);
 	}
-	.about-callout {
+	.about-strip {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 2rem;
 		margin-top: var(--section-space);
 		padding: clamp(1.75rem, 4vw, 2.75rem);
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-large);
-		box-shadow: var(--shadow-small);
+		background: linear-gradient(125deg, #1c2235, #242b43);
+		border-radius: var(--radius-xlarge);
+		box-shadow: var(--shadow-medium);
+		color: #bfc8d9;
 	}
-	.about-callout > div:first-child {
-		max-width: 42rem;
+	.about-strip > div { max-width: 46rem; }
+	.about-strip h2 { color: #fff; }
+	.about-strip p:last-child { margin: 0; }
+	.about-strip .eyebrow { color: #aeb0ff; }
+	.about-strip .button { flex: 0 0 auto; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #fff; }
+	.about-strip .button:hover { background: #fff; color: var(--color-text); }
+	@media (max-width: 760px) {
+		.home { width: min(var(--content-width), calc(100% - 1.5rem)); }
+		.about-strip { display: block; }
+		.about-strip .button { margin-top: 1.25rem; }
 	}
-	.about-callout p:last-child {
-		margin: 0;
-		color: var(--color-text-muted);
-	}
-	.callout-actions {
-		display: flex;
-		flex: 0 0 auto;
-		gap: 0.75rem;
-	}
-	@media (max-width: 720px) {
-		.home {
-			width: min(var(--content-width), calc(100% - 1.5rem));
-		}
-		.about-callout {
-			display: block;
-		}
-		.callout-actions {
-			flex-wrap: wrap;
-			margin-top: 1.5rem;
-		}
-	}
-	@media (max-width: 420px) {
-		.callout-actions .button {
-			width: 100%;
-		}
-	}
+	@media (max-width: 420px) { .about-strip .button { width: 100%; } }
 </style>

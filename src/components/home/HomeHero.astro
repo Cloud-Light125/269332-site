@@ -1,217 +1,185 @@
 ---
+import { Image } from 'astro:assets';
+import { kindLabels, type CatalogItem } from '../../data/catalog';
+
 interface Props {
-	projectsCount: number;
-	gameToolsCount: number;
+	items: CatalogItem[];
 }
 
-const { projectsCount, gameToolsCount } = Astro.props;
+const { items } = Astro.props;
 ---
 
 <section class="home-hero" aria-labelledby="home-title">
 	<div class="hero-copy">
-		<p class="eyebrow">个人开发空间</p>
-		<h1 id="home-title">把想法做成<br />可以使用的东西</h1>
+		<p class="eyebrow">CloudLight 个人工具箱</p>
+		<h1 id="home-title">好用的小工具，解决具体的小麻烦。</h1>
 		<p class="hero-intro">
-			这里收录 Windows 桌面项目、Steam 游戏数据可视化与守望先锋互动工具，也整理 Windows 使用经验、问题处理方法和实际开发记录。
+			这里有 Windows 软件、游戏与网页工具、浏览器脚本，以及把问题讲清楚的博客和教程。
 		</p>
 		<div class="hero-actions">
-			<a class="button button-primary" href="/projects/">查看项目</a>
-			<a class="button button-secondary" href="/tools/">打开游戏工具箱</a>
-			<a
-				class="text-link"
-				href="https://github.com/yundan125"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				GitHub <span aria-hidden="true">↗</span>
-				<span class="sr-only">（在新窗口打开）</span>
-			</a>
+			<a class="button button-primary" href="/projects/">浏览项目 <span aria-hidden="true">→</span></a>
+			<a class="button button-secondary" href="/blog/">查看博客</a>
 		</div>
+		<ul class="content-kinds" aria-label="网站内容类型">
+			<li>Windows 工具</li><li>游戏工具</li><li>网页工具</li><li>浏览器脚本</li>
+		</ul>
 	</div>
-	<div class="hero-visual" aria-hidden="true">
-		<div class="window-bar">
-			<span></span><span></span><span></span>
-			<small>269332.xyz / CloudLight</small>
+
+	<div class="hero-showcase" aria-label="推荐入口">
+		<div class="showcase-heading">
+			<div><span aria-hidden="true"></span> 推荐入口</div>
+			<small>现在就能打开</small>
 		</div>
-		<div class="window-body">
-			<div class="visual-heading">
-				<span>网站内容</span>
-				<strong>项目、工具与使用记录</strong>
-			</div>
-			<div class="module-grid">
-				<div>
-					<span>01 / 游戏工具</span>
-					<strong>{gameToolsCount} 个</strong>
-					<small>可直接打开使用</small>
-				</div>
-				<div>
-					<span>02 / 软件项目</span>
-					<strong>{projectsCount} 个</strong>
-					<small>下载与详细说明</small>
-				</div>
-				<div>
-					<span>03 / 内容说明</span>
-					<strong>使用记录</strong>
-					<small>安装、权限与注意事项</small>
-				</div>
-				<div class="signature">
-					<span>个人开发空间</span>
-					<strong>CloudLight</strong>
-					<small>269332.xyz</small>
-				</div>
-			</div>
-			<div class="status-line"><span></span> 项目说明与下载入口持续更新</div>
+		<div class="showcase-list">
+			{items.map((item) => (
+				<a
+					class:list={['showcase-item', `accent-${item.accent}`]}
+					href={item.detailsPath ?? item.primaryAction.href}
+					target={!item.detailsPath && item.primaryAction.external ? '_blank' : undefined}
+					rel={!item.detailsPath && item.primaryAction.external ? 'noopener noreferrer' : undefined}
+				>
+					<span class="showcase-icon" aria-hidden="true">
+						{item.icon ? <Image src={item.icon} alt="" widths={[42, 84]} sizes="42px" /> : item.kind === 'userscript' ? '//' : '↗'}
+					</span>
+					<span class="showcase-copy">
+						<small>{kindLabels[item.kind]}</small>
+						<strong>{item.name}</strong>
+						<span>{item.summary}</span>
+					</span>
+					<i aria-hidden="true">→</i>
+				</a>
+			))}
 		</div>
+		<div class="showcase-foot">所有项目都提供明确的下载、使用或安装入口。</div>
 	</div>
 </section>
 
 <style>
 	.home-hero {
 		display: grid;
-		grid-template-columns: minmax(0, 1.08fr) minmax(22rem, 0.92fr);
+		grid-template-columns: minmax(0, 1.05fr) minmax(25rem, 0.95fr);
 		align-items: center;
-		gap: clamp(2.5rem, 7vw, 6rem);
-		min-height: min(44rem, calc(100vh - 4.5rem));
-		padding: clamp(4rem, 9vw, 7.5rem) 0;
+		gap: clamp(2.5rem, 7vw, 6.5rem);
+		min-height: min(46rem, calc(100vh - 4.6rem));
+		padding: clamp(4.5rem, 9vw, 8rem) 0;
 	}
-	.hero-copy {
-		min-width: 0;
-	}
+	.hero-copy { min-width: 0; }
 	h1 {
 		max-width: 11ch;
-		margin-bottom: 1.35rem;
+		margin-bottom: 1.4rem;
+		font-size: clamp(2.9rem, 7vw, 5.4rem);
+		letter-spacing: -0.055em;
 	}
 	.hero-intro {
-		max-width: 36rem;
+		max-width: 35rem;
 		color: var(--color-text-muted);
-		font-size: clamp(1.05rem, 2vw, 1.2rem);
+		font-size: clamp(1.08rem, 2vw, 1.24rem);
+		line-height: 1.68;
 	}
 	.hero-actions {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
 		gap: 0.75rem;
 		margin-top: 2rem;
 	}
-	.text-link {
-		padding: 0.6rem 0.4rem;
-		font-size: 0.9rem;
-		font-weight: 700;
-		text-decoration: none;
+	.content-kinds {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45rem 1rem;
+		margin: 2rem 0 0;
+		padding: 1.2rem 0 0;
+		border-top: 1px solid var(--color-border);
+		color: var(--color-text-muted);
+		font-size: 0.78rem;
+		list-style: none;
 	}
-	.hero-visual {
+	.content-kinds li::before {
+		margin-right: 0.45rem;
+		color: var(--color-accent);
+		content: '•';
+	}
+	.hero-showcase {
 		min-width: 0;
-		overflow: hidden;
-		background: #111b27;
-		border: 1px solid rgba(255, 255, 255, 0.12);
-		border-radius: var(--radius-large);
+		padding: 1rem;
+		background: rgba(255, 255, 255, 0.82);
+		border: 1px solid rgba(203, 211, 225, 0.9);
+		border-radius: var(--radius-xlarge);
 		box-shadow: var(--shadow-medium);
-		
+		backdrop-filter: blur(12px);
 	}
-	.window-bar {
+	.showcase-heading {
 		display: flex;
 		align-items: center;
-		gap: 0.4rem;
-		padding: 0.8rem 1rem;
-		background: rgba(255, 255, 255, 0.05);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.09);
-	}
-	.window-bar > span {
-		width: 0.55rem;
-		height: 0.55rem;
-		background: #607086;
-		border-radius: 50%;
-	}
-	.window-bar small {
-		margin-left: auto;
-		color: #93a3b7;
-		font-size: 0.68rem;
-		letter-spacing: 0.06em;
-	}
-	.window-body {
-		padding: clamp(1.25rem, 4vw, 2rem);
-	}
-	.visual-heading {
-		display: grid;
-		gap: 0.3rem;
-	}
-	.visual-heading span {
-		color: #6e87a4;
-		font-size: 0.65rem;
-		letter-spacing: 0.12em;
-	}
-	.visual-heading strong {
-		color: #dbe7f5;
-		font-size: clamp(1rem, 2vw, 1.2rem);
-	}
-	.module-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 0.75rem;
-		margin: 2rem 0;
-	}
-	.module-grid > div {
-		display: flex;
-		flex-direction: column;
 		justify-content: space-between;
-		min-height: 7rem;
-		padding: 0.9rem;
-		background: rgba(255, 255, 255, 0.04);
-		border: 1px solid rgba(255, 255, 255, 0.11);
-		border-radius: var(--radius-medium);
-		color: #dbe7f5;
+		gap: 1rem;
+		padding: 0.35rem 0.45rem 0.9rem;
+		color: var(--color-text);
+		font-size: 0.82rem;
+		font-weight: 700;
 	}
-	.module-grid span,
-	.module-grid small {
-		color: #6e87a4;
-		font-size: 0.65rem;
-	}
-	.module-grid strong {
-		font-size: clamp(1.05rem, 3vw, 1.45rem);
-		letter-spacing: 0.01em;
-	}
-	.module-grid .signature {
-		background: #e7f0fb;
-		color: #19477f;
-	}
-	.module-grid .signature span,
-	.module-grid .signature small {
-		color: #55708f;
-	}
-	.status-line {
-		color: #8294a9;
-		font-size: 0.63rem;
-		letter-spacing: 0.09em;
-	}
-	.status-line span {
-		display: inline-block;
-		width: 0.45rem;
-		height: 0.45rem;
-		margin-right: 0.4rem;
-		background: #55a77b;
+	.showcase-heading div { display: flex; align-items: center; gap: 0.5rem; }
+	.showcase-heading div span {
+		width: 0.48rem;
+		height: 0.48rem;
+		background: #27a274;
 		border-radius: 50%;
+		box-shadow: 0 0 0 4px rgba(39, 162, 116, 0.12);
 	}
-	@media (max-width: 860px) {
-		.home-hero {
-			grid-template-columns: 1fr;
-			min-height: 0;
-		}
-		.hero-visual {
-			width: min(34rem, 100%);
-			transform: none;
-		}
+	.showcase-heading small { color: var(--color-text-soft); font-weight: 400; }
+	.showcase-list { display: grid; gap: 0.65rem; }
+	.showcase-item {
+		--item-accent: var(--color-accent);
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 0.85rem;
+		padding: 0.85rem;
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-medium);
+		color: inherit;
+		text-decoration: none;
 	}
-	@media (max-width: 480px) {
-		.home-hero {
-			padding-top: 3.5rem;
-		}
-		.hero-actions .button {
-			flex: 1 1 9rem;
-		}
+	.showcase-item:hover {
+		border-color: color-mix(in srgb, var(--item-accent) 45%, var(--color-border));
+		box-shadow: var(--shadow-small);
+		transform: translateX(3px);
+	}
+	.showcase-item.accent-cyan { --item-accent: #238f91; }
+	.showcase-item.accent-violet { --item-accent: #7b55d9; }
+	.showcase-item.accent-amber { --item-accent: #c47a20; }
+	.showcase-icon {
+		display: grid;
+		width: 2.75rem;
+		height: 2.75rem;
+		place-items: center;
+		padding: 0.28rem;
+		background: color-mix(in srgb, var(--item-accent) 10%, white);
+		border-radius: 0.75rem;
+		color: var(--item-accent);
+		font-family: Consolas, monospace;
+		font-weight: 700;
+	}
+	.showcase-icon :global(img) { width: 100%; height: 100%; object-fit: contain; }
+	.showcase-copy { display: grid; min-width: 0; }
+	.showcase-copy small { color: var(--item-accent); font-size: 0.66rem; font-weight: 700; }
+	.showcase-copy strong { color: var(--color-text); font-size: 0.92rem; line-height: 1.35; }
+	.showcase-copy > span { margin-top: 0.18rem; color: var(--color-text-muted); font-size: 0.72rem; line-height: 1.42; }
+	.showcase-item > i { color: var(--color-text-soft); font-style: normal; }
+	.showcase-foot { padding: 0.9rem 0.45rem 0.2rem; color: var(--color-text-soft); font-size: 0.72rem; }
+	@media (max-width: 920px) {
+		.home-hero { grid-template-columns: 1fr; min-height: 0; }
+		.hero-copy { max-width: 45rem; }
+		.hero-showcase { width: min(38rem, 100%); }
+	}
+	@media (max-width: 520px) {
+		.home-hero { padding-top: 3.75rem; }
+		h1 { font-size: clamp(2.65rem, 15vw, 4rem); }
+		.hero-actions .button { flex: 1 1 9rem; }
+		.showcase-copy > span { display: none; }
+		.showcase-item { padding: 0.75rem; }
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.hero-visual {
-			transform: none;
-		}
+		.showcase-item:hover { transform: none; }
 	}
 </style>

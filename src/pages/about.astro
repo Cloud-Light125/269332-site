@@ -1,339 +1,73 @@
-﻿---
+---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout
-	title="关于这个网站 · CloudLight"
-	description="了解 CloudLight 网站收录的项目、游戏工具、文章、使用说明以及源码与反馈方式。"
->
+<BaseLayout title="关于 · CloudLight" description="了解 CloudLight 个人网站、站内内容和项目反馈方式。">
 	<main class="about-page">
 		<header class="about-hero">
-			<p class="eyebrow">关于</p>
-			<h1>关于这个网站</h1>
-			<p class="lead">CloudLight 用来集中整理个人项目、游戏工具、文章和对应的使用说明。</p>
-			<p>
-				这里会说明项目和工具解决什么问题、如何下载和使用，也会整理 Windows 使用经验、问题处理方法以及实际开发记录。
-			</p>
-			<nav aria-label="本页内容">
-				<a href="#content">网站内容</a>
-				<a href="#project-info">内容说明</a>
-				<a href="#source">源码与反馈</a>
-			</nav>
+			<div>
+				<p class="eyebrow">关于</p>
+				<h1>这里是 CloudLight</h1>
+				<p class="lead">一个用来发布个人软件、网页工具和博客的网站。</p>
+				<p>我会把已经能用的项目放在这里，并尽量把“它解决什么问题、怎么开始、有哪些限制”说明白。项目源码和反馈入口仍然放在 GitHub。</p>
+			</div>
+			<div class="about-card" aria-label="网站内容摘要">
+				<span>269332.xyz</span>
+				<strong>软件 · 工具 · 博客</strong>
+				<ul><li>Windows 桌面软件</li><li>游戏网页工具</li><li>浏览器脚本</li><li>使用经验与教程</li></ul>
+			</div>
 		</header>
 
-		<section id="content" aria-labelledby="content-title">
-			<p class="eyebrow">内容方向</p>
-			<h2 id="content-title">网站内容</h2>
+		<section class="content-section" aria-labelledby="content-title">
+			<div class="section-heading"><p class="eyebrow">网站内容</p><h2 id="content-title">你可以在这里找到什么</h2></div>
 			<div class="content-grid">
-				<article>
-					<h3>Windows 软件、系统工具与使用经验</h3>
-					<p>整理电源设置、网络控制和 Windows 系统功能相关的桌面项目，也记录 Windows 使用经验和问题处理方法。</p>
-				</article>
-				<article>
-					<h3>游戏工具箱</h3>
-					<p>收录 Steam 数据展示、守望先锋趣味工具、赛事预测和其他游戏相关网页。</p>
-				</article>
-				<article>
-					<h3>项目说明、文章与使用指南</h3>
-					<p>整理项目用途、功能范围、下载方式和使用步骤，并通过文章记录问题原因、处理过程和实际经验。</p>
-				</article>
-				<article>
-					<h3>游戏、电竞与开发记录</h3>
-					<p>围绕赛事预测、数据展示和游戏内容制作可直接使用的交互页面，同时记录相关实现过程和开发经验。</p>
-				</article>
+				<article><span aria-hidden="true">01</span><h3>可下载的软件</h3><p>Windows 系统工具、桌面自动化和游戏直播辅助软件。项目页提供截图、主要功能、使用步骤和下载入口。</p><a href="/projects/">浏览项目 <span aria-hidden="true">→</span></a></article>
+				<article><span aria-hidden="true">02</span><h3>打开就能用的网页</h3><p>Steam 游玩时光全景图和守望先锋看图猜英雄，不需要下载安装。</p><a href="/tools/">打开游戏工具 <span aria-hidden="true">→</span></a></article>
+				<article><span aria-hidden="true">03</span><h3>解决问题的文章</h3><p>记录实际遇到的问题、用过的处理方法，以及需要进一步说明的项目内容。</p><a href="/blog/">阅读博客 <span aria-hidden="true">→</span></a></article>
 			</div>
-			<p class="content-note">
-				<a href="/blog/">文章页面</a>会持续整理 Windows 使用经验、问题处理方法和实际开发记录。
-			</p>
 		</section>
 
-		<section id="project-info" aria-labelledby="project-info-title">
-			<p class="eyebrow">内容说明</p>
-			<h2 id="project-info-title">在项目和文章页面可以看到什么</h2>
-			<ul class="guide-list">
-				<li>
-					<span>01</span>
-					<div>
-						<h3>项目用途与文章主题</h3>
-						<p>说明项目解决什么问题、适合哪些使用场景，以及文章主要记录的问题和经验。</p>
-					</div>
-				</li>
-				<li>
-					<span>02</span>
-					<div>
-						<h3>主要功能与核心内容</h3>
-						<p>概括项目当前已经实现的功能，并说明文章所记录的处理方法和关键内容。</p>
-					</div>
-				</li>
-				<li>
-					<span>03</span>
-					<div>
-						<h3>下载与相关入口</h3>
-						<p>提供项目的 GitHub 下载入口、源码地址，以及文章中涉及的必要参考入口。</p>
-					</div>
-				</li>
-				<li>
-					<span>04</span>
-					<div>
-						<h3>使用方法与操作步骤</h3>
-						<p>整理项目的下载、启动、配置和基本操作步骤，也记录文章中经过验证的处理流程。</p>
-					</div>
-				</li>
-				<li>
-					<span>05</span>
-					<div>
-						<h3>限制、风险与注意事项</h3>
-						<p>说明系统要求、兼容性、已知限制，以及项目使用或文章操作过程中需要注意的问题。</p>
-					</div>
-				</li>
-				<li>
-					<span>06</span>
-					<div>
-						<h3>源码、参考与反馈</h3>
-						<p>提供项目仓库和相关参考信息，方便查看更新记录、核对内容和反馈问题。</p>
-					</div>
-				</li>
-			</ul>
-		</section>
-
-		<section id="source" aria-labelledby="source-title">
-			<p class="eyebrow">GitHub</p>
-			<h2 id="source-title">源码与反馈</h2>
-			<div class="source-intro">
-				<p>网站源码和公开项目均可在 GitHub 查看，可以通过仓库了解具体实现和最近更新。</p>
-				<p>发现页面错误、失效链接或项目问题时，请优先前往对应仓库查看说明和反馈渠道。</p>
-			</div>
+		<section class="source-section" aria-labelledby="source-title">
+			<div><p class="eyebrow">源码与反馈</p><h2 id="source-title">在 GitHub 查看与反馈</h2><p>公开项目的源码、版本记录和问题反馈都在对应仓库。发现页面链接失效或内容不准确，也可以通过网站仓库反馈。</p></div>
 			<div class="source-links">
-				<a
-					class="source-card"
-					href="https://github.com/yundan125/269332-site"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<span>网站源码</span>
-					<strong>yundan125/269332-site</strong>
-					<p>查看主站源码和更新记录</p>
-					<small>打开网站仓库 <span aria-hidden="true">↗</span></small>
-					<span class="sr-only">（在新窗口打开）</span>
-				</a>
-				<a
-					class="source-card"
-					href="https://github.com/yundan125"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<span>GitHub 主页</span>
-					<strong>github.com/yundan125</strong>
-					<p>查看公开项目和源码仓库</p>
-					<small>打开 GitHub 主页 <span aria-hidden="true">↗</span></small>
-					<span class="sr-only">（在新窗口打开）</span>
-				</a>
+				<a href="https://github.com/yundan125" target="_blank" rel="noopener noreferrer"><span>全部公开项目</span><strong>GitHub 主页</strong><small>打开 <i aria-hidden="true">↗</i></small><span class="sr-only">（在新窗口打开）</span></a>
+				<a href="https://github.com/yundan125/269332-site" target="_blank" rel="noopener noreferrer"><span>这个网站</span><strong>网站源码</strong><small>打开 <i aria-hidden="true">↗</i></small><span class="sr-only">（在新窗口打开）</span></a>
 			</div>
 		</section>
-
-		<aside class="site-note" aria-labelledby="site-note-title">
-			<h2 id="site-note-title">站点说明</h2>
-			<ul>
-				<li>本站内容以实际公开项目、工具和已经发布的文章为准。</li>
-				<li>项目下载、使用限制和许可证以对应 GitHub 仓库为准。</li>
-				<li>发现页面错误、描述不准确或链接失效时，可以前往对应仓库反馈。</li>
-			</ul>
-		</aside>
 	</main>
 </BaseLayout>
 
 <style>
-	.about-page {
-		width: min(960px, calc(100% - 2rem));
-		max-width: none;
-	}
-	.about-hero {
-		max-width: 780px;
-		padding-bottom: clamp(3rem, 7vw, 5rem);
-	}
-	.about-hero h1 {
-		margin-bottom: 1.25rem;
-	}
-	.about-hero .lead {
-		color: var(--color-text);
-		font-size: clamp(1.18rem, 2.5vw, 1.4rem);
-		font-weight: 700;
-		line-height: 1.55;
-	}
-	.about-hero > p:not(.eyebrow) {
-		max-width: 44rem;
-	}
-	.about-hero nav {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.55rem;
-		margin-top: 2rem;
-	}
-	.about-hero nav a {
-		padding: 0.35rem 0.65rem;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-small);
-		color: var(--color-text-muted);
-		font-size: 0.78rem;
-		font-weight: 700;
-		text-decoration: none;
-	}
-	.about-page > section {
-		padding: clamp(3rem, 7vw, 5rem) 0;
-		border-top: 1px solid var(--color-border);
-		scroll-margin-top: 6rem;
-	}
-	.content-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1rem;
-		margin-top: 2rem;
-	}
-	.content-grid article {
-		padding: 1.35rem;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-medium);
-	}
-	.content-grid h3 {
-		font-size: 1.08rem;
-	}
-	.content-grid p,
-	.content-note {
-		margin: 0;
-		color: var(--color-text-muted);
-		font-size: 0.88rem;
-	}
-	.content-note {
-		margin-top: 1rem;
-		padding: 0.85rem 1rem;
-		background: var(--color-accent-soft);
-		border-radius: var(--radius-small);
-		color: var(--color-accent-hover);
-	}
-	.guide-list {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		margin: 2rem 0 0;
-		padding: 0;
-		border-top: 1px solid var(--color-border);
-		list-style: none;
-	}
-	.guide-list li {
-		display: grid;
-		grid-template-columns: 2.25rem minmax(0, 1fr);
-		gap: 0.8rem;
-		padding: 1.1rem 0;
-		border-bottom: 1px solid var(--color-border);
-	}
-	.guide-list li:nth-child(odd) {
-		padding-right: 1.5rem;
-	}
-	.guide-list li:nth-child(even) {
-		padding-left: 1.5rem;
-		border-left: 1px solid var(--color-border);
-	}
-	.guide-list > li > span {
-		color: var(--color-accent);
-		font-size: 0.7rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-	}
-	.guide-list h3 {
-		margin-bottom: 0.35rem;
-		font-size: 1rem;
-	}
-	.guide-list p {
-		margin: 0;
-		color: var(--color-text-muted);
-		font-size: 0.85rem;
-	}
-	.source-intro {
-		max-width: 44rem;
-		color: var(--color-text-muted);
-	}
-	.source-intro p:last-child {
-		margin-bottom: 0;
-	}
-	.source-links {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1rem;
-		margin-top: 2rem;
-	}
-	.source-card {
-		display: flex;
-		min-width: 0;
-		padding: 1.35rem;
-		flex-direction: column;
-		background: var(--color-surface);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-medium);
-		color: var(--color-text);
-		text-decoration: none;
-	}
-	.source-card:hover {
-		border-color: var(--color-accent);
-		box-shadow: var(--shadow-small);
-		transform: translateY(-2px);
-	}
-	.source-card > span:first-child,
-	.source-card small {
-		color: var(--color-text-muted);
-		font-size: 0.72rem;
-	}
-	.source-card strong {
-		margin: 0.25rem 0 0.5rem;
-		overflow-wrap: anywhere;
-	}
-	.source-card p {
-		margin: 0 0 1.5rem;
-		color: var(--color-text-muted);
-		font-size: 0.85rem;
-	}
-	.source-card small {
-		margin-top: auto;
-		color: var(--color-accent);
-		font-weight: 700;
-	}
-	.site-note {
-		padding: 1.5rem;
-		background: #152130;
-		border-radius: var(--radius-medium);
-		color: #bdc8d5;
-	}
-	.site-note h2 {
-		color: white;
-		font-size: 1.1rem;
-	}
-	.site-note ul {
-		margin: 0;
-		padding-left: 1.2rem;
-		font-size: 0.85rem;
-	}
-	.site-note li + li {
-		margin-top: 0.45rem;
-	}
-	@media (max-width: 720px) {
-		.about-page {
-			width: min(960px, calc(100% - 1.5rem));
-		}
-		.content-grid,
-		.guide-list,
-		.source-links {
-			grid-template-columns: 1fr;
-		}
-		.guide-list li:nth-child(odd),
-		.guide-list li:nth-child(even) {
-			padding-right: 0;
-			padding-left: 0;
-			border-left: 0;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.source-card:hover {
-			transform: none;
-		}
-	}
+	.about-page { width: min(var(--content-width), calc(100% - 2rem)); max-width: none; }
+	.about-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.55fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); padding-bottom: var(--section-space); }
+	.about-hero > div:first-child { max-width: 49rem; }
+	.about-hero h1 { margin-bottom: 1rem; }
+	.lead { color: var(--color-text); font-size: clamp(1.25rem, 2.8vw, 1.55rem); font-weight: 700; line-height: 1.5; }
+	.about-hero > div:first-child > p:last-child { margin: 0; color: var(--color-text-muted); }
+	.about-card { display: flex; min-height: 20rem; padding: 1.5rem; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #1b2233, #283249); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-xlarge); box-shadow: var(--shadow-medium); color: #fff; }
+	.about-card > span { color: #a9b3c7; font-size: 0.72rem; letter-spacing: 0.08em; }
+	.about-card strong { font-size: clamp(1.5rem, 3vw, 2.15rem); line-height: 1.15; }
+	.about-card ul { margin: 0; padding: 0; color: #c5cddb; font-size: 0.82rem; list-style: none; }
+	.about-card li + li { margin-top: 0.35rem; }
+	.about-card li::before { margin-right: 0.45rem; color: #aeb0ff; content: '•'; }
+	.about-page > section { padding: var(--section-space) 0 0; border-top: 1px solid var(--color-border); }
+	.section-heading { max-width: 43rem; margin-bottom: 2rem; }
+	.content-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+	.content-grid article { display: flex; min-width: 0; padding: 1.4rem; flex-direction: column; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-large); box-shadow: var(--shadow-small); }
+	.content-grid article > span { color: var(--color-accent); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; }
+	.content-grid h3 { margin-top: 1rem; }
+	.content-grid p { flex: 1; color: var(--color-text-muted); font-size: 0.88rem; }
+	.content-grid a { font-size: 0.82rem; font-weight: 700; text-decoration: none; }
+	.source-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.9fr); gap: clamp(2rem, 7vw, 6rem); }
+	.source-section > div:first-child p:last-child { margin: 0; color: var(--color-text-muted); }
+	.source-links { display: grid; gap: 0.75rem; }
+	.source-links a { display: grid; grid-template-columns: minmax(0, 1fr) auto; padding: 1.1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-medium); color: inherit; text-decoration: none; }
+	.source-links a:hover { border-color: var(--color-accent); box-shadow: var(--shadow-small); transform: translateX(2px); }
+	.source-links a > span:first-child { grid-column: 1; color: var(--color-text-soft); font-size: 0.7rem; }
+	.source-links strong { grid-column: 1; }
+	.source-links small { grid-column: 2; grid-row: 1 / 3; align-self: center; color: var(--color-accent); font-weight: 700; }
+	.source-links i { font-style: normal; }
+	@media (max-width: 850px) { .about-hero { grid-template-columns: 1fr; } .about-card { width: min(26rem, 100%); min-height: 16rem; } .content-grid, .source-section { grid-template-columns: 1fr; } }
+	@media (max-width: 700px) { .about-page { width: min(var(--content-width), calc(100% - 1.5rem)); } }
+	@media (prefers-reduced-motion: reduce) { .source-links a:hover { transform: none; } }
 </style>
