@@ -92,6 +92,94 @@ export interface ProjectDetail {
 
 export const projectDetails: ProjectDetail[] = [
 	{
+		slug: 'cloudlight-blizzard',
+		item: getCatalogItem('cloudlight-blizzard'),
+		pageDescription: '管理多个 Battle.net 账号，并自动联动《守望先锋》国服 / 国际服本地差异文件，减少日常跨区时约 200MB 的重复更新。',
+		sections: [
+			{
+				type: 'features',
+				id: 'battle-net-accounts',
+				title: '管理和切换 Battle.net 账号',
+				intro: ['CloudLight Blizzard 读取 Battle.net 已保存在本机的登录状态，为每个账号保存一份本地备份。切换时不需要重新输入账号密码，也不需要在软件里保存 Battle.net 密码。'],
+				layout: 'columns',
+				items: [
+					{ title: '保存多个账号', description: '登录一个账号后更新账号备份，再登录其它账号继续保存。' },
+					{ title: '名称与备注', description: '为已保存账号设置便于识别的名称和备注。' },
+					{ title: '快速切换', description: '从账号列表选择目标账号，恢复对应的本地登录状态。' },
+					{ title: '托盘与开机启动', description: '可以留在系统托盘运行，并按需设置开机自动启动。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'local-region-files',
+				title: '用本地文件切换国服和国际服',
+				intro: [
+					'第一次准备时，需要让电脑通过 Battle.net 真正拥有一次完整的国服和国际服版本。程序比较两端版本后，只长期保存真正不同的本地文件。',
+					'以后从国服切到国际服，或从国际服切回国服时，程序会直接恢复本机保存的对应文件。在实际切换场景中，Battle.net 通常会重新更新约 200MB 的区服差异内容；准备好两端文件后，日常切换不必反复下载这部分内容。实际大小会随游戏版本变化。',
+				],
+				layout: 'cards',
+				items: [
+					{ title: '两端各准备一次', description: '按提示保存当前版本、完成一次跨区更新，再准备另一端版本。' },
+					{ title: '只保留差异文件', description: '完成准备后清理完整临时副本，长期保留国服与国际服真正不同的文件。' },
+					{ title: '日常直接恢复', description: '切换区服时使用本机文件恢复目标版本，减少 Battle.net 重复下载。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'account-region-link',
+				title: '账号与区服自动联动',
+				intro: ['每个账号都可以标记为国服或国际服。以后切换账号时，程序会同时恢复该账号对应的《守望先锋》本地文件，再启动 Battle.net；如果区服文件恢复失败，后续启动会停止，避免在错误文件状态下继续。'],
+				layout: 'list',
+				items: [
+					{ title: '国服账号', description: '切换账号 → 恢复国服文件 → 启动 Battle.net。' },
+					{ title: '国际服账号', description: '切换账号 → 恢复国际服文件 → 启动 Battle.net。' },
+				],
+			},
+			{
+				type: 'steps',
+				id: 'getting-started',
+				title: '开始使用',
+				items: [
+					{ title: '安装 CloudLight Blizzard', description: '下载并运行 Windows x64 安装包，完成安装后打开软件。' },
+					{ title: '保存当前账号', description: '在“账号”页面确认当前 Battle.net 账号，点击“更新账号备份”。' },
+					{ title: '继续保存其它账号', description: '在 Battle.net 登录其它账号，再回到软件更新对应账号备份。' },
+					{ title: '编辑账号信息', description: '为每个账号设置名称、备注，以及国服或国际服归属。' },
+					{ title: '准备两端区服文件', description: '在“区服文件”页面设置游戏和存储位置，按提示完成一次国服与国际服双端准备。' },
+					{ title: '直接切换账号', description: '以后在账号页面点击“切换”，程序会恢复账号状态并联动对应区服文件。' },
+				],
+			},
+			{
+				type: 'note',
+				id: 'after-game-updates',
+				title: '游戏更新后需要重新准备一次',
+				description: '《守望先锋》更新可能改变公共游戏文件。程序检测到核心版本变化后，会把旧区服文件标记为需要重新准备；按提示再完成一次双端准备，之后就能继续使用本地文件快速切换。账号备份通常不需要重新保存。',
+			},
+			{
+				type: 'features',
+				id: 'career-stats',
+				title: '按账号区服查看战绩',
+				intro: ['“战绩”页面列出所有已保存账号，选择账号后会按其绑定的区服自动选择数据源。'],
+				layout: 'columns',
+				items: [
+					{ title: '国服账号', description: '查看现有的国服战绩、英雄和比赛数据；部分能力需要对应服务的登录状态。' },
+					{ title: '国际服账号', description: '查询暴雪公开生涯数据；需要 BattleTag 正确，并在游戏中公开生涯档案。' },
+				],
+			},
+			{
+				type: 'facts',
+				id: 'requirements-and-data',
+				title: '安装与文件准备要求',
+				items: [
+					{ term: '系统', description: 'Windows 10 或 Windows 11 x64。' },
+					{ term: '运行环境', description: '.NET 8 Windows Desktop Runtime。' },
+					{ term: '本机程序', description: '需要已安装 Battle.net；使用区服文件功能时还需要已安装《守望先锋》。' },
+					{ term: '临时空间', description: '第一次准备需要为当前完整版本保留额外临时磁盘空间，完成后会清理完整临时副本。' },
+					{ term: '数据位置', description: '账号备份、设置和日志默认保存在“文档\\CloudLight\\CloudLight Blizzard”；区服差异文件可以另选容量较大的磁盘。' },
+				],
+			},
+		],
+	},
+	{
 		slug: 'cloudlight-automator',
 		item: getCatalogItem('cloudlight-automator'),
 		pageDescription: '用可视化流程组合窗口、截图、图像识别、文字识别和键鼠操作，创建可重复运行的 Windows 自动化任务。',

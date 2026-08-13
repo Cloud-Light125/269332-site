@@ -9,14 +9,14 @@ const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwa
 
 <BaseLayout
 	title="游戏工具 · CloudLight"
-	description="使用 Steam 游玩时光全景图、守望先锋看图猜英雄和 YouTube 直播观看助手。"
+	description="使用 Steam 游玩时光全景图、守望先锋看图猜英雄、CloudLight Blizzard 和直播观看辅助工具。"
 >
 	<main class="tools-page">
 		<header class="tools-hero">
 			<div>
 				<p class="eyebrow">游戏</p>
 				<h1>游戏数据、互动与直播工具</h1>
-				<p>包含 Steam 游玩数据可视化、守望先锋互动工具，以及用于直播观看和掉宝任务的 Windows 辅助程序。</p>
+				<p>包含 Steam 游玩数据可视化、守望先锋互动工具，以及 Battle.net 多账号、国服 / 国际服本地切换、直播观看和掉宝任务辅助程序。</p>
 				<div class="hero-actions">
 					<a class="button button-primary" href={gameTools[0].primaryAction.href} target="_blank" rel="noopener noreferrer">生成 Steam 全景图 <span aria-hidden="true">↗</span><span class="sr-only">（在新窗口打开）</span></a>
 					<a class="button button-secondary" href={overwatchWatcher.detailsPath}>查看直播助手</a>
@@ -24,7 +24,7 @@ const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwa
 			</div>
 			<div class="hero-mark" aria-hidden="true">
 				<div><span>PLAY</span><strong>{String(gameItems.length).padStart(2, '0')}</strong></div>
-				<p>Steam<br />Overwatch<br />YouTube</p>
+				<p>Steam<br />Overwatch<br />Battle.net</p>
 				<small>网页工具 · Windows 助手</small>
 			</div>
 		</header>

@@ -4,6 +4,8 @@ import gameStreamingCategoryIcon from '../assets/categories/game-streaming.png';
 import windowsCategoryIcon from '../assets/categories/windows.png';
 import cloudlightAutomatorIcon from '../assets/projects/cloudlight-automator/icon.png';
 import cloudlightAutomatorScreenshot from '../assets/projects/cloudlight-automator/screenshot.png';
+import cloudlightBlizzardIcon from '../assets/projects/cloudlight-blizzard/icon.png';
+import cloudlightBlizzardScreenshot from '../assets/projects/cloudlight-blizzard/screenshot.png';
 import cloudlightCodexBridgeIcon from '../assets/projects/codex-bridge/icon.png';
 import cloudlightCodexBridgeScreenshot from '../assets/projects/codex-bridge/screenshot.png';
 import cloudlightCodexBridgeScreenshot2 from '../assets/projects/codex-bridge/screenshot-2.png';
@@ -115,6 +117,33 @@ export const statusLabels: Record<CatalogItem['status'], string> = {
 };
 
 export const projects: CatalogItem[] = [
+	{
+		id: 'cloudlight-blizzard',
+		name: 'CloudLight Blizzard',
+		summary: '管理多个 Battle.net 账号，并自动联动《守望先锋》国服 / 国际服本地文件，减少跨区时约 200MB 的重复更新。',
+		kind: 'desktop',
+		categories: ['game-streaming', 'games'],
+		status: 'available',
+		capabilities: ['Battle.net 多账号', '国服 / 国际服本地切换', '账号与区服联动'],
+		accent: 'blue',
+		featured: true,
+		icon: cloudlightBlizzardIcon,
+		screenshot: cloudlightBlizzardScreenshot,
+		screenshotAlt: 'CloudLight Blizzard 的 Battle.net 账号管理页面，显示当前账号、国服与国际服标签以及已保存账号的切换入口',
+		screenshotCaption: '在账号页面保存多个 Battle.net 账号，为账号标记国服或国际服，并从账号卡片直接切换。',
+		detailsPath: '/projects/cloudlight-blizzard/',
+		primaryAction: {
+			label: '下载 Windows 版',
+			href: 'https://github.com/yundan125/CloudLight-Blizzard/releases/download/v1.0.1/CloudLight-Blizzard-1.0.1-win-x64-Setup.exe',
+			external: true,
+		},
+		secondaryAction: {
+			label: '查看 GitHub',
+			href: 'https://github.com/yundan125/CloudLight-Blizzard',
+			external: true,
+		},
+		ctaNote: '当前正式版 v1.0.1；适用于 Windows 10/11 x64，需要 .NET 8 Windows Desktop Runtime。',
+	},
 	{
 		id: 'cloudlight-automator',
 		name: 'CloudLight 自动化工作室',
