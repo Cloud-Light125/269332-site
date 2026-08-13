@@ -31,16 +31,16 @@ const { posts } = Astro.props;
 <style>
 	.latest-posts { padding-top: var(--section-space); }
 	header { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
-	header > a { flex: 0 0 auto; font-size: 0.86rem; font-weight: 700; text-decoration: none; }
+	header > a { flex: 0 0 auto; font-size: var(--font-size-sm); font-weight: 700; text-decoration: none; }
 	.post-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 	article { min-width: 0; }
 	article > a { display: block; height: 100%; overflow: hidden; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-large); color: inherit; text-decoration: none; box-shadow: var(--shadow-small); }
 	article > a:hover { border-color: var(--color-accent); box-shadow: var(--shadow-medium); transform: translateY(-2px); }
 	article :global(img) { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 	.post-copy { padding: 1.25rem; }
-	.post-copy p { margin: 0 0 0.45rem; color: var(--color-text-soft); font-size: 0.72rem; }
+	.post-copy p { margin: 0 0 0.45rem; color: var(--color-text-soft); font-size: var(--font-size-xs); }
 	h3 { margin-bottom: 0.55rem; font-size: 1.18rem; }
-	.post-copy > span { display: block; color: var(--color-text-muted); font-size: 0.84rem; line-height: 1.55; }
+	.post-copy > span { display: block; color: var(--color-text-muted); font-size: 0.9375rem; line-height: 1.6; }
 	@media (max-width: 900px) { .post-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .post-grid article:last-child:nth-child(odd) { display: none; } }
 	@media (max-width: 620px) { header { display: block; } header > a { display: inline-block; margin-top: 1rem; } .post-grid { grid-template-columns: 1fr; } .post-grid article:last-child:nth-child(odd) { display: block; } }
 	@media (prefers-reduced-motion: reduce) { article > a:hover { transform: none; } }

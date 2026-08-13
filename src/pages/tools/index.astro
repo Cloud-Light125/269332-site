@@ -15,8 +15,8 @@ const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwa
 		<header class="tools-hero">
 			<div>
 				<p class="eyebrow">游戏</p>
-				<h1>游戏记录、问答和直播工具</h1>
-				<p>把 Steam 游玩记录做成一张图、凭第一印象猜守望先锋英雄，或在 Windows 中自动查找指定 YouTube 频道的直播。</p>
+				<h1>游戏数据、互动与直播工具</h1>
+				<p>包含 Steam 游玩数据可视化、守望先锋互动工具，以及用于直播观看和掉宝任务的 Windows 辅助程序。</p>
 				<div class="hero-actions">
 					<a class="button button-primary" href={gameTools[0].primaryAction.href} target="_blank" rel="noopener noreferrer">生成 Steam 全景图 <span aria-hidden="true">↗</span><span class="sr-only">（在新窗口打开）</span></a>
 					<a class="button button-secondary" href={overwatchWatcher.detailsPath}>查看直播助手</a>
@@ -30,7 +30,7 @@ const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwa
 		</header>
 
 		<section class="tool-list" aria-labelledby="tool-list-title">
-			<header><p class="eyebrow">全部工具</p><h2 id="tool-list-title">选择一个开始</h2></header>
+			<header><p class="eyebrow">全部工具</p><h2 id="tool-list-title">选择工具</h2></header>
 			<div class="catalog-grid">{gameItems.map((tool) => <CatalogCard item={tool} headingLevel="h3" />)}</div>
 		</section>
 
@@ -51,18 +51,18 @@ const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwa
 		padding-bottom: clamp(3.5rem, 7vw, 6rem);
 	}
 	.tools-hero > div:first-child { max-width: 49rem; }
-	.tools-hero h1 { margin-bottom: 1.15rem; font-size: clamp(2.7rem, 6.5vw, 5rem); }
+	.tools-hero h1 { margin-bottom: 1.15rem; font-size: var(--font-size-page-title); }
 	.tools-hero > div:first-child > p:last-of-type { color: var(--color-text-muted); font-size: 1.06rem; }
 	.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.8rem; }
 	.hero-mark { display: flex; min-height: 19rem; padding: 1.5rem; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #1c2335, #252f46); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-xlarge); box-shadow: var(--shadow-medium); color: #fff; }
-	.hero-mark div { display: flex; justify-content: space-between; color: #aeb5ff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.13em; }
+	.hero-mark div { display: flex; justify-content: space-between; color: #aeb5ff; font-size: var(--font-size-xs); font-weight: 700; letter-spacing: 0.1em; }
 	.hero-mark div strong { color: #fff; font-size: 1.6rem; line-height: 1; }
-	.hero-mark p { margin: 0; color: #fff; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.05em; }
-	.hero-mark small { color: #9ca7bb; font-size: 0.72rem; }
+	.hero-mark p { margin: 0; color: #fff; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.015em; }
+	.hero-mark small { color: #9ca7bb; font-size: var(--font-size-xs); }
 	.tool-list { padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--color-border); }
 	.tool-list > header { margin-bottom: 1.75rem; }
 	.catalog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-	.copyright-note { margin-top: 2rem; padding: 1.1rem 1.2rem; background: rgba(238, 241, 247, 0.72); border: 1px solid var(--color-border); border-radius: var(--radius-medium); color: var(--color-text-muted); font-size: 0.76rem; }
+	.copyright-note { margin-top: 2rem; padding: 1.1rem 1.2rem; background: rgba(238, 241, 247, 0.72); border: 1px solid var(--color-border); border-radius: var(--radius-medium); color: var(--color-text-muted); font-size: var(--font-size-sm); }
 	.copyright-note p { margin: 0; }
 	.copyright-note p + p { margin-top: 0.5rem; }
 	@media (max-width: 980px) { .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .catalog-grid > :global(:last-child:nth-child(odd)) { grid-column: 1 / -1; } }

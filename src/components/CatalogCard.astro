@@ -120,7 +120,7 @@ const externalProps = (action: CatalogAction) =>
 		background: var(--color-surface-muted);
 		border-radius: 99px;
 		color: var(--color-text-muted);
-		font-size: 0.68rem;
+		font-size: var(--font-size-xs);
 		font-weight: 700;
 	}
 	.card-topline .status {
@@ -171,13 +171,13 @@ const externalProps = (action: CatalogAction) =>
 	h2,
 	h3 {
 		margin: 0;
-		font-size: clamp(1.22rem, 2vw, 1.45rem);
+		font-size: clamp(1.1875rem, 1.7vw, 1.375rem);
 		overflow-wrap: anywhere;
 	}
 	.english-name {
 		margin: 0.2rem 0 0;
 		color: var(--color-text-soft);
-		font-size: 0.76rem;
+		font-size: var(--font-size-xs);
 		line-height: 1.35;
 		overflow-wrap: anywhere;
 	}
@@ -185,7 +185,7 @@ const externalProps = (action: CatalogAction) =>
 		flex: 1;
 		margin-bottom: 1.1rem;
 		color: var(--color-text-muted);
-		font-size: 0.92rem;
+		font-size: 0.9375rem;
 		line-height: 1.65;
 	}
 	.capabilities {
@@ -201,7 +201,7 @@ const externalProps = (action: CatalogAction) =>
 		border: 1px solid var(--color-border);
 		border-radius: 0.45rem;
 		color: var(--color-text-muted);
-		font-size: 0.7rem;
+		font-size: var(--font-size-xs);
 	}
 	.card-actions {
 		display: flex;
@@ -219,7 +219,7 @@ const externalProps = (action: CatalogAction) =>
 		gap: 0.3rem;
 		padding: 0.42rem 0.7rem;
 		border-radius: 0.6rem;
-		font-size: 0.8rem;
+		font-size: var(--font-size-sm);
 		font-weight: 700;
 		text-decoration: none;
 	}

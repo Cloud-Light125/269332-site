@@ -446,7 +446,7 @@
     elements.previousButton.disabled = state.game.currentIndex === 0;
     elements.confirmAssignmentButton.textContent = state.game.currentIndex === state.game.heroOrder.length - 1
       ? '检查并提交全部结果'
-      : '确认并进入下一位';
+      : '确认并继续';
     renderNamePool();
     updateSingleConfirmState();
   }
@@ -656,7 +656,7 @@
 
       const reasonLabel = document.createElement('label');
       const reasonCaption = document.createElement('span');
-      reasonCaption.textContent = '为什么觉得他叫这个名字？';
+      reasonCaption.textContent = '选择这个名字的理由（可选）';
       const textarea = document.createElement('textarea');
       textarea.maxLength = 200;
       textarea.rows = 4;
@@ -954,7 +954,7 @@
   function renderResult() {
     if (!state.result) return;
     const result = state.result;
-    elements.resultTitle.textContent = result.title || '没玩过守望先锋的人看图猜名字';
+    elements.resultTitle.textContent = result.title || '守望先锋英雄看图猜名结果';
     const completed = new Date(result.completedAt || result.createdAt);
     elements.resultMeta.textContent = `${MODE_LABELS[result.mode]} · ${ROLE_LABELS[result.roleFilter]} · ${PLAY_STYLE_LABELS[result.playStyle]} · 完成时间 ${completed.toLocaleString('zh-CN')}`;
     elements.totalResultMetric.textContent = String(result.totalHeroes);

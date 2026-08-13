@@ -7,9 +7,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		<header class="about-hero">
 			<div>
 				<p class="eyebrow">关于</p>
-				<h1>这里是 CloudLight</h1>
-				<p class="lead">一个用来发布个人软件、网页工具和博客的网站。</p>
-				<p>我会把已经能用的项目放在这里，并尽量把“它解决什么问题、怎么开始、有哪些限制”说明白。项目源码和反馈入口仍然放在 GitHub。</p>
+				<h1>关于 CloudLight</h1>
+				<p class="lead">一个用于发布个人软件、网页工具、浏览器脚本与使用记录的网站。</p>
+				<p>本站集中整理已经可用的项目，并尽量明确用途、使用方式和实际限制。源码、版本记录与问题反馈继续在 GitHub 维护。</p>
 			</div>
 			<div class="about-card" aria-label="网站内容摘要">
 				<span>269332.xyz</span>
@@ -19,16 +19,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		</header>
 
 		<section class="content-section" aria-labelledby="content-title">
-			<div class="section-heading"><p class="eyebrow">网站内容</p><h2 id="content-title">你可以在这里找到什么</h2></div>
+			<div class="section-heading"><p class="eyebrow">网站内容</p><h2 id="content-title">网站内容</h2></div>
 			<div class="content-grid">
-				<article><span aria-hidden="true">01</span><h3>可下载的软件</h3><p>Windows 系统工具、桌面自动化和游戏直播辅助软件。项目页提供截图、主要功能、使用步骤和下载入口。</p><a href="/projects/">浏览项目 <span aria-hidden="true">→</span></a></article>
-				<article><span aria-hidden="true">02</span><h3>打开就能用的网页</h3><p>Steam 游玩时光全景图和守望先锋看图猜英雄，不需要下载安装。</p><a href="/tools/">打开游戏工具 <span aria-hidden="true">→</span></a></article>
-				<article><span aria-hidden="true">03</span><h3>解决问题的文章</h3><p>记录实际遇到的问题、用过的处理方法，以及需要进一步说明的项目内容。</p><a href="/blog/">阅读博客 <span aria-hidden="true">→</span></a></article>
+				<article><span aria-hidden="true">01</span><h3>Windows 软件</h3><p>包括系统工具、桌面自动化和游戏直播辅助软件。项目页提供截图、主要功能、使用步骤与下载入口。</p><a href="/projects/">浏览项目 <span aria-hidden="true">→</span></a></article>
+				<article><span aria-hidden="true">02</span><h3>在线工具</h3><p>包括 Steam 游玩时光全景图、守望先锋看图猜英雄与浏览器脚本。</p><a href="/tools/">打开游戏工具 <span aria-hidden="true">→</span></a></article>
+				<article><span aria-hidden="true">03</span><h3>使用记录与教程</h3><p>记录实际使用和开发中遇到的问题、处理方法，以及需要单独说明的项目内容。</p><a href="/blog/">阅读博客 <span aria-hidden="true">→</span></a></article>
 			</div>
 		</section>
 
 		<section class="source-section" aria-labelledby="source-title">
-			<div><p class="eyebrow">源码与反馈</p><h2 id="source-title">在 GitHub 查看与反馈</h2><p>公开项目的源码、版本记录和问题反馈都在对应仓库。发现页面链接失效或内容不准确，也可以通过网站仓库反馈。</p></div>
+			<div><p class="eyebrow">源码与反馈</p><h2 id="source-title">源码与问题反馈</h2><p>公开项目的源码、版本记录与问题反馈均在对应 GitHub 仓库维护。页面链接失效或内容有误时，也可以通过网站仓库提交反馈。</p></div>
 			<div class="source-links">
 				<a href="https://github.com/yundan125" target="_blank" rel="noopener noreferrer"><span>全部公开项目</span><strong>GitHub 主页</strong><small>打开 <i aria-hidden="true">↗</i></small><span class="sr-only">（在新窗口打开）</span></a>
 				<a href="https://github.com/yundan125/269332-site" target="_blank" rel="noopener noreferrer"><span>这个网站</span><strong>网站源码</strong><small>打开 <i aria-hidden="true">↗</i></small><span class="sr-only">（在新窗口打开）</span></a>
@@ -45,25 +45,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	.lead { color: var(--color-text); font-size: clamp(1.25rem, 2.8vw, 1.55rem); font-weight: 700; line-height: 1.5; }
 	.about-hero > div:first-child > p:last-child { margin: 0; color: var(--color-text-muted); }
 	.about-card { display: flex; min-height: 20rem; padding: 1.5rem; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #1b2233, #283249); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-xlarge); box-shadow: var(--shadow-medium); color: #fff; }
-	.about-card > span { color: #a9b3c7; font-size: 0.72rem; letter-spacing: 0.08em; }
+	.about-card > span { color: #a9b3c7; font-size: var(--font-size-xs); letter-spacing: 0.08em; }
 	.about-card strong { font-size: clamp(1.5rem, 3vw, 2.15rem); line-height: 1.15; }
-	.about-card ul { margin: 0; padding: 0; color: #c5cddb; font-size: 0.82rem; list-style: none; }
+	.about-card ul { margin: 0; padding: 0; color: #c5cddb; font-size: var(--font-size-sm); list-style: none; }
 	.about-card li + li { margin-top: 0.35rem; }
 	.about-card li::before { margin-right: 0.45rem; color: #aeb0ff; content: '•'; }
 	.about-page > section { padding: var(--section-space) 0 0; border-top: 1px solid var(--color-border); }
 	.section-heading { max-width: 43rem; margin-bottom: 2rem; }
 	.content-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 	.content-grid article { display: flex; min-width: 0; padding: 1.4rem; flex-direction: column; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-large); box-shadow: var(--shadow-small); }
-	.content-grid article > span { color: var(--color-accent); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; }
+	.content-grid article > span { color: var(--color-accent); font-size: var(--font-size-xs); font-weight: 700; letter-spacing: 0.1em; }
 	.content-grid h3 { margin-top: 1rem; }
-	.content-grid p { flex: 1; color: var(--color-text-muted); font-size: 0.88rem; }
-	.content-grid a { font-size: 0.82rem; font-weight: 700; text-decoration: none; }
+	.content-grid p { flex: 1; color: var(--color-text-muted); font-size: 0.9375rem; }
+	.content-grid a { font-size: var(--font-size-sm); font-weight: 700; text-decoration: none; }
 	.source-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.9fr); gap: clamp(2rem, 7vw, 6rem); }
 	.source-section > div:first-child p:last-child { margin: 0; color: var(--color-text-muted); }
 	.source-links { display: grid; gap: 0.75rem; }
 	.source-links a { display: grid; grid-template-columns: minmax(0, 1fr) auto; padding: 1.1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-medium); color: inherit; text-decoration: none; }
 	.source-links a:hover { border-color: var(--color-accent); box-shadow: var(--shadow-small); transform: translateX(2px); }
-	.source-links a > span:first-child { grid-column: 1; color: var(--color-text-soft); font-size: 0.7rem; }
+	.source-links a > span:first-child { grid-column: 1; color: var(--color-text-soft); font-size: var(--font-size-xs); }
 	.source-links strong { grid-column: 1; }
 	.source-links small { grid-column: 2; grid-row: 1 / 3; align-self: center; color: var(--color-accent); font-weight: 700; }
 	.source-links i { font-style: normal; }

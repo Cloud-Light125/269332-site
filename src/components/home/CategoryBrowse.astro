@@ -10,7 +10,7 @@ const homeCategories = catalogCategories.filter((category) => category.showOnHom
 <section class="category-section" aria-labelledby="category-title">
 	<header>
 		<p class="eyebrow">按类别浏览</p>
-		<h2 id="category-title">从你要解决的问题开始</h2>
+		<h2 id="category-title">按用途浏览</h2>
 	</header>
 	<div class="category-grid">
 		{homeCategories.map((category) => {
@@ -56,8 +56,8 @@ const homeCategories = catalogCategories.filter((category) => category.showOnHom
 	}
 	.category-icon :global(img) { display: block; width: 100%; height: 100%; border-radius: 0.7rem; object-fit: contain; }
 	h3 { margin: 0.1rem 0 0.35rem; font-size: 1.2rem; }
-	p { margin: 0; color: var(--color-text-muted); font-size: 0.85rem; line-height: 1.55; }
-	small { grid-column: 2; color: var(--color-text-soft); font-size: 0.74rem; }
+	p { margin: 0; color: var(--color-text-muted); font-size: 0.9375rem; line-height: 1.6; }
+	small { grid-column: 2; color: var(--color-text-soft); font-size: var(--font-size-xs); }
 	small i { margin-left: 0.25rem; color: var(--color-accent); font-style: normal; }
 	@media (max-width: 900px) { .category-grid { grid-template-columns: 1fr; } }
 	@media (prefers-reduced-motion: reduce) { .category-grid a:hover { transform: none; } }

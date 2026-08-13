@@ -6,13 +6,13 @@
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#f7f9fc">
   <title>守望先锋看图猜英雄 · CloudLight 游戏工具箱</title>
-  <meta name="description" content="根据守望先锋英雄图片分配名字、记录第一印象，并在提交后查看真实名称和猜测结果。">
+  <meta name="description" content="根据守望先锋英雄图片匹配名字、记录第一印象，并在提交后查看真实名称和猜测结果。">
   <link rel="canonical" href="https://269332.xyz/overwatch-hero-quiz/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:site_name" content="CloudLight">
   <meta property="og:title" content="守望先锋看图猜英雄 · CloudLight 游戏工具箱">
-  <meta property="og:description" content="根据守望先锋英雄图片分配名字、记录第一印象，并在提交后查看真实名称和猜测结果。">
+  <meta property="og:description" content="根据守望先锋英雄图片匹配名字、记录第一印象，并在提交后查看真实名称和猜测结果。">
   <meta property="og:url" content="https://269332.xyz/overwatch-hero-quiz/">
   <meta property="og:image" content="https://269332.xyz/overwatch-hero-quiz/site-social.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/overwatch-hero-quiz/favicon-32x32.png">
@@ -48,8 +48,8 @@
       <section id="setupScreen" class="screen setup-screen" aria-labelledby="gameTitle">
         <div class="hero-heading">
           <p class="eyebrow">FIRST IMPRESSION LAB</p>
-          <h1 id="gameTitle">给守望先锋英雄起名字</h1>
-          <p>根据英雄的长相，从全部名称中选出你觉得最适合他的名字，并写下理由。</p>
+          <h1 id="gameTitle">凭第一印象给英雄匹配名字</h1>
+          <p>根据英雄外观，从现有名称中选择你认为最匹配的一项，也可以补充选择理由。</p>
         </div>
 
         <section id="resumePanel" class="resume-panel hidden" aria-labelledby="resumeTitle">
@@ -95,7 +95,7 @@
 
           <p id="gamePreview" class="game-preview" aria-live="polite"></p>
           <div id="assetWarning" class="notice warning hidden" role="alert"></div>
-          <button class="primary-button" type="submit">开始分配名字</button>
+          <button class="primary-button" type="submit">开始匹配</button>
         </form>
       </section>
 
@@ -103,7 +103,7 @@
         <div class="game-header">
           <div>
             <p class="eyebrow">NAME ASSIGNMENT</p>
-            <h2 id="gameScreenTitle">凭第一印象分配名字</h2>
+            <h2 id="gameScreenTitle">凭第一印象匹配名字</h2>
           </div>
           <button id="gameBackSetupButton" class="ghost-button compact no-print" type="button">返回设置</button>
         </div>
@@ -138,7 +138,7 @@
               <div class="section-heading">
                 <div>
                   <p class="step-label">从本局名称池中选择</p>
-                  <h3>你觉得他叫什么？</h3>
+                  <h3>你认为这位英雄叫什么？</h3>
                 </div>
                 <span id="poolStatus" class="status-chip">仅显示未使用名称</span>
               </div>
@@ -152,15 +152,15 @@
               <p id="emptySearch" class="empty-search hidden">没有符合搜索条件的可用名称。</p>
 
               <label class="reason-field" for="reasonInput">
-                <span>为什么觉得他叫这个名字？</span>
-                <textarea id="reasonInput" maxlength="200" rows="5" placeholder="例如：看起来很神秘，感觉这个名字很适合他。"></textarea>
+                <span>选择这个名字的理由（可选）</span>
+                <textarea id="reasonInput" maxlength="200" rows="5" placeholder="例如：外观、气质或角色特征与这个名字比较匹配。"></textarea>
               </label>
               <p class="character-count"><span id="reasonCount">0</span> / 200 字</p>
 
               <div class="single-actions">
-                <button id="confirmAssignmentButton" class="primary-button" type="button" disabled>确认并进入下一位</button>
-                <button id="previousButton" class="secondary-button" type="button">暂存并返回上一位</button>
-                <button id="overviewButton" class="ghost-button" type="button">查看当前分配表</button>
+                <button id="confirmAssignmentButton" class="primary-button" type="button" disabled>确认并继续</button>
+                <button id="previousButton" class="secondary-button" type="button">保存并返回上一位</button>
+                <button id="overviewButton" class="ghost-button" type="button">查看当前匹配</button>
               </div>
             </article>
           </div>
@@ -170,10 +170,10 @@
           <div class="list-toolbar no-print">
             <div>
               <h3 id="listTitle">全部英雄分配列表</h3>
-              <p>已保存的卡片会锁定；点击“编辑”可重新分配并释放旧名称。</p>
+              <p>已确认的卡片会锁定；需要修改时点击“编辑”。</p>
             </div>
             <label class="check-filter"><input id="incompleteOnly" type="checkbox"> 只看未完成</label>
-            <button id="listOverviewButton" class="ghost-button compact" type="button">查看当前分配表</button>
+            <button id="listOverviewButton" class="ghost-button compact" type="button">查看当前匹配</button>
           </div>
           <div id="listCards" class="list-cards"></div>
           <button id="listSubmitButton" class="primary-button list-submit" type="button" disabled>检查并提交全部结果</button>
@@ -183,7 +183,7 @@
       <section id="resultScreen" class="screen result-screen hidden" aria-labelledby="resultTitle">
         <header class="result-hero share-header">
           <p class="eyebrow">FIRST IMPRESSION REPORT</p>
-          <h2 id="resultTitle">没玩过守望先锋的人看图猜名字</h2>
+          <h2 id="resultTitle">守望先锋英雄看图猜名结果</h2>
           <p id="resultMeta"></p>
         </header>
 
@@ -260,10 +260,10 @@
   <dialog id="overviewDialog" class="app-dialog" aria-labelledby="overviewTitle" aria-modal="true">
     <div class="dialog-heading">
       <div>
-        <p class="eyebrow">分配检查</p>
-        <h2 id="overviewTitle">当前分配表</h2>
+        <p class="eyebrow">匹配检查</p>
+        <h2 id="overviewTitle">当前匹配</h2>
       </div>
-      <button class="icon-button" type="button" data-close-dialog="overviewDialog" aria-label="关闭当前分配表">×</button>
+      <button class="icon-button" type="button" data-close-dialog="overviewDialog" aria-label="关闭当前匹配">×</button>
     </div>
     <p>这里不会显示真实名称或猜测是否正确。</p>
     <div class="table-scroller">

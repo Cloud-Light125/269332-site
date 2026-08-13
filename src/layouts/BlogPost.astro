@@ -30,18 +30,18 @@ const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.prop
 <style>
 	.post-main { width: min(1080px, calc(100% - 2rem)); max-width: none; padding-top: clamp(2.5rem, 6vw, 5rem); }
 	.post-header { width: min(820px, 100%); margin: 0 auto clamp(2rem, 5vw, 3.5rem); text-align: center; }
-	.breadcrumbs { display: flex; justify-content: center; gap: 0.45rem; margin-bottom: 2rem; color: var(--color-text-soft); font-size: 0.78rem; }
+	.breadcrumbs { display: flex; justify-content: center; gap: 0.45rem; margin-bottom: 2rem; color: var(--color-text-soft); font-size: var(--font-size-xs); }
 	.breadcrumbs a { color: inherit; text-decoration: none; }
-	.post-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem 1rem; margin-bottom: 0.85rem; color: var(--color-text-soft); font-size: 0.78rem; }
-	.post-header h1 { margin-bottom: 1rem; font-size: clamp(2.5rem, 6.5vw, 4.8rem); }
+	.post-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem 1rem; margin-bottom: 0.85rem; color: var(--color-text-soft); font-size: var(--font-size-xs); }
+	.post-header h1 { margin-bottom: 1rem; font-size: var(--font-size-page-title); }
 	.description { max-width: 43rem; margin: 0 auto; color: var(--color-text-muted); font-size: clamp(1.02rem, 2vw, 1.16rem); }
 	.post-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
-	.post-tags li { padding: 0.22rem 0.52rem; background: var(--color-accent-soft); border-radius: 99px; color: var(--color-accent-hover); font-size: 0.7rem; font-weight: 700; }
+	.post-tags li { padding: 0.22rem 0.52rem; background: var(--color-accent-soft); border-radius: 99px; color: var(--color-accent-hover); font-size: var(--font-size-xs); font-weight: 700; }
 	.hero-image { margin: 0 0 clamp(3rem, 7vw, 5rem); }
 	.hero-image :global(img) { display: block; width: 100%; max-height: 36rem; object-fit: cover; border: 1px solid var(--color-border); border-radius: var(--radius-xlarge); box-shadow: var(--shadow-medium); }
 	.article-body { width: min(var(--reading-width), 100%); margin: 0 auto; color: #303a4d; font-size: 1.02rem; }
 	.article-body :global(p) { margin-bottom: 1.55rem; }
-	.article-body :global(h2) { margin-top: 3.25rem; margin-bottom: 1rem; font-size: clamp(1.65rem, 3.2vw, 2.2rem); }
+	.article-body :global(h2) { margin-top: 3.25rem; margin-bottom: 1rem; font-size: var(--font-size-h2); }
 	.article-body :global(h3) { margin-top: 2.3rem; margin-bottom: 0.8rem; }
 	.article-body :global(h4) { margin-top: 1.8rem; }
 	.article-body :global(ul), .article-body :global(ol) { margin: 0 0 1.6rem; padding-left: 1.4rem; }

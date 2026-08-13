@@ -16,10 +16,10 @@ const filters = catalogCategories
 		<header class="page-hero">
 			<div>
 				<p class="eyebrow">项目</p>
-				<h1>找到适合你的工具</h1>
-				<p>从用途出发选择项目。桌面软件可以直接下载，浏览器脚本可以打开安装页，每个项目都有完整用法。</p>
+				<h1>按用途浏览工具</h1>
+				<p>包含可下载的 Windows 软件、在线工具与浏览器脚本；项目页提供功能说明、使用步骤与获取方式。</p>
 			</div>
-			<div class="project-count"><strong>{projects.length}</strong><span>个可用项目</span></div>
+			<div class="project-count"><strong>{projects.length}</strong><span>个项目</span></div>
 		</header>
 
 		<div class="filter-bar" aria-label="按类别筛选项目">
@@ -79,11 +79,11 @@ const filters = catalogCategories
 		border-bottom: 1px solid var(--color-border);
 	}
 	.page-hero > div:first-child { max-width: 48rem; }
-	.page-hero h1 { margin-bottom: 1rem; font-size: clamp(2.65rem, 6vw, 4.8rem); }
+	.page-hero h1 { margin-bottom: 1rem; font-size: var(--font-size-page-title); }
 	.page-hero p:last-child { margin: 0; color: var(--color-text-muted); font-size: 1.03rem; }
 	.project-count { display: grid; min-width: 8.5rem; padding: 1rem 1.15rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-medium); box-shadow: var(--shadow-small); text-align: center; }
 	.project-count strong { font-size: 2rem; line-height: 1; }
-	.project-count span { margin-top: 0.35rem; color: var(--color-text-muted); font-size: 0.74rem; }
+	.project-count span { margin-top: 0.35rem; color: var(--color-text-muted); font-size: var(--font-size-sm); }
 	.filter-bar { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 2rem; }
 	.filter-bar button {
 		display: inline-flex;
@@ -95,13 +95,13 @@ const filters = catalogCategories
 		border: 1px solid var(--color-border);
 		border-radius: 0.7rem;
 		color: var(--color-text-muted);
-		font-size: 0.82rem;
+		font-size: var(--font-size-sm);
 		font-weight: 700;
 		cursor: pointer;
 	}
 	.filter-bar button:hover { border-color: var(--color-accent); color: var(--color-text); }
 	.filter-bar button[aria-pressed="true"] { background: var(--color-text); border-color: var(--color-text); color: #fff; }
-	.filter-bar span { display: grid; min-width: 1.25rem; height: 1.25rem; place-items: center; padding: 0 0.25rem; background: rgba(128, 136, 158, 0.12); border-radius: 99px; font-size: 0.66rem; }
+	.filter-bar span { display: grid; min-width: 1.25rem; height: 1.25rem; place-items: center; padding: 0 0.25rem; background: rgba(128, 136, 158, 0.12); border-radius: 99px; font-size: var(--font-size-xs); }
 	.filter-bar button[aria-pressed="true"] span { background: rgba(255, 255, 255, 0.15); }
 	.catalog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 	.catalog-grid > :global([hidden]) { display: none; }

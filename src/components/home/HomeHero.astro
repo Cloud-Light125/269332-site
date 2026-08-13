@@ -11,10 +11,10 @@ const { items } = Astro.props;
 
 <section class="home-hero" aria-labelledby="home-title">
 	<div class="hero-copy">
-		<p class="eyebrow">CloudLight 个人工具箱</p>
-		<h1 id="home-title">好用的小工具，解决具体的小麻烦。</h1>
+		<p class="eyebrow">CloudLight · 软件与工具</p>
+		<h1 id="home-title">实用软件与工具，解决具体使用需求。</h1>
 		<p class="hero-intro">
-			这里有 Windows 软件、游戏与网页工具、浏览器脚本，以及把问题讲清楚的博客和教程。
+			集中整理 Windows 软件、游戏与网页工具、浏览器脚本，以及相关的使用说明与开发记录。
 		</p>
 		<div class="hero-actions">
 			<a class="button button-primary" href="/projects/">浏览项目 <span aria-hidden="true">→</span></a>
@@ -25,10 +25,10 @@ const { items } = Astro.props;
 		</ul>
 	</div>
 
-	<div class="hero-showcase" aria-label="推荐入口">
+	<div class="hero-showcase" aria-label="推荐项目">
 		<div class="showcase-heading">
-			<div><span aria-hidden="true"></span> 推荐入口</div>
-			<small>现在就能打开</small>
+			<div><span aria-hidden="true"></span> 推荐项目</div>
+			<small>快速访问</small>
 		</div>
 		<div class="showcase-list">
 			{items.map((item) => (
@@ -50,7 +50,7 @@ const { items } = Astro.props;
 				</a>
 			))}
 		</div>
-		<div class="showcase-foot">所有项目都提供明确的下载、使用或安装入口。</div>
+		<div class="showcase-foot">项目页提供下载、在线使用或脚本安装入口。</div>
 	</div>
 </section>
 
@@ -67,13 +67,13 @@ const { items } = Astro.props;
 	h1 {
 		max-width: 11ch;
 		margin-bottom: 1.4rem;
-		font-size: clamp(2.9rem, 7vw, 5.4rem);
-		letter-spacing: -0.055em;
+		font-size: var(--font-size-display);
+		letter-spacing: -0.012em;
 	}
 	.hero-intro {
 		max-width: 35rem;
 		color: var(--color-text-muted);
-		font-size: clamp(1.08rem, 2vw, 1.24rem);
+		font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
 		line-height: 1.68;
 	}
 	.hero-actions {
@@ -90,7 +90,7 @@ const { items } = Astro.props;
 		padding: 1.2rem 0 0;
 		border-top: 1px solid var(--color-border);
 		color: var(--color-text-muted);
-		font-size: 0.78rem;
+		font-size: var(--font-size-sm);
 		list-style: none;
 	}
 	.content-kinds li::before {
@@ -114,7 +114,7 @@ const { items } = Astro.props;
 		gap: 1rem;
 		padding: 0.35rem 0.45rem 0.9rem;
 		color: var(--color-text);
-		font-size: 0.82rem;
+		font-size: var(--font-size-sm);
 		font-weight: 700;
 	}
 	.showcase-heading div { display: flex; align-items: center; gap: 0.5rem; }
@@ -162,11 +162,11 @@ const { items } = Astro.props;
 	}
 	.showcase-icon :global(img) { width: 100%; height: 100%; object-fit: contain; }
 	.showcase-copy { display: grid; min-width: 0; }
-	.showcase-copy small { color: var(--item-accent); font-size: 0.66rem; font-weight: 700; }
-	.showcase-copy strong { color: var(--color-text); font-size: 0.92rem; line-height: 1.35; }
-	.showcase-copy > span { margin-top: 0.18rem; color: var(--color-text-muted); font-size: 0.72rem; line-height: 1.42; }
+	.showcase-copy small { color: var(--item-accent); font-size: var(--font-size-xs); font-weight: 700; }
+	.showcase-copy strong { color: var(--color-text); font-size: var(--font-size-md); line-height: 1.35; }
+	.showcase-copy > span { margin-top: 0.18rem; color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: 1.5; }
 	.showcase-item > i { color: var(--color-text-soft); font-style: normal; }
-	.showcase-foot { padding: 0.9rem 0.45rem 0.2rem; color: var(--color-text-soft); font-size: 0.72rem; }
+	.showcase-foot { padding: 0.9rem 0.45rem 0.2rem; color: var(--color-text-soft); font-size: var(--font-size-xs); }
 	@media (max-width: 920px) {
 		.home-hero { grid-template-columns: 1fr; min-height: 0; }
 		.hero-copy { max-width: 45rem; }
@@ -174,7 +174,7 @@ const { items } = Astro.props;
 	}
 	@media (max-width: 520px) {
 		.home-hero { padding-top: 3.75rem; }
-		h1 { font-size: clamp(2.65rem, 15vw, 4rem); }
+		h1 { font-size: clamp(2.1rem, 10.5vw, 2.5rem); }
 		.hero-actions .button { flex: 1 1 9rem; }
 		.showcase-copy > span { display: none; }
 		.showcase-item { padding: 0.75rem; }

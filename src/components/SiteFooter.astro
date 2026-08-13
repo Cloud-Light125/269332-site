@@ -8,7 +8,7 @@ const year = new Date().getFullYear();
 	<div class="footer-inner">
 		<div class="footer-brand">
 			<a href="/">{SITE_TITLE}</a>
-			<p>个人制作的 Windows 软件、游戏工具、浏览器脚本和实用文章。</p>
+			<p>个人开发的 Windows 软件、游戏工具、浏览器脚本与使用记录。</p>
 		</div>
 		<nav aria-label="页脚导航">
 			<a href="/projects/">项目</a>
@@ -58,6 +58,7 @@ const year = new Date().getFullYear();
 	}
 	.footer-brand p {
 		margin: 0.75rem 0 0;
+		font-size: var(--font-size-sm);
 	}
 	nav,
 	.footer-links {
@@ -67,7 +68,7 @@ const year = new Date().getFullYear();
 	nav a,
 	.footer-links a {
 		color: #c2c9d8;
-		font-size: 0.88rem;
+		font-size: var(--font-size-sm);
 		text-decoration: none;
 	}
 	nav a:hover,
@@ -80,7 +81,7 @@ const year = new Date().getFullYear();
 		gap: 1rem;
 		padding-top: 1.4rem;
 		border-top: 1px solid rgba(255, 255, 255, 0.11);
-		font-size: 0.78rem;
+		font-size: var(--font-size-xs);
 	}
 	.footer-bottom p {
 		margin: 0;

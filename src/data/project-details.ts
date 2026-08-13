@@ -154,7 +154,7 @@ export const projectDetails: ProjectDetail[] = [
 			{
 				type: 'bullets',
 				id: 'running-safely',
-				title: '运行工作流时请留意',
+				title: '使用限制与注意事项',
 				tone: 'warning',
 				items: [
 					'当前执行器不支持并行流程、任意环或无限循环。',
@@ -513,7 +513,7 @@ export const projectDetails: ProjectDetail[] = [
 			{
 				type: 'steps',
 				id: 'getting-started',
-				title: '怎么开始使用',
+				title: '使用步骤',
 				items: [
 					{ title: '安装桌面端', description: '在最新发布页选择安装版或便携版；便携版需要完整解压，如果提示缺少运行环境请改用安装版。' },
 					{ title: '确认本机 Codex 可用', description: '先完成 Codex 登录；没有自动找到时，可以在设置中指定 codex.exe。' },
@@ -654,7 +654,7 @@ export const projectDetails: ProjectDetail[] = [
 			{
 				type: 'steps',
 				id: 'export-post',
-				title: '怎么导出帖子',
+				title: '导出步骤',
 				items: [
 					{ title: '准备 Edge', description: '打开日常使用的 Microsoft Edge，在地址栏进入 edge://inspect，并允许当前浏览器实例进行远程调试。' },
 					{ title: '打开软件', description: '运行 HeyboxPostExporter.exe。Edge 弹出授权提示时，手工点击允许。' },
