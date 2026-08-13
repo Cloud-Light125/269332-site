@@ -338,7 +338,7 @@
     let cursor = 0;
     let stopped = false;
     img.removeAttribute('title');
-    img.alt = handlers.alt || '待命名英雄图片';
+    img.alt = handlers.alt || `待命名${MODE_LABELS[mode]}`;
     img.onload = null;
     img.onerror = null;
     img.removeAttribute('src');
@@ -637,7 +637,7 @@
       const imageBox = document.createElement('div');
       imageBox.className = `card-image${state.game.config.mode === 'fullbody' ? ' fullbody' : ''}`;
       const img = document.createElement('img');
-      img.alt = '待命名英雄图片';
+      img.alt = `待命名${MODE_LABELS[state.game.config.mode]}`;
       img.loading = 'lazy';
       img.draggable = false;
       const placeholder = document.createElement('div');
@@ -852,7 +852,7 @@
       const imageBox = document.createElement('div');
       imageBox.className = `table-image${state.game.config.mode === 'fullbody' ? ' fullbody' : ''}`;
       const img = document.createElement('img');
-      img.alt = '待命名英雄图片';
+      img.alt = `待命名${MODE_LABELS[state.game.config.mode]}`;
       img.loading = 'lazy';
       imageBox.append(img);
       imageCell.append(imageBox);
@@ -999,7 +999,7 @@
       const imageBox = document.createElement('div');
       imageBox.className = `result-image${state.result.mode === 'fullbody' ? ' fullbody' : ''}`;
       const img = document.createElement('img');
-      img.alt = `${answer.realChineseName}的英雄图片`;
+      img.alt = `${answer.realChineseName}的${MODE_LABELS[state.result.mode]}`;
       img.loading = 'lazy';
       const hero = heroMap.get(answer.heroId);
       const paths = [answer.imagePath, ...core.getImagePaths(hero, state.result.mode)].filter((path, index, list) => path && list.indexOf(path) === index);
