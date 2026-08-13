@@ -7,9 +7,27 @@ import BaseLayout from './BaseLayout.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description,
+	datePublished: pubDate.toISOString(),
+	...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+	author: {
+		'@type': 'Person',
+		name: SITE_TITLE,
+		url: new URL('/', Astro.site),
+	},
+	url: canonicalURL,
+	mainEntityOfPage: canonicalURL,
+	...(heroImage ? { image: new URL(heroImage.src, Astro.site) } : {}),
+};
 ---
 
 <BaseLayout title={`${title} · ${SITE_TITLE}`} description={description} image={heroImage} type="article">
+	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
 	<main class="post-main">
 		<article>
 			<header class="post-header">

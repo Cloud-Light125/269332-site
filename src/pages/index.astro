@@ -25,10 +25,24 @@ const latestPosts = (await getPublishedPosts()).slice(0, 3);
 
 const websiteSchema = {
 	'@context': 'https://schema.org',
-	'@type': 'WebSite',
-	name: SITE_TITLE,
-	url: 'https://269332.xyz',
-	description: SITE_DESCRIPTION,
+	'@graph': [
+		{
+			'@type': 'WebSite',
+			'@id': 'https://269332.xyz/#website',
+			name: SITE_TITLE,
+			url: 'https://269332.xyz/',
+			description: SITE_DESCRIPTION,
+			inLanguage: 'zh-CN',
+			author: { '@id': 'https://269332.xyz/#person' },
+		},
+		{
+			'@type': 'Person',
+			'@id': 'https://269332.xyz/#person',
+			name: SITE_TITLE,
+			url: 'https://269332.xyz/',
+			sameAs: ['https://github.com/yundan125'],
+		},
+	],
 };
 ---
 

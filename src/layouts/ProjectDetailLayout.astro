@@ -30,9 +30,22 @@ const sectionScreenshots = (indexes: number[]) => indexes
 	.map((index) => screenshots[index])
 	.filter((screenshot): screenshot is CatalogScreenshot => screenshot !== undefined);
 const sections = project.sections;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const projectSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: item.name,
+	...(item.englishName ? { alternateName: item.englishName } : {}),
+	description: project.pageDescription,
+	url: canonicalURL,
+	applicationCategory: item.kind === 'desktop' ? 'UtilitiesApplication' : 'BrowserApplication',
+	operatingSystem: item.kind === 'desktop' ? 'Windows 10, Windows 11' : 'Web browser',
+	...(heroScreenshot ? { image: new URL(heroScreenshot.image.src, Astro.site) } : {}),
+};
 ---
 
 <BaseLayout title={`${item.name} · CloudLight`} description={project.pageDescription} image={heroScreenshot?.image}>
+	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(projectSchema)}></script>
 	<main class="project-detail">
 		<nav class="breadcrumbs" aria-label="面包屑">
 			<a href="/">首页</a><span aria-hidden="true">/</span><a href="/projects/">项目</a><span aria-hidden="true">/</span><span aria-current="page">{item.name}</span>
