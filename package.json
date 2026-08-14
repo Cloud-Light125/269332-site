@@ -8,6 +8,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "baidu:push": "node scripts/baidu-push.mjs",
+    "deploy:production": "node scripts/deploy-production.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

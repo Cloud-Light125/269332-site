@@ -41,11 +41,14 @@ draft 为 true 的文章不会出现在博客列表、文章动态路由、RSS �
 
 ## 部署
 
-Cloudflare Pages 配置：
+Cloudflare Workers Builds 配置：
 
 - Production branch：main
 - Build command：npm run build
-- Build output directory：dist
+- Production deploy command：npm run deploy:production
+- Non-production branch deploy command：npx wrangler versions upload
 - Node.js：读取仓库根目录 .node-version
+
+生产部署成功后，部署脚本会在 `WORKERS_CI_BRANCH=main` 时运行百度普通收录推送；推送失败只记录警告，不影响已经成功的部署。Preview 分支不会推送。
 
 正式站点地址：https://269332.xyz
