@@ -4,8 +4,11 @@ import gameStreamingCategoryIcon from '../assets/categories/game-streaming.png';
 import windowsCategoryIcon from '../assets/categories/windows.png';
 import cloudlightAutomatorIcon from '../assets/projects/cloudlight-automator/icon.png';
 import cloudlightAutomatorScreenshot from '../assets/projects/cloudlight-automator/screenshot.png';
+import cloudlightBlizzardAccountSwitch from '../assets/projects/cloudlight-blizzard/account-switch.png';
+import cloudlightBlizzardDrops from '../assets/projects/cloudlight-blizzard/drops.png';
 import cloudlightBlizzardIcon from '../assets/projects/cloudlight-blizzard/icon.png';
-import cloudlightBlizzardScreenshot from '../assets/projects/cloudlight-blizzard/screenshot.png';
+import cloudlightBlizzardRegionFiles from '../assets/projects/cloudlight-blizzard/region-files.png';
+import cloudlightBlizzardSettings from '../assets/projects/cloudlight-blizzard/settings.png';
 import cloudlightCodexBridgeIcon from '../assets/projects/codex-bridge/icon.png';
 import cloudlightCodexBridgeScreenshot from '../assets/projects/codex-bridge/screenshot.png';
 import cloudlightCodexBridgeScreenshot2 from '../assets/projects/codex-bridge/screenshot-2.png';
@@ -120,21 +123,40 @@ export const projects: CatalogItem[] = [
 	{
 		id: 'cloudlight-blizzard',
 		name: 'CloudLight Blizzard',
-		summary: '管理多个 Battle.net 账号，并自动联动《守望先锋》国服 / 国际服本地文件，减少跨区时约 200MB 的重复更新。',
+		summary: '管理多个 Battle.net 账号，自动切换《守望先锋》国服 / 国际服本地文件，并整合 SOOP、YouTube 与 Twitch 掉宝观赛。',
 		kind: 'desktop',
 		categories: ['game-streaming', 'games'],
 		status: 'available',
-		capabilities: ['Battle.net 多账号', '国服 / 国际服本地切换', '账号与区服联动'],
+		capabilities: ['Battle.net 多账号', '国服 / 国际服本地切换', '三平台掉宝与观赛'],
 		accent: 'blue',
 		featured: true,
 		icon: cloudlightBlizzardIcon,
-		screenshot: cloudlightBlizzardScreenshot,
-		screenshotAlt: 'CloudLight Blizzard 的 Battle.net 账号管理页面，显示当前账号、国服与国际服标签以及已保存账号的切换入口',
-		screenshotCaption: '在账号页面保存多个 Battle.net 账号，为账号标记国服或国际服，并从账号卡片直接切换。',
+		screenshots: [
+			{
+				image: cloudlightBlizzardAccountSwitch,
+				alt: 'CloudLight Blizzard 账号页面，当前账号为国际服，两个已保存账号分别带有国际服和国服标签，并提供战绩、编辑和切换入口',
+				caption: '账号页同时显示当前账号和已保存账号，可直接查看区服标签并切换。',
+			},
+			{
+				image: cloudlightBlizzardRegionFiles,
+				alt: 'CloudLight Blizzard 区服文件页面，显示当前为国际服、国服与国际服备份均已准备，以及游戏位置、备份位置和切换按钮',
+				caption: '区服文件页显示两端准备状态、当前区服和存储位置，并提供国服与国际服恢复入口。',
+			},
+			{
+				image: cloudlightBlizzardDrops,
+				alt: 'CloudLight Blizzard 掉宝页面，顶部集中显示 SOOP、YouTube 与 Twitch 的运行状态、统一代理状态和各平台入口',
+				caption: '掉宝页把 SOOP、YouTube 与 Twitch 放在同一个入口，并集中显示网络、运行状态和下一步操作。',
+			},
+			{
+				image: cloudlightBlizzardSettings,
+				alt: 'CloudLight Blizzard 设置页面，显示托盘与开机启动选项、Battle.net 路径、掉宝网络代理和当前 2.0.0 版本',
+				caption: '设置页集中管理托盘、开机启动、主题、Battle.net 路径、三平台共用代理与软件更新。',
+			},
+		],
 		detailsPath: '/projects/cloudlight-blizzard/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/CloudLight-Blizzard/releases/download/v1.0.1/CloudLight-Blizzard-1.0.1-win-x64-Setup.exe',
+			href: 'https://github.com/yundan125/CloudLight-Blizzard/releases/download/v2.0.0/CloudLight-Blizzard-2.0.0-win-x64-Setup.exe',
 			external: true,
 		},
 		secondaryAction: {
@@ -142,7 +164,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/yundan125/CloudLight-Blizzard',
 			external: true,
 		},
-		ctaNote: '当前正式版 v1.0.1；适用于 Windows 10/11 x64，需要 .NET 8 Windows Desktop Runtime。',
+		ctaNote: '当前正式版 v2.0.0；适用于 Windows 10/11 x64，需要 .NET 8 Windows Desktop Runtime。',
 	},
 	{
 		id: 'cloudlight-automator',
