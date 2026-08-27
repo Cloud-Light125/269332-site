@@ -255,6 +255,139 @@ export const projectDetails: ProjectDetail[] = [
 		],
 	},
 	{
+		slug: 'cloudlight-xiaomi',
+		item: getCatalogItem('cloudlight-xiaomi'),
+		pageDescription: 'CloudLight XiaoMi 是一款 Windows 小米路由器设备在线状态记录工具，可查看设备上线、离线、在线时长和时间轴，并支持 QQ 状态提醒。',
+		sections: [
+			{
+				type: 'features',
+				id: 'record-device-presence',
+				title: '记录设备的上线和离线',
+				intro: [
+					'CloudLight XiaoMi 会定时从小米路由器云端读取设备状态，把观察到的上线、离线变化保存在电脑上。你可以从主界面看到当前状态，不必反复打开路由器后台查看。',
+					'它记录的是设备在路由器中的在线状态，不是人的位置。',
+				],
+				layout: 'columns',
+				items: [
+					{ title: '持续观察', description: '软件按设置的时间间隔更新路由器中的设备状态，默认间隔为 10 秒。' },
+					{ title: '状态筛选', description: '主界面可以按全部、在线、离线或未知筛选，也可以搜索名称、备注、MAC 和 IP。' },
+					{ title: '连接信息', description: '在线设备会显示当前连接方式与信号信息；每张主体卡片还会显示关联设备数量。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'timeline-and-history',
+				title: '回看在线时长和时间轴',
+				intro: [
+					'不只是显示“现在在线还是离线”。设备详情页会把已经记录的状态变化整理成在线时长、时间分布和活动历史，方便回看最近一段时间发生了什么。',
+				],
+				layout: 'columns',
+				items: [
+					{ title: '四个时间范围', description: '分别查看最近 24 小时、3 天、7 天和 30 天的统计。' },
+					{ title: '累计在线时长', description: '查看各时间范围内累计在线了多久，以及已记录时间中的在线比例。' },
+					{ title: '状态分布', description: '时间轴用不同颜色区分在线、离线和暂时没有记录的时间段。' },
+					{ title: '最近活动', description: '按时间回看设备什么时候上线、什么时候离线，以及主体的状态变化。' },
+				],
+			},
+			{
+				type: 'screenshots',
+				id: 'device-detail-screen',
+				title: '统计、时间轴和最近活动放在一起',
+				intro: ['设备详情页同时显示关联设备、四个时间范围的统计卡片、在线时间分布和最近活动记录。'],
+				indexes: [1],
+			},
+			{
+				type: 'note',
+				id: 'monitoring-gaps',
+				title: '没有监控到的时间会标成无法确认',
+				description: '如果电脑关闭、网络中断或软件暂停监控，这段时间不会被错误算成“在线”或“离线”，而是作为无法确认的监控空档显示。这样历史时间轴不会把没有实际监控到的时间误算成设备状态。',
+			},
+			{
+				type: 'features',
+				id: 'organize-by-subject',
+				title: '把同一个人的设备归到一个主体',
+				intro: [
+					'同一个人的多个设备或不同网络接口可以放到同一个主体中，以主体为单位查看状态和通知。主体详情页可以管理关联设备，也可以修改名称和备注。',
+				],
+				layout: 'list',
+				items: [
+					{ title: '关联设备', description: '在主体详情中点击“管理”，选择要归到这个主体的设备；设备也可以从主体中移出。' },
+					{ title: '合并状态', description: '主体状态会根据关联设备综合显示；只要有一个关联设备在线，就能从主体层面看到在线状态。' },
+					{ title: '主体详情', description: '打开主体卡片后，可以查看关联设备、统计、时间轴和最近活动，也可以拆分或解散主体。' },
+				],
+			},
+			{
+				type: 'features',
+				id: 'qq-notifications',
+				title: '在线或离线达到条件后提醒',
+				intro: [
+					'不需要一直盯着主界面。设置 QQ 官方开放平台 Bot 后，可以为主体添加连续在线或连续离线提醒。',
+				],
+				layout: 'columns',
+				items: [
+					{ title: '连续在线提醒', description: '设置连续在线达到指定分钟、小时或天数后发送一次提醒。' },
+					{ title: '连续离线提醒', description: '设置连续离线达到指定时长后发送一次提醒。' },
+					{ title: '私聊或群聊', description: '提醒以主体为对象发送到 QQ 私聊或群聊；接收目标填写 QQ 开放平台提供的 OpenID。' },
+				],
+			},
+			{
+				type: 'screenshots',
+				id: 'notification-settings-screen',
+				title: '轮询和 QQ 通知集中在设置页',
+				intro: ['设置页同时提供轮询间隔、QQ 通知、连接异常提醒和自动提醒规则。'],
+				indexes: [2],
+			},
+			{
+				type: 'steps',
+				id: 'getting-started',
+				title: '开始监控',
+				items: [
+					{ title: '安装并打开', description: '下载并安装 CloudLight XiaoMi Windows 版。' },
+					{ title: '登录小米账号', description: '首次使用时点击“登录 Xiaomi 账号”，在打开的小米官方页面按提示扫码、验证码或完成风控验证。' },
+					{ title: '选择小米路由器', description: '登录成功后等待软件发现账号可见的路由器；如果有多台，从主界面选择要监控的一台。' },
+					{ title: '开始查看设备', description: '监控启动后，主界面会按主体显示设备的在线、离线或未知状态；点击卡片可以打开详情。' },
+					{ title: '按需设置提醒', description: '需要 QQ 通知时，在“设置”中配置 QQ，再添加连续在线或连续离线提醒规则。' },
+				],
+			},
+			{
+				type: 'feature-groups',
+				id: 'daily-use',
+				title: '日常运行与数据迁移',
+				intro: ['CloudLight XiaoMi 适合放在 Windows 后台运行；设置页和托盘菜单保留了长期运行时需要的选项。'],
+				groups: [
+					{
+						title: '后台记录',
+						items: [
+							{ title: '最小化到托盘', description: '关闭窗口时仍可留在托盘，监控继续运行；从托盘可以重新打开窗口或暂停、开始监控。' },
+							{ title: '开机自动启动', description: '可以开启当前 Windows 用户的开机自启，也可以选择启动后直接最小化到托盘。' },
+							{ title: '调整刷新间隔', description: '在设置中把自动刷新间隔调整为 5–300 秒；软件建议使用 10 秒或更长。' },
+						],
+					},
+					{
+						title: '保留和迁移记录',
+						items: [
+							{ title: '.clpresence 导出', description: '导出已经记录的路由器、设备、状态历史、主体关联和提醒规则，保存为版本化的 .clpresence 文件。' },
+							{ title: '导入后合并', description: '在另一台电脑或重新安装后导入，软件会验证文件并合并设备、事件和主体数据，跳过重复记录。' },
+							{ title: '不导出登录凭据', description: '导出的文件不包含 Xiaomi 登录信息或 QQ AppSecret；导出的提醒规则仍会保留接收目标 OpenID。' },
+						],
+					},
+				],
+			},
+			{
+				type: 'facts',
+				id: 'usage-boundaries',
+				title: '使用时要知道',
+				items: [
+					{ term: '系统', description: 'Windows 10 或 Windows 11 x64。' },
+					{ term: '小米账号', description: '需要能够登录并查看目标小米路由器的小米账号；设备状态来自该账号在云端可见的路由器数据。' },
+					{ term: '电脑状态', description: '持续记录需要运行软件的 Windows 电脑保持开机、联网，且监控没有暂停。' },
+					{ term: '安装包', description: '安装包已带有程序所需的私有运行环境，普通用户不需要另外安装 Python。' },
+					{ term: '记录边界', description: '统计反映设备在路由器中的网络在线情况，不等同于人的精确位置。' },
+				],
+			},
+		],
+	},
+	{
 		slug: 'cloudlight-automator',
 		item: getCatalogItem('cloudlight-automator'),
 		pageDescription: '用可视化流程组合窗口、截图、图像识别、文字识别和键鼠操作，创建可重复运行的 Windows 自动化任务。',

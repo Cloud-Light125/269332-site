@@ -13,12 +13,12 @@ const pickProject = (id: string) => projects.find((project) => project.id === id
 const heroItems = [
 	pickProject('cloudlight-blizzard'),
 	pickProject('cloudlight-automator'),
-	pickProject('cloudlight-codex-bridge'),
+	pickProject('cloudlight-xiaomi'),
 ];
 const featuredProjects = [
 	pickProject('cloudlight-blizzard'),
 	pickProject('cloudlight-overwatch-youtube-watcher'),
-	pickProject('twitter-x-media-renamer'),
+	pickProject('cloudlight-xiaomi'),
 ];
 const directUseItems = [...gameTools, pickProject('heybox-post-export-userscript')];
 const latestPosts = (await getPublishedPosts()).slice(0, 3);

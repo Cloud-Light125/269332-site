@@ -17,6 +17,10 @@ import cloudlightOverwatchYoutubeWatcherIcon from '../assets/projects/cloudlight
 import cloudlightOverwatchYoutubeWatcherScreenshot from '../assets/projects/cloudlight-overwatch-youtube-watcher/screenshot.png';
 import cloudlightSoopDropsMinerIcon from '../assets/projects/cloudlight-soop-drops-miner/icon.png';
 import cloudlightSoopDropsMinerScreenshot from '../assets/projects/cloudlight-soop-drops-miner/screenshot.png';
+import cloudlightXiaomiDeviceDetail from '../assets/projects/cloudlight-xiaomi/device-detail.png';
+import cloudlightXiaomiIcon from '../assets/projects/cloudlight-xiaomi/icon.png';
+import cloudlightXiaomiNotificationSettings from '../assets/projects/cloudlight-xiaomi/notification-settings.png';
+import cloudlightXiaomiScreenshot from '../assets/projects/cloudlight-xiaomi/screenshot.png';
 import heyboxPostExportUserscriptIcon from '../assets/projects/heybox-post-export-userscript/icon.png';
 import heyboxPostExporterIcon from '../assets/projects/heybox-post-exporter/icon.png';
 import heyboxPostExporterScreenshot from '../assets/projects/heybox-post-exporter/screenshot.png';
@@ -234,6 +238,47 @@ export const projects: CatalogItem[] = [
 			external: true,
 		},
 		ctaNote: '在最新发布页选择安装版或便携版；安装版已包含 .NET 8 Windows 桌面运行环境。',
+	},
+	{
+		id: 'cloudlight-xiaomi',
+		name: 'CloudLight XiaoMi',
+		summary: '通过小米路由器云端记录设备上线和离线时间，查看在线时长、时间轴和活动历史。',
+		kind: 'desktop',
+		categories: ['windows'],
+		status: 'available',
+		capabilities: ['在线 / 离线记录', '在线时长与时间轴', 'QQ 状态提醒'],
+		accent: 'amber',
+		featured: true,
+		icon: cloudlightXiaomiIcon,
+		screenshots: [
+			{
+				image: cloudlightXiaomiScreenshot,
+				alt: 'CloudLight XiaoMi 主界面，显示小米路由器连接状态、在线和离线筛选以及多个主体卡片',
+				caption: '主界面按主体显示设备当前在线状态、连接情况和关联设备数量，并提供路由器选择、状态筛选与刷新。',
+			},
+			{
+				image: cloudlightXiaomiDeviceDetail,
+				alt: 'CloudLight XiaoMi 主体详情界面，显示关联设备、四个时间范围的统计、在线时间分布和最近活动',
+				caption: '主体详情可以查看关联设备、最近 24 小时/3 天/7 天/30 天统计、在线时间分布和最近活动。',
+			},
+			{
+				image: cloudlightXiaomiNotificationSettings,
+				alt: 'CloudLight XiaoMi 设置界面，显示轮询间隔、QQ 通知、连接异常提醒和自动提醒规则',
+				caption: '设置页集中管理轮询间隔、QQ 通知、连接异常提醒和连续在线/离线自动提醒。',
+			},
+		],
+		detailsPath: '/projects/cloudlight-xiaomi/',
+		primaryAction: {
+			label: '下载 Windows 版',
+			href: 'https://github.com/Cloud-Light125/CloudLight-XiaoMi/releases/download/v1.2.1/CloudLight-XiaoMi-Setup-1.2.1.exe',
+			external: true,
+		},
+		secondaryAction: {
+			label: '查看 GitHub',
+			href: 'https://github.com/Cloud-Light125/CloudLight-XiaoMi',
+			external: true,
+		},
+		ctaNote: 'v1.2.1 · Windows 10/11 x64；安装包已包含运行所需环境。',
 	},
 	{
 		id: 'twitter-x-media-renamer',
