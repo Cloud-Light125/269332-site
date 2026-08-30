@@ -21,6 +21,7 @@ const screenshots: CatalogScreenshot[] = item.screenshots ?? (item.screenshot ? 
 	caption: item.screenshotCaption,
 }] : []);
 const heroScreenshot = screenshots[0];
+const socialImage = heroScreenshot?.image ?? item.icon;
 const screenshotWidths = (width: number) => [...new Set([480, 720, 960, 1280, width])]
 	.filter((candidate) => candidate <= width)
 	.sort((a, b) => a - b);
@@ -40,11 +41,11 @@ const projectSchema = {
 	url: canonicalURL,
 	applicationCategory: item.kind === 'desktop' ? 'UtilitiesApplication' : 'BrowserApplication',
 	operatingSystem: item.kind === 'desktop' ? 'Windows 10, Windows 11' : 'Web browser',
-	...(heroScreenshot ? { image: new URL(heroScreenshot.image.src, Astro.site) } : {}),
+	...(socialImage ? { image: new URL(socialImage.src, Astro.site) } : {}),
 };
 ---
 
-<BaseLayout title={`${item.name} · CloudLight`} description={project.pageDescription} image={heroScreenshot?.image}>
+<BaseLayout title={`${item.name} · CloudLight`} description={project.pageDescription} image={socialImage}>
 	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(projectSchema)}></script>
 	<main class="project-detail">
 		<nav class="breadcrumbs" aria-label="面包屑">

@@ -11,15 +11,16 @@ import cloudlightBlizzardRegionFiles from '../assets/projects/cloudlight-blizzar
 import cloudlightBlizzardSettings from '../assets/projects/cloudlight-blizzard/settings.png';
 import cloudlightCodexBridgeIcon from '../assets/projects/codex-bridge/icon.png';
 import cloudlightCodexBridgeScreenshot from '../assets/projects/codex-bridge/screenshot.png';
-import cloudlightCodexBridgeScreenshot2 from '../assets/projects/codex-bridge/screenshot-2.png';
-import cloudlightCodexBridgeScreenshot3 from '../assets/projects/codex-bridge/screenshot-3.png';
+import cloudlightCodexBridgeOpenClawCommands from '../assets/projects/codex-bridge/openclaw-commands.png';
+import cloudlightCodexBridgeQqChannel from '../assets/projects/codex-bridge/qq-channel.png';
 import cloudlightOverwatchYoutubeWatcherIcon from '../assets/projects/cloudlight-overwatch-youtube-watcher/icon.png';
 import cloudlightOverwatchYoutubeWatcherScreenshot from '../assets/projects/cloudlight-overwatch-youtube-watcher/screenshot.png';
 import cloudlightSoopDropsMinerIcon from '../assets/projects/cloudlight-soop-drops-miner/icon.png';
 import cloudlightSoopDropsMinerScreenshot from '../assets/projects/cloudlight-soop-drops-miner/screenshot.png';
 import cloudlightXiaomiDeviceDetail from '../assets/projects/cloudlight-xiaomi/device-detail.png';
 import cloudlightXiaomiIcon from '../assets/projects/cloudlight-xiaomi/icon.png';
-import cloudlightXiaomiNotificationSettings from '../assets/projects/cloudlight-xiaomi/notification-settings.png';
+import cloudlightXiaomiQqReminder from '../assets/projects/cloudlight-xiaomi/qq-reminder.png';
+import cloudlightXiaomiRouterPresence from '../assets/projects/cloudlight-xiaomi/router-presence.png';
 import cloudlightXiaomiScreenshot from '../assets/projects/cloudlight-xiaomi/screenshot.png';
 import heyboxPostExportUserscriptIcon from '../assets/projects/heybox-post-export-userscript/icon.png';
 import heyboxPostExporterIcon from '../assets/projects/heybox-post-exporter/icon.png';
@@ -37,6 +38,7 @@ import tdmClaimTogglePatcherScreenshot from '../assets/projects/tdm-claim-toggle
 import twitterXMediaRenamerIcon from '../assets/projects/twitter-x-media-renamer/icon.png';
 import twitterXMediaRenamerScreenshot from '../assets/projects/twitter-x-media-renamer/screenshot.png';
 import overwatchHeroQuizIcon from '../assets/projects/overwatch-hero-quiz/icon.png';
+import cloudlightVideoCompressorIcon from '../assets/projects/cloudlight-video-compressor/icon.png';
 
 export type CatalogKind = 'desktop' | 'online' | 'userscript';
 export type CatalogCategoryId = 'windows' | 'game-streaming' | 'games' | 'scripts';
@@ -171,6 +173,30 @@ export const projects: CatalogItem[] = [
 		ctaNote: '当前正式版 v2.0.0；适用于 Windows 10/11 x64，需要 .NET 8 Windows Desktop Runtime。',
 	},
 	{
+		id: 'cloudlight-video-compressor',
+		name: 'CloudLight Video Compressor',
+		summary: '批量扫描视频，判断哪些值得压缩，为每个视频生成合适的压缩方案，再批量执行并查看前后结果。',
+		kind: 'desktop',
+		categories: ['windows'],
+		status: 'available',
+		capabilities: ['批量扫描与分析', '每个视频独立规划', 'QSV / NVENC / AMF'],
+		accent: 'blue',
+		featured: true,
+		icon: cloudlightVideoCompressorIcon,
+		detailsPath: '/projects/cloudlight-video-compressor/',
+		primaryAction: {
+			label: '下载 Windows 版',
+			href: 'https://github.com/Cloud-Light125/CloudLight-Video-Compressor/releases',
+			external: true,
+		},
+		secondaryAction: {
+			label: '查看源码',
+			href: 'https://github.com/Cloud-Light125/CloudLight-Video-Compressor',
+			external: true,
+		},
+		ctaNote: '当前公开 Release v1.2.0；安装包已包含 .NET 8 Windows Desktop Runtime、FFmpeg 和 ffprobe。',
+	},
+	{
 		id: 'cloudlight-automator',
 		name: 'CloudLight 自动化工作室',
 		englishName: 'CloudLight Automator',
@@ -201,29 +227,29 @@ export const projects: CatalogItem[] = [
 		id: 'cloudlight-codex-bridge',
 		name: 'CloudLight Codex 桥接器',
 		englishName: 'CloudLight Codex Bridge',
-		summary: '把电脑上的 Codex 会话连接到 QQ 或 Telegram，远程发送任务并接收最终回复。',
+		summary: '在 Windows 上浏览并继续 Codex / OpenClaw 会话，也可以通过 QQ 或 Telegram 远程选择会话、发送任务并接收最终回复。',
 		kind: 'desktop',
 		categories: ['windows'],
 		status: 'available',
-		capabilities: ['QQ 与 Telegram', '远程继续会话', '桌面配置'],
+		capabilities: ['Codex / OpenClaw', 'QQ 与 Telegram', '继续已有会话'],
 		accent: 'cyan',
 		featured: true,
 		icon: cloudlightCodexBridgeIcon,
 		screenshots: [
 			{
 				image: cloudlightCodexBridgeScreenshot,
-				alt: 'CloudLight Codex 桥接器的远程渠道页面，显示 Telegram 与 QQ 机器人连接和会话状态',
-				caption: '在远程渠道页面配置、测试并管理 Telegram 与 QQ 官方机器人连接。',
+				alt: 'CloudLight Codex Bridge 的 OpenClaw Sessions 页面，显示会话列表、Gateway 地址和当前会话消息',
+				caption: 'OpenClaw 会话页可以浏览 Gateway 中的 Session，查看消息并继续发送任务。',
 			},
 			{
-				image: cloudlightCodexBridgeScreenshot2,
-				alt: 'CloudLight Codex 桥接器的概览页面，显示 Codex、QQ、Telegram 和消息同步状态',
-				caption: '概览页集中显示 Codex 会话、远程渠道、消息同步和最近活动状态。',
+				image: cloudlightCodexBridgeOpenClawCommands,
+				alt: 'CloudLight Codex Bridge 的 OpenClaw 指令页面，显示已加载指令、QQ 与 Telegram 共用配置和指令编辑入口',
+				caption: '指令页可以解锁编辑、改名、添加别名、停用或恢复内置指令，也能创建自定义指令。',
 			},
 			{
-				image: cloudlightCodexBridgeScreenshot3,
-				alt: '通过 QQ 与 CloudLight Codex 桥接器远程连接的 Codex 会话对话界面',
-				caption: '在 QQ 中用稳定的会话编号发送任务，并接收 Codex 的最终回复。',
+				image: cloudlightCodexBridgeQqChannel,
+				alt: 'CloudLight Codex Bridge 的 QQ Bot Profile 页面，显示 QQ 机器人连接状态、OpenID 和分配后端入口',
+				caption: 'QQ Bot 页面集中管理连接、允许的 OpenID，以及消息转发到 Codex 或 OpenClaw 的后端。',
 			},
 		],
 		detailsPath: '/projects/cloudlight-codex-bridge/',
@@ -237,34 +263,39 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/Cloud-Light125/Codex-Bridge',
 			external: true,
 		},
-		ctaNote: '在 Releases 页面选择安装版或便携版；安装版已包含 .NET 8 Windows 桌面运行环境。',
+		ctaNote: '当前公开 Release v1.1.4；完整安装包包含 .NET 8 Windows 桌面运行环境，下载入口进入 Releases 列表。',
 	},
 	{
 		id: 'cloudlight-xiaomi',
 		name: 'CloudLight XiaoMi',
-		summary: '通过小米路由器云端记录设备上线和离线时间，查看在线时长、时间轴和活动历史。',
+		summary: '查看 Xiaomi 账号下的米家设备，并继续记录小米路由器设备的在线 / 离线历史、时长和时间轴。',
 		kind: 'desktop',
 		categories: ['windows'],
 		status: 'available',
-		capabilities: ['在线 / 离线记录', '在线时长与时间轴', 'QQ 状态提醒'],
+		capabilities: ['Xiaomi 账号设备', '米家设备控制', '路由器 Presence 历史'],
 		accent: 'amber',
 		featured: true,
 		icon: cloudlightXiaomiIcon,
 		screenshots: [
 			{
 				image: cloudlightXiaomiScreenshot,
-				alt: 'CloudLight XiaoMi 主界面，显示小米路由器连接状态、在线和离线筛选以及多个主体卡片',
-				caption: '主界面按主体显示设备当前在线状态、连接情况和关联设备数量，并提供路由器选择、状态筛选与刷新。',
+				alt: 'CloudLight XiaoMi 新版设备页，显示已连接的 Xiaomi 账号、当前路由器、在线筛选和路由器、智能插座、手机等设备卡片',
+				caption: '设备页先展示当前 Xiaomi 账号下的设备，卡片包含类型、家庭 / 房间、型号、状态，并提供详情或可用的开关入口。',
 			},
 			{
 				image: cloudlightXiaomiDeviceDetail,
-				alt: 'CloudLight XiaoMi 主体详情界面，显示关联设备、四个时间范围的统计、在线时间分布和最近活动',
-				caption: '主体详情可以查看关联设备、最近 24 小时/3 天/7 天/30 天统计、在线时间分布和最近活动。',
+				alt: 'CloudLight XiaoMi 主体详情页，显示 24 小时、3 天、7 天和 30 天统计、在线时间分布与最近活动',
+				caption: '主体详情把在线时长、时间轴、最近活动和未记录的时间段放在同一页。',
 			},
 			{
-				image: cloudlightXiaomiNotificationSettings,
-				alt: 'CloudLight XiaoMi 设置界面，显示轮询间隔、QQ 通知、连接异常提醒和自动提醒规则',
-				caption: '设置页集中管理轮询间隔、QQ 通知、连接异常提醒和连续在线/离线自动提醒。',
+				image: cloudlightXiaomiRouterPresence,
+				alt: 'CloudLight XiaoMi 路由器 Presence 页面，显示在线、离线、未知筛选、主体在线时长和关联设备',
+				caption: '路由器 Presence 页面继续记录联网设备的当前状态、在线时长、当前连接和关联设备。',
+			},
+			{
+				image: cloudlightXiaomiQqReminder,
+				alt: 'CloudLight XiaoMi 独立 QQ 提醒页面，显示 QQ Bot 状态、接收目标、自动提醒规则和连接异常提醒入口',
+				caption: 'QQ提醒现在是独立入口，可以配置 Bot、接收目标、连续状态提醒和连接异常提醒。',
 			},
 		],
 		detailsPath: '/projects/cloudlight-xiaomi/',
@@ -278,7 +309,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/Cloud-Light125/CloudLight-XiaoMi',
 			external: true,
 		},
-		ctaNote: 'v1.2.1 · Windows 10/11 x64；安装包已包含运行所需环境。',
+		ctaNote: '当前公开 Release v1.2.1；main 分支已包含 2.1.0 开发内容，下载请进入 Releases 列表。',
 	},
 	{
 		id: 'twitter-x-media-renamer',
