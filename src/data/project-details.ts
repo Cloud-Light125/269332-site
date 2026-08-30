@@ -811,7 +811,7 @@ export const projectDetails: ProjectDetail[] = [
 				id: 'getting-started',
 				title: '使用步骤',
 				items: [
-					{ title: '安装桌面端', description: '在最新发布页选择安装版或便携版；便携版需要完整解压，如果提示缺少运行环境请改用安装版。' },
+					{ title: '安装桌面端', description: '在 Releases 页面选择安装版或便携版；便携版需要完整解压，如果提示缺少运行环境请改用安装版。' },
 					{ title: '确认本机 Codex 可用', description: '先完成 Codex 登录；没有自动找到时，可以在设置中指定 codex.exe。' },
 					{ title: '添加远程渠道', description: '选择 Telegram 或 QQ 官方机器人，填写对应平台提供的机器人凭据。' },
 					{ title: '测试并绑定会话', description: '测试凭据和网络，在聊天端用 #N 指定会话，或把当前聊天绑定到一个现有会话。' },
@@ -846,8 +846,8 @@ export const projectDetails: ProjectDetail[] = [
 				id: 'source-and-release',
 				title: '源码与发布记录',
 				items: [
-					{ label: '查看最新发布', href: 'https://github.com/yundan125/Codex-Bridge/releases/latest' },
-					{ label: '查看 GitHub 仓库', href: 'https://github.com/yundan125/Codex-Bridge' },
+					{ label: '查看下载', href: 'https://github.com/Cloud-Light125/Codex-Bridge/releases' },
+					{ label: '查看 GitHub 仓库', href: 'https://github.com/Cloud-Light125/Codex-Bridge' },
 				],
 			},
 		],

@@ -160,12 +160,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/cloudlight-blizzard/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/CloudLight-Blizzard/releases/download/v2.0.0/CloudLight-Blizzard-2.0.0-win-x64-Setup.exe',
+			href: 'https://github.com/Cloud-Light125/CloudLight-Blizzard/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看 GitHub',
-			href: 'https://github.com/yundan125/CloudLight-Blizzard',
+			href: 'https://github.com/Cloud-Light125/CloudLight-Blizzard',
 			external: true,
 		},
 		ctaNote: '当前正式版 v2.0.0；适用于 Windows 10/11 x64，需要 .NET 8 Windows Desktop Runtime。',
@@ -188,12 +188,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/cloudlight-automator/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/cloudlight-automator/releases/latest',
+			href: 'https://github.com/Cloud-Light125/cloudlight-automator/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/cloudlight-automator',
+			href: 'https://github.com/Cloud-Light125/cloudlight-automator',
 			external: true,
 		},
 	},
@@ -228,16 +228,16 @@ export const projects: CatalogItem[] = [
 		],
 		detailsPath: '/projects/cloudlight-codex-bridge/',
 		primaryAction: {
-			label: '获取 Windows 版',
-			href: 'https://github.com/yundan125/Codex-Bridge/releases/latest',
+			label: '下载 Windows 版',
+			href: 'https://github.com/Cloud-Light125/Codex-Bridge/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/Codex-Bridge',
+			href: 'https://github.com/Cloud-Light125/Codex-Bridge',
 			external: true,
 		},
-		ctaNote: '在最新发布页选择安装版或便携版；安装版已包含 .NET 8 Windows 桌面运行环境。',
+		ctaNote: '在 Releases 页面选择安装版或便携版；安装版已包含 .NET 8 Windows 桌面运行环境。',
 	},
 	{
 		id: 'cloudlight-xiaomi',
@@ -270,7 +270,7 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/cloudlight-xiaomi/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/Cloud-Light125/CloudLight-XiaoMi/releases/download/v1.2.1/CloudLight-XiaoMi-Setup-1.2.1.exe',
+			href: 'https://github.com/Cloud-Light125/CloudLight-XiaoMi/releases',
 			external: true,
 		},
 		secondaryAction: {
@@ -298,15 +298,15 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/twitter-x-media-renamer/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/TwitterXMediaRenamer/releases/latest',
+			href: 'https://github.com/Cloud-Light125/TwitterXMediaRenamer/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/TwitterXMediaRenamer',
+			href: 'https://github.com/Cloud-Light125/TwitterXMediaRenamer',
 			external: true,
 		},
-		ctaNote: '在最新发布页获取 Windows 单文件程序，无需安装 Python。',
+		ctaNote: '在 Releases 页面选择 Windows 单文件程序，无需安装 Python。',
 	},
 	{
 		id: 'heybox-post-exporter',
@@ -326,12 +326,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/heybox-post-exporter/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/HeyboxPostExporter/releases/latest',
+			href: 'https://github.com/Cloud-Light125/HeyboxPostExporter/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看 GitHub',
-			href: 'https://github.com/yundan125/HeyboxPostExporter',
+			href: 'https://github.com/Cloud-Light125/HeyboxPostExporter',
 			external: true,
 		},
 		ctaNote: '提供 Windows 10/11 x64 单文件程序；使用前还需要准备 Microsoft Edge 和 Node.js。',
@@ -354,15 +354,15 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/cloudlight-overwatch-youtube-watcher/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/CloudLight-Overwatch-YouTube-Watcher/releases/latest',
+			href: 'https://github.com/Cloud-Light125/CloudLight-Overwatch-YouTube-Watcher/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/CloudLight-Overwatch-YouTube-Watcher',
+			href: 'https://github.com/Cloud-Light125/CloudLight-Overwatch-YouTube-Watcher',
 			external: true,
 		},
-		ctaNote: '在最新发布页获取 Windows 程序；运行时需要已安装并更新的 Chrome 或 Brave。',
+		ctaNote: '在 Releases 页面选择 Windows 程序；运行时需要已安装并更新的 Chrome 或 Brave。',
 	},
 	{
 		id: 'cloudlight-soop-drops-miner',
@@ -382,12 +382,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/cloudlight-soop-drops-miner/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/cloudlight-soop-drops-miner/releases/latest',
+			href: 'https://github.com/Cloud-Light125/cloudlight-soop-drops-miner/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/cloudlight-soop-drops-miner',
+			href: 'https://github.com/Cloud-Light125/cloudlight-soop-drops-miner',
 			external: true,
 		},
 	},
@@ -409,12 +409,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/microsoft-pinyin-cleaner/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/MicrosoftPinyinCleaner/releases/latest',
+			href: 'https://github.com/Cloud-Light125/MicrosoftPinyinCleaner/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/MicrosoftPinyinCleaner',
+			href: 'https://github.com/Cloud-Light125/MicrosoftPinyinCleaner',
 			external: true,
 		},
 	},
@@ -436,12 +436,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/power-settings-manager/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/PowerSettingsManager/releases/latest',
+			href: 'https://github.com/Cloud-Light125/PowerSettingsManager/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/PowerSettingsManager',
+			href: 'https://github.com/Cloud-Light125/PowerSettingsManager',
 			external: true,
 		},
 	},
@@ -463,12 +463,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/mobile-hotspot-controller/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/MobileHotspotController/releases/latest',
+			href: 'https://github.com/Cloud-Light125/MobileHotspotController/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/MobileHotspotController',
+			href: 'https://github.com/Cloud-Light125/MobileHotspotController',
 			external: true,
 		},
 	},
@@ -489,12 +489,12 @@ export const projects: CatalogItem[] = [
 		detailsPath: '/projects/tdm-claim-toggle-patcher/',
 		primaryAction: {
 			label: '下载 Windows 版',
-			href: 'https://github.com/yundan125/tdm-claim-toggle-patcher/releases/latest',
+			href: 'https://github.com/Cloud-Light125/tdm-claim-toggle-patcher/releases',
 			external: true,
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/tdm-claim-toggle-patcher',
+			href: 'https://github.com/Cloud-Light125/tdm-claim-toggle-patcher',
 			external: true,
 		},
 	},
@@ -563,7 +563,7 @@ export const gameTools: CatalogItem[] = [
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/playtime-panorama',
+			href: 'https://github.com/Cloud-Light125/playtime-panorama',
 			external: true,
 		},
 	},
@@ -584,7 +584,7 @@ export const gameTools: CatalogItem[] = [
 		},
 		secondaryAction: {
 			label: '查看源码',
-			href: 'https://github.com/yundan125/overwatch-hero-quiz',
+			href: 'https://github.com/Cloud-Light125/overwatch-hero-quiz',
 			external: true,
 		},
 	},
