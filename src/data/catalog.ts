@@ -49,7 +49,8 @@ export interface CatalogCategory {
 	name: string;
 	description: string;
 	icon?: ImageMetadata;
-	showOnHome?: boolean;
+	showOnProjects: boolean;
+	showOnHome: boolean;
 }
 
 export interface CatalogAction {
@@ -74,7 +75,6 @@ export interface CatalogItem {
 	status: 'available';
 	capabilities: string[];
 	accent: CatalogAccent;
-	featured?: boolean;
 	icon?: ImageMetadata;
 	screenshot?: ImageMetadata;
 	screenshotAlt?: string;
@@ -92,6 +92,7 @@ export const catalogCategories: CatalogCategory[] = [
 		name: 'Windows 工具',
 		description: '安装在电脑上的系统、整理、导出与自动化工具。',
 		icon: windowsCategoryIcon,
+		showOnProjects: true,
 		showOnHome: true,
 	},
 	{
@@ -99,21 +100,27 @@ export const catalogCategories: CatalogCategory[] = [
 		name: '游戏与直播',
 		description: '游戏数据、趣味互动和直播活动辅助工具。',
 		icon: gameStreamingCategoryIcon,
+		showOnProjects: true,
 		showOnHome: true,
 	},
 	{
 		id: 'games',
 		name: '游戏',
 		description: '汇总网页游戏、游戏数据与桌面辅助工具。',
+		showOnProjects: false,
+		showOnHome: false,
 	},
 	{
 		id: 'scripts',
 		name: '浏览器脚本',
 		description: '在特定网页中减少重复操作的小型脚本。',
 		icon: browserScriptsCategoryIcon,
+		showOnProjects: true,
 		showOnHome: true,
 	},
 ];
+
+export const projectCategories = catalogCategories.filter((category) => category.showOnProjects);
 
 export const kindLabels: Record<CatalogKind, string> = {
 	desktop: '桌面软件',
@@ -135,7 +142,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['Battle.net 多账号', '国服 / 国际服本地切换', '三平台掉宝与观赛'],
 		accent: 'blue',
-		featured: true,
 		icon: cloudlightBlizzardIcon,
 		screenshots: [
 			{
@@ -155,7 +161,7 @@ export const projects: CatalogItem[] = [
 			},
 			{
 				image: cloudlightBlizzardSettings,
-				alt: 'CloudLight Blizzard 设置页面，显示托盘与开机启动选项、Battle.net 路径、掉宝网络代理和当前 2.0.0 版本',
+				alt: 'CloudLight Blizzard 设置页面，显示托盘与开机启动选项、Battle.net 路径、掉宝网络代理和软件版本信息',
 				caption: '设置页集中管理托盘、开机启动、主题、Battle.net 路径、三平台共用代理与软件更新。',
 			},
 		],
@@ -170,7 +176,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/Cloud-Light125/CloudLight-Blizzard',
 			external: true,
 		},
-		ctaNote: '当前正式版 v2.0.0；适用于 Windows 10/11 x64，需要 .NET 8 Windows Desktop Runtime。',
+		ctaNote: '适用于 Windows 10/11 x64，需要 .NET 8 Windows Desktop Runtime；在 Releases 页面选择版本。',
 	},
 	{
 		id: 'cloudlight-video-compressor',
@@ -181,7 +187,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['批量扫描与分析', '每个视频独立规划', 'QSV / NVENC / AMF'],
 		accent: 'blue',
-		featured: true,
 		icon: cloudlightVideoCompressorIcon,
 		detailsPath: '/projects/cloudlight-video-compressor/',
 		primaryAction: {
@@ -194,7 +199,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/Cloud-Light125/CloudLight-Video-Compressor',
 			external: true,
 		},
-		ctaNote: '当前公开 Release v1.2.0；安装包已包含 .NET 8 Windows Desktop Runtime、FFmpeg 和 ffprobe。',
+		ctaNote: '安装包包含 .NET 8 Windows Desktop Runtime、FFmpeg 和 ffprobe；在 Releases 页面选择版本。',
 	},
 	{
 		id: 'cloudlight-automator',
@@ -206,7 +211,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['可视化流程', '图像与文字识别', '键鼠操作'],
 		accent: 'violet',
-		featured: true,
 		icon: cloudlightAutomatorIcon,
 		screenshot: cloudlightAutomatorScreenshot,
 		screenshotAlt: 'CloudLight 自动化工作室的可视化工作流编辑界面',
@@ -233,7 +237,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['Codex / OpenClaw', 'QQ 与 Telegram', '继续已有会话'],
 		accent: 'cyan',
-		featured: true,
 		icon: cloudlightCodexBridgeIcon,
 		screenshots: [
 			{
@@ -263,7 +266,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/Cloud-Light125/Codex-Bridge',
 			external: true,
 		},
-		ctaNote: '当前公开 Release v1.1.4；完整安装包包含 .NET 8 Windows 桌面运行环境，下载入口进入 Releases 列表。',
+		ctaNote: '完整安装包包含 .NET 8 Windows 桌面运行环境；在 Releases 页面选择版本。',
 	},
 	{
 		id: 'cloudlight-xiaomi',
@@ -274,7 +277,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['Xiaomi 账号设备', '米家设备控制', '路由器 Presence 历史'],
 		accent: 'amber',
-		featured: true,
 		icon: cloudlightXiaomiIcon,
 		screenshots: [
 			{
@@ -309,7 +311,7 @@ export const projects: CatalogItem[] = [
 			href: 'https://github.com/Cloud-Light125/CloudLight-XiaoMi',
 			external: true,
 		},
-		ctaNote: '当前公开 Release v1.2.1；main 分支已包含 2.1.0 开发内容，下载请进入 Releases 列表。',
+		ctaNote: '网站功能说明包含当前 main 已实现内容；公开下载版本请以 Releases 页面为准。',
 	},
 	{
 		id: 'twitter-x-media-renamer',
@@ -321,7 +323,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['自动识别帖子', '改名前预览', '避免重名覆盖'],
 		accent: 'blue',
-		featured: true,
 		icon: twitterXMediaRenamerIcon,
 		screenshot: twitterXMediaRenamerScreenshot,
 		screenshotAlt: 'Twitter/X 媒体文件批量改名工具的文件扫描与重命名预览界面',
@@ -349,7 +350,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['评论与楼中楼', '三种导出格式', '图片本地保存'],
 		accent: 'amber',
-		featured: true,
 		icon: heyboxPostExporterIcon,
 		screenshot: heyboxPostExporterScreenshot,
 		screenshotAlt: '小黑盒帖子完整导出工具的 Edge 连接状态、导出选项与运行日志界面',
@@ -377,7 +377,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['自动查找直播', '多个浏览器 Profile', '手动 URL 模式'],
 		accent: 'violet',
-		featured: true,
 		icon: cloudlightOverwatchYoutubeWatcherIcon,
 		screenshot: cloudlightOverwatchYoutubeWatcherScreenshot,
 		screenshotAlt: '守望先锋 YouTube 直播观看助手的观看模式、直播地址与运行日志界面',
@@ -405,7 +404,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['多账号管理', '智能选台', '奖励进度'],
 		accent: 'amber',
-		featured: true,
 		icon: cloudlightSoopDropsMinerIcon,
 		screenshot: cloudlightSoopDropsMinerScreenshot,
 		screenshotAlt: 'CloudLight SOOP Drops Miner 的多账号任务管理界面',
@@ -432,7 +430,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['一键检测', '安全移除', '登录自动检查'],
 		accent: 'blue',
-		featured: true,
 		icon: microsoftPinyinCleanerIcon,
 		screenshot: microsoftPinyinCleanerScreenshot,
 		screenshotAlt: '微软拼音清理工具的检测与清理界面',
@@ -459,7 +456,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['隐藏设置扫描', '批量显示或隐藏', '修改前备份'],
 		accent: 'cyan',
-		featured: true,
 		icon: powerSettingsManagerIcon,
 		screenshot: powerSettingsManagerScreenshot,
 		screenshotAlt: 'Windows 高级电源设置管理器的扫描结果列表',
@@ -486,7 +482,6 @@ export const projects: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['离线局域网', '热点控制', '设备诊断'],
 		accent: 'blue',
-		featured: true,
 		icon: mobileHotspotControllerIcon,
 		screenshot: mobileHotspotControllerScreenshot,
 		screenshotAlt: 'Windows 移动热点控制器的热点设置与状态界面',
@@ -585,7 +580,6 @@ export const gameTools: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['多账号累计', '游玩排行榜', 'PNG 导出'],
 		accent: 'cyan',
-		featured: true,
 		icon: steamPlaytimePanoramaIcon,
 		primaryAction: {
 			label: '立即使用',
@@ -607,7 +601,6 @@ export const gameTools: CatalogItem[] = [
 		status: 'available',
 		capabilities: ['图标或全身照', '本地保存进度', '结果分享'],
 		accent: 'amber',
-		featured: true,
 		icon: overwatchHeroQuizIcon,
 		primaryAction: {
 			label: '立即使用',
@@ -627,8 +620,14 @@ export function getCatalogCategory(id: CatalogCategoryId) {
 	return catalogCategories.find((category) => category.id === id)!;
 }
 
-export function getCatalogCategories(item: CatalogItem) {
-	return item.categories.map(getCatalogCategory);
+export type CatalogCategoryScope = 'projects' | 'tools' | 'all';
+
+export function getCatalogCategories(item: CatalogItem, scope: CatalogCategoryScope = 'projects') {
+	const categories = item.categories.map(getCatalogCategory);
+	if (scope === 'all') return categories;
+
+	const projectCategories = categories.filter((category) => category.showOnProjects);
+	return scope === 'tools' && projectCategories.length === 0 ? categories : projectCategories;
 }
 
 export function hasCatalogCategory(item: CatalogItem, id: CatalogCategoryId) {

@@ -22,6 +22,7 @@ const screenshots: CatalogScreenshot[] = item.screenshots ?? (item.screenshot ? 
 }] : []);
 const heroScreenshot = screenshots[0];
 const socialImage = heroScreenshot?.image ?? item.icon;
+const socialImageAlt = heroScreenshot?.alt ?? `${item.name}项目图标`;
 const screenshotWidths = (width: number) => [...new Set([480, 720, 960, 1280, width])]
 	.filter((candidate) => candidate <= width)
 	.sort((a, b) => a - b);
@@ -32,21 +33,52 @@ const sectionScreenshots = (indexes: number[]) => indexes
 	.filter((screenshot): screenshot is CatalogScreenshot => screenshot !== undefined);
 const sections = project.sections;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const isGitHubRepository = (href: string) => {
+	try {
+		const url = new URL(href);
+		return url.hostname.toLowerCase() === 'github.com' && /^\/[^/]+\/[^/]+\/?$/.test(url.pathname);
+	} catch {
+		return false;
+	}
+};
+const isGitHubReleasesPage = (href: string) => {
+	try {
+		const url = new URL(href);
+		return url.hostname.toLowerCase() === 'github.com' && /^\/[^/]+\/[^/]+\/releases\/?$/.test(url.pathname);
+	} catch {
+		return false;
+	}
+};
 const projectSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'SoftwareApplication',
 	name: item.name,
 	...(item.englishName ? { alternateName: item.englishName } : {}),
 	description: project.pageDescription,
+	inLanguage: 'zh-CN',
 	url: canonicalURL,
 	applicationCategory: item.kind === 'desktop' ? 'UtilitiesApplication' : 'BrowserApplication',
 	operatingSystem: item.kind === 'desktop' ? 'Windows 10, Windows 11' : 'Web browser',
 	...(socialImage ? { image: new URL(socialImage.src, Astro.site) } : {}),
+	...(item.secondaryAction?.external && isGitHubRepository(item.secondaryAction.href) ? { sameAs: item.secondaryAction.href } : {}),
+	...(item.kind === 'desktop' && item.primaryAction.external && isGitHubReleasesPage(item.primaryAction.href)
+		? { downloadUrl: item.primaryAction.href }
+		: {}),
+};
+const breadcrumbSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', Astro.site) },
+		{ '@type': 'ListItem', position: 2, name: '项目', item: new URL('/projects/', Astro.site) },
+		{ '@type': 'ListItem', position: 3, name: item.name, item: canonicalURL },
+	],
 };
 ---
 
-<BaseLayout title={`${item.name} · CloudLight`} description={project.pageDescription} image={socialImage}>
+<BaseLayout title={`${item.name} · CloudLight`} description={project.pageDescription} image={socialImage} imageAlt={socialImageAlt}>
 	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(projectSchema)}></script>
+	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
 	<main class="project-detail">
 		<nav class="breadcrumbs" aria-label="面包屑">
 			<a href="/">首页</a><span aria-hidden="true">/</span><a href="/projects/">项目</a><span aria-hidden="true">/</span><span aria-current="page">{item.name}</span>
@@ -59,7 +91,7 @@ const projectSchema = {
 					<span class="status"><i aria-hidden="true"></i>{statusLabels[item.status]}</span>
 				</p>
 				<div class="project-title">
-					{item.icon && <span class="project-icon" aria-hidden="true"><Image src={item.icon} alt="" widths={[72, 144]} sizes="72px" /></span>}
+					{item.icon && <span class="project-icon" aria-hidden="true"><Image src={item.icon} alt="" widths={[72, 144]} sizes="72px" loading="eager" decoding="async" /></span>}
 					<div><h1>{item.name}</h1>{item.englishName && <p>{item.englishName}</p>}</div>
 				</div>
 				<p class="hero-summary">{item.summary}</p>
@@ -91,18 +123,18 @@ const projectSchema = {
 								alt={heroScreenshot.alt}
 								widths={screenshotWidths(heroScreenshot.image.width)}
 								sizes="(max-width: 900px) calc(100vw - 3rem), min(48vw, 650px)"
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
 							/>
 							<span class="sr-only">（在新窗口打开原图）</span>
 						</a>
 						{heroScreenshot.caption && <figcaption>{heroScreenshot.caption}</figcaption>}
 					</figure>
 				) : (
-					<div class:list={['script-preview', { desktop: item.kind === 'desktop' }]} aria-hidden="true">
-						<div class="script-window"><span></span><span></span><span></span><small>{item.kind === 'desktop' ? 'Windows' : 'user.js'}</small></div>
-						<div class="script-body">
-							{item.icon ? <span class="preview-icon"><Image src={item.icon} alt="" widths={[96, 192]} sizes="96px" /></span> : <strong>{item.kind === 'desktop' ? '▣' : '//'}</strong>}
-							<p>{item.kind === 'desktop' ? <>仓库暂未提供界面截图<br />请先查看使用要求</> : <>直接在目标网页中运行<br />由你开始和确认操作</>}</p>
-						</div>
+					<div class="no-screenshot-preview">
+						{item.icon && <span class="preview-icon"><Image src={item.icon} alt="" widths={[192, 384]} sizes="clamp(96px, 12vw, 128px)" loading="eager" decoding="async" /></span>}
+						<p>暂无界面截图</p>
 					</div>
 				)}
 			</div>
@@ -186,7 +218,7 @@ const projectSchema = {
 								{sectionScreenshots(section.indexes).map((screenshot) => (
 									<figure>
 										<a href={screenshot.image.src} target="_blank" rel="noopener noreferrer">
-											<Image src={screenshot.image} alt={screenshot.alt} widths={screenshotWidths(screenshot.image.width)} sizes="(max-width: 700px) calc(100vw - 3rem), min(44vw, 540px)" />
+											<Image src={screenshot.image} alt={screenshot.alt} widths={screenshotWidths(screenshot.image.width)} sizes="(max-width: 700px) calc(100vw - 3rem), min(44vw, 540px)" loading="lazy" decoding="async" />
 											<span class="sr-only">（在新窗口打开原图）</span>
 										</a>
 										{screenshot.caption && <figcaption>{screenshot.caption}</figcaption>}
@@ -255,15 +287,10 @@ const projectSchema = {
 	.hero-preview figure > a:hover, .body-gallery figure > a:hover { border-color: var(--detail-accent, var(--color-accent)); transform: translateY(-2px); }
 	.hero-preview figure :global(img), .body-gallery figure :global(img) { display: block; width: auto; max-width: 100%; height: auto; max-height: 31rem; object-fit: contain; border-radius: 0.85rem; }
 	.hero-preview figcaption, .body-gallery figcaption { margin-top: 0.7rem; color: var(--color-text-muted); font-size: var(--font-size-sm); line-height: 1.5; text-align: center; }
-	.script-preview { overflow: hidden; background: #191f30; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-large); box-shadow: var(--shadow-medium); color: #fff; }
-	.script-window { display: flex; align-items: center; gap: 0.4rem; padding: 0.75rem 0.9rem; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-	.script-window > span { width: 0.5rem; height: 0.5rem; background: #626d83; border-radius: 50%; }
-	.script-window small { margin-left: auto; color: #909bb0; font-family: Consolas, monospace; }
-	.script-body { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1.5rem; padding: 2rem; }
-	.script-body strong { color: #d7b1ff; font-family: Consolas, monospace; font-size: 4rem; line-height: 1; }
-	.preview-icon { display: grid; width: 6rem; height: 6rem; place-items: center; padding: 0.35rem; overflow: hidden; background: rgba(255, 255, 255, 0.08); border-radius: 1.25rem; }
-	.preview-icon :global(img) { display: block; width: 100%; height: 100%; border-radius: 0.95rem; object-fit: contain; }
-	.script-body p { margin: 0; color: #c4ccda; font-size: 1.15rem; line-height: 1.8; }
+	.no-screenshot-preview { display: grid; min-height: clamp(18rem, 32vw, 25rem); place-items: center; align-content: center; gap: 1rem; padding: 2rem; background: color-mix(in srgb, var(--detail-accent) 12%, rgba(255, 255, 255, 0.72)); border: 1px solid color-mix(in srgb, var(--detail-accent) 24%, var(--color-border)); border-radius: var(--radius-large); color: var(--detail-accent); text-align: center; }
+	.preview-icon { display: grid; width: clamp(6rem, 10vw, 8rem); height: clamp(6rem, 10vw, 8rem); place-items: center; padding: 0.55rem; overflow: hidden; background: rgba(255, 255, 255, 0.82); border: 1px solid color-mix(in srgb, var(--detail-accent) 18%, var(--color-border)); border-radius: 1.35rem; box-shadow: var(--shadow-small); }
+	.preview-icon :global(img) { display: block; width: 100%; height: 100%; border-radius: 1rem; object-fit: contain; }
+	.no-screenshot-preview p { margin: 0; color: color-mix(in srgb, var(--detail-accent) 70%, var(--color-text)); font-size: var(--font-size-sm); font-weight: 700; }
 	.project-sections { width: min(68rem, 100%); margin: 0 auto; }
 	.detail-section { margin-top: clamp(3.25rem, 6.5vw, 5.5rem); scroll-margin-top: 6rem; }
 	.section-header { max-width: 47rem; margin-bottom: 1.5rem; }

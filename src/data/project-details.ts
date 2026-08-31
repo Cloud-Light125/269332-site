@@ -1012,7 +1012,7 @@ export const projectDetails: ProjectDetail[] = [
 					{ term: 'Codex', description: '已经安装并能正常使用 Codex CLI 或 Codex Desktop，且已完成登录。' },
 					{ term: 'OpenClaw', description: 'OpenClaw 是可选后端；需要能连接本机 OpenClaw Gateway，并准备可用的 Session。' },
 					{ term: '远程渠道', description: '需要自行准备 QQ 或 Telegram Bot 凭据、接收目标和对应网络连接。' },
-					{ term: '安装包', description: '当前公开 Release v1.1.4 的完整安装包包含 .NET 8 Windows 桌面运行环境；便携版可能需要电脑已有对应运行环境。' },
+					{ term: '安装包', description: '完整安装包包含 .NET 8 Windows 桌面运行环境；便携版可能需要电脑已有对应运行环境，请在 Releases 页面选择版本。' },
 				],
 			},
 			{

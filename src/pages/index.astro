@@ -55,7 +55,7 @@ const websiteSchema = {
 			id="featured-projects"
 			label="精选项目"
 			title="推荐工具"
-			description="项目页包含用途说明、适用场景、使用步骤与获取方式。"
+			description="项目页提供用途、主要功能、真实截图、使用说明与获取入口。"
 			items={featuredProjects}
 			allHref="/projects/"
 			allLabel="浏览全部项目"
@@ -68,7 +68,8 @@ const websiteSchema = {
 			description="网页工具可直接打开使用，浏览器脚本会跳转至对应安装页面。"
 			items={directUseItems}
 			allHref="/tools/"
-			allLabel="查看游戏工具"
+			allLabel="查看在线工具"
+			categoryScope="tools"
 		/>
 
 		<CategoryBrowse items={projects} />
@@ -78,7 +79,7 @@ const websiteSchema = {
 			<div>
 				<p class="eyebrow">关于 CloudLight</p>
 				<h2 id="about-strip-title">个人项目与使用记录</h2>
-				<p>本站整理个人开发的软件、工具与使用记录。项目页提供用途、使用方式与限制说明，博客用于记录更完整的问题处理过程。</p>
+				<p>本站整理个人开发的软件、工具与使用记录。项目页按项目实际情况介绍用途、主要功能、界面和获取入口；博客用于记录更完整的问题处理过程。</p>
 			</div>
 			<a class="button button-secondary" href="/about/">了解更多</a>
 		</section>

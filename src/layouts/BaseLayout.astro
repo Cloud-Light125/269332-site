@@ -9,17 +9,18 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	imageAlt?: string;
 	type?: 'website' | 'article';
 	noindex?: boolean;
 }
 
-const { title, description, image, type = 'website', noindex = false } = Astro.props;
+const { title, description, image, imageAlt, type = 'website', noindex = false } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title={title} description={description} image={image} type={type} noindex={noindex} />
+		<BaseHead title={title} description={description} image={image} imageAlt={imageAlt} type={type} noindex={noindex} />
 		<slot name="head" />
 	</head>
 	<body>

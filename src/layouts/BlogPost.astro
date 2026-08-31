@@ -13,6 +13,7 @@ const articleSchema = {
 	'@type': 'BlogPosting',
 	headline: title,
 	description,
+	inLanguage: 'zh-CN',
 	datePublished: pubDate.toISOString(),
 	...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
 	author: {
@@ -23,11 +24,22 @@ const articleSchema = {
 	url: canonicalURL,
 	mainEntityOfPage: canonicalURL,
 	...(heroImage ? { image: new URL(heroImage.src, Astro.site) } : {}),
+	...(tags.length > 0 ? { keywords: tags } : {}),
+};
+const breadcrumbSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', Astro.site) },
+		{ '@type': 'ListItem', position: 2, name: '博客', item: new URL('/blog/', Astro.site) },
+		{ '@type': 'ListItem', position: 3, name: title, item: canonicalURL },
+	],
 };
 ---
 
-<BaseLayout title={`${title} · ${SITE_TITLE}`} description={description} image={heroImage} type="article">
+<BaseLayout title={`${title} · ${SITE_TITLE}`} description={description} image={heroImage} imageAlt={heroImage ? `${title}文章配图` : undefined} type="article">
 	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+	<script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
 	<main class="post-main">
 		<article>
 			<header class="post-header">
@@ -38,7 +50,7 @@ const articleSchema = {
 				{tags.length > 0 && <ul class="post-tags" aria-label="文章标签">{tags.map((tag) => <li>{tag}</li>)}</ul>}
 			</header>
 
-			{heroImage && <figure class="hero-image"><Image src={heroImage} alt={`${title}文章配图`} widths={[720, 1080, 1440]} sizes="(max-width: 760px) calc(100vw - 1.5rem), min(1080px, calc(100vw - 2rem))" /><figcaption class="sr-only">{title}文章配图</figcaption></figure>}
+			{heroImage && <figure class="hero-image"><Image src={heroImage} alt={`${title}文章配图`} widths={[720, 1080, 1440]} sizes="(max-width: 760px) calc(100vw - 1.5rem), min(1080px, calc(100vw - 2rem))" loading="eager" fetchpriority="high" decoding="async" /><figcaption class="sr-only">{title}文章配图</figcaption></figure>}
 
 			<div class="article-body"><slot /></div>
 		</article>

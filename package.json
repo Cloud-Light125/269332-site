@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "validate": "node scripts/validate-site-data.mjs",
+    "build": "npm run validate && astro build",
     "baidu:push": "node scripts/baidu-push.mjs",
     "deploy:production": "node scripts/deploy-production.mjs",
     "preview": "astro preview",

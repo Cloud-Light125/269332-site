@@ -1,6 +1,6 @@
 ---
 import CatalogCard from '../CatalogCard.astro';
-import type { CatalogItem } from '../../data/catalog';
+import type { CatalogCategoryScope, CatalogItem } from '../../data/catalog';
 
 interface Props {
 	id: string;
@@ -10,9 +10,10 @@ interface Props {
 	items: CatalogItem[];
 	allHref: string;
 	allLabel: string;
+	categoryScope?: CatalogCategoryScope;
 }
 
-const { id, label, title, description, items, allHref, allLabel } = Astro.props;
+const { id, label, title, description, items, allHref, allLabel, categoryScope = 'projects' } = Astro.props;
 ---
 
 <section class="featured-section" aria-labelledby={id}>
@@ -25,7 +26,7 @@ const { id, label, title, description, items, allHref, allLabel } = Astro.props;
 		<a class="section-link" href={allHref}>{allLabel} <span aria-hidden="true">→</span></a>
 	</header>
 	<div class="catalog-grid">
-		{items.map((item) => <CatalogCard item={item} headingLevel="h3" />)}
+		{items.map((item) => <CatalogCard item={item} headingLevel="h3" categoryScope={categoryScope} />)}
 	</div>
 </section>
 

@@ -8,12 +8,15 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	imageAlt?: string;
 	type?: 'website' | 'article';
 	noindex?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = FallbackImage, type = 'website', noindex = false } = Astro.props;
+const { title, description, image: imageProp, imageAlt: imageAltProp, type = 'website', noindex = false } = Astro.props;
+const image = imageProp ?? FallbackImage;
+const imageAlt = imageAltProp ?? (imageProp ? title : 'CloudLight 网站');
 const imageURL = new URL(image.src, Astro.site);
 ---
 
@@ -43,6 +46,7 @@ const imageURL = new URL(image.src, Astro.site);
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageURL} />
+<meta property="og:image:alt" content={imageAlt} />
 <meta property="og:image:width" content={String(image.width)} />
 <meta property="og:image:height" content={String(image.height)} />
 
@@ -50,3 +54,4 @@ const imageURL = new URL(image.src, Astro.site);
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageURL} />
+<meta name="twitter:image:alt" content={imageAlt} />

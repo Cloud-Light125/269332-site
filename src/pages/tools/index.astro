@@ -14,7 +14,7 @@ const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwa
 	<main class="tools-page">
 		<header class="tools-hero">
 			<div>
-				<p class="eyebrow">游戏</p>
+				<p class="eyebrow">游戏工具</p>
 				<h1>游戏数据、互动与直播工具</h1>
 				<p>包含 Steam 游玩数据可视化、守望先锋互动工具，以及 Battle.net 多账号、国服 / 国际服本地切换、直播观看和掉宝任务辅助程序。</p>
 				<div class="hero-actions">
@@ -25,13 +25,13 @@ const overwatchWatcher = gameItems.find((item) => item.id === 'cloudlight-overwa
 			<div class="hero-mark" aria-hidden="true">
 				<div><span>PLAY</span><strong>{String(gameItems.length).padStart(2, '0')}</strong></div>
 				<p>Steam<br />Overwatch<br />Battle.net</p>
-				<small>网页工具 · Windows 助手</small>
+				<small>共 {gameItems.length} 项游戏工具 · 网页工具与 Windows 助手</small>
 			</div>
 		</header>
 
 		<section class="tool-list" aria-labelledby="tool-list-title">
 			<header><p class="eyebrow">全部工具</p><h2 id="tool-list-title">选择工具</h2></header>
-			<div class="catalog-grid">{gameItems.map((tool) => <CatalogCard item={tool} headingLevel="h3" />)}</div>
+			<div class="catalog-grid">{gameItems.map((tool) => <CatalogCard item={tool} headingLevel="h3" categoryScope="tools" />)}</div>
 		</section>
 
 		<aside class="copyright-note" aria-label="游戏相关商标与非官方说明">

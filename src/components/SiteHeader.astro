@@ -16,7 +16,7 @@ import HeaderLink from './HeaderLink.astro';
 			<nav aria-label="主导航">
 				<HeaderLink href="/">首页</HeaderLink>
 				<HeaderLink href="/projects/">项目</HeaderLink>
-				<HeaderLink href="/tools/">游戏</HeaderLink>
+				<HeaderLink href="/tools/">游戏工具</HeaderLink>
 				<HeaderLink href="/blog/">博客</HeaderLink>
 				<HeaderLink href="/about/">关于</HeaderLink>
 			</nav>
@@ -47,13 +47,18 @@ import HeaderLink from './HeaderLink.astro';
 			toggle.setAttribute('aria-expanded', 'false');
 			toggle.querySelector('.sr-only')!.textContent = '打开导航';
 			panel.classList.remove('is-open');
+			panel.setAttribute('aria-hidden', window.innerWidth <= 760 ? 'true' : 'false');
 		};
+
+		panel.setAttribute('aria-hidden', window.innerWidth <= 760 ? 'true' : 'false');
 
 		toggle.addEventListener('click', () => {
 			const open = toggle.getAttribute('aria-expanded') !== 'true';
 			toggle.setAttribute('aria-expanded', String(open));
 			toggle.querySelector('.sr-only')!.textContent = open ? '关闭导航' : '打开导航';
 			panel.classList.toggle('is-open', open);
+			panel.setAttribute('aria-hidden', open ? 'false' : window.innerWidth <= 760 ? 'true' : 'false');
+			if (open) panel.querySelector<HTMLAnchorElement>('a')?.focus();
 		});
 
 		panel.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));

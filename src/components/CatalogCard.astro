@@ -5,6 +5,7 @@ import {
 	kindLabels,
 	statusLabels,
 	type CatalogAction,
+	type CatalogCategoryScope,
 	type CatalogItem,
 } from '../data/catalog';
 
@@ -12,11 +13,22 @@ interface Props {
 	item: CatalogItem;
 	compact?: boolean;
 	headingLevel?: 'h2' | 'h3';
+	categoryScope?: CatalogCategoryScope;
 }
 
-const { item, compact = false, headingLevel = 'h2' } = Astro.props;
-const categories = getCatalogCategories(item);
+const { item, compact = false, headingLevel = 'h2', categoryScope = 'projects' } = Astro.props;
+const categories = getCatalogCategories(item, categoryScope);
 const Heading = headingLevel;
+const searchText = [
+	item.name,
+	item.englishName,
+	item.summary,
+	kindLabels[item.kind],
+	...item.capabilities,
+	...categories.map((category) => category.name),
+]
+	.filter(Boolean)
+	.join(' ');
 
 const externalProps = (action: CatalogAction) =>
 	action.external ? { target: '_blank' as const, rel: 'noopener noreferrer' } : {};
@@ -25,9 +37,10 @@ const externalProps = (action: CatalogAction) =>
 <article
 	class:list={['catalog-card', `accent-${item.accent}`, { compact }]}
 	data-catalog-card
-	data-categories={item.categories.join(' ')}
+	data-categories={categories.map((category) => category.id).join(' ')}
+	data-search={searchText}
 >
-	<div class="card-topline" aria-label="项目类型与状态">
+	<div class="card-topline" role="group" aria-label="项目类型与状态">
 		{categories.map((category) => <span>{category.name}</span>)}
 		<span>{kindLabels[item.kind]}</span>
 		<span class="status"><i aria-hidden="true"></i>{statusLabels[item.status]}</span>

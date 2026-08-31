@@ -1,10 +1,10 @@
 ---
 import { Image } from 'astro:assets';
-import { catalogCategories, hasCatalogCategory, type CatalogItem } from '../../data/catalog';
+import { hasCatalogCategory, projectCategories, type CatalogItem } from '../../data/catalog';
 
 interface Props { items: CatalogItem[]; }
 const { items } = Astro.props;
-const homeCategories = catalogCategories.filter((category) => category.showOnHome);
+const homeCategories = projectCategories.filter((category) => category.showOnHome);
 ---
 
 <section class="category-section" aria-labelledby="category-title">
@@ -18,7 +18,7 @@ const homeCategories = catalogCategories.filter((category) => category.showOnHom
 			return (
 				<a href={`/projects/?category=${category.id}`}>
 					<span class="category-icon" aria-hidden="true">
-						{category.icon && <Image src={category.icon} alt="" widths={[52, 104]} sizes="52px" />}
+						{category.icon && <Image src={category.icon} alt="" widths={[52, 104]} sizes="52px" loading="lazy" decoding="async" />}
 					</span>
 					<div><h3>{category.name}</h3><p>{category.description}</p></div>
 					<small>{count} 个项目 <i aria-hidden="true">→</i></small>
